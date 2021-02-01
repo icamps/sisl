@@ -225,7 +225,7 @@
 <span class="c1"># This list of tuples is formed as</span>
 <span class="c1">#  [(&#39;fdf&#39;, fdfSileSiesta, fdfSileSiesta),</span>
 <span class="c1">#   (&#39;fdf&#39;, ncSileSiesta, fdfSileSiesta)]</span>
-<span class="c1"># [0] is the file-endding</span>
+<span class="c1"># [0] is the file suffix</span>
 <span class="c1"># [1] is the base class that may be queried</span>
 <span class="c1"># [2] is the actual class the file represents</span>
 <span class="c1"># This enables one to add several files with the</span>
@@ -242,10 +242,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">gzip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cls</span> <span class="o">=</span> <span class="bp">cls</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">=</span> <span class="n">case</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">case</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">case</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">suffix</span> <span class="o">=</span> <span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gzip</span> <span class="o">=</span> <span class="n">gzip</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">build_bases</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="vm">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bases</span><span class="p">]</span>

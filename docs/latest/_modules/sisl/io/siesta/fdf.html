@@ -1531,7 +1531,7 @@
         <span class="c1"># Read the block (not strictly needed, if so we simply set all atoms to H)</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_basis</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="n">SileWarning</span><span class="p">(</span><span class="s1">&#39;Block ChemicalSpeciesLabel does not exist, cannot determine the basis (all Hydrogen).&#39;</span><span class="p">))</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Block ChemicalSpeciesLabel does not exist, cannot determine the basis (all Hydrogen).&#39;</span><span class="p">)</span>
 
             <span class="c1"># Default atom (hydrogen)</span>
             <span class="n">atoms</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>

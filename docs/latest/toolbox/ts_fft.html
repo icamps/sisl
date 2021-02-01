@@ -41,7 +41,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="ASE" href="../visualization/ase/index.html" />
+    <link rel="next" title="Plotting atom output" href="atom_plot.html" />
     <link rel="prev" title="Toolboxes" href="../toolbox.html" /> 
 </head>
 
@@ -119,6 +119,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#method">Method</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="atom_plot.html">Plotting <em class="xref py py-obj">atom</em> output</a></li>
 </ul>
 </li>
 </ul>
@@ -222,10 +223,10 @@
 </style>
 <div class="section" id="transiesta-hartree-correction-for-fft-poisson-solver">
 <span id="toc-tool-ts-fft"></span><h1>TranSiesta Hartree correction for FFT Poisson solver<a class="headerlink" href="#transiesta-hartree-correction-for-fft-poisson-solver" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://gitlab.com/siesta-project/siesta">TranSiesta</a> calculations based on the NEGF formalism is based on solving the
+<p><a class="reference external" href="https://siesta-project.org">TranSiesta</a> calculations based on the NEGF formalism is based on solving the
 Poisson equation for an open-boundary condition.
 For 2 electrodes (left/right) a potential drop between the electrodes.</p>
-<p>In <a class="reference external" href="https://departments.icmab.es/leem/siesta">Siesta</a> the Poisson equation is solved using Fourier transforms which
+<p>In <a class="reference external" href="https://siesta-project.org">Siesta</a> the Poisson equation is solved using Fourier transforms which
 implicitly assumes periodic boundary conditions. This is contrary to the
 actual open boundary conditions which have fixed <em>and</em> different potentials at
 the boundaries.</p>
@@ -248,7 +249,7 @@ as defined by the user.</p>
 <p>Here we list the required items needed to create a correction file compatible with
 TranSiesta.</p>
 <ol class="arabic simple">
-<li><p>Supply a geometry from a previous <a class="reference external" href="https://gitlab.com/siesta-project/siesta">TBtrans</a> calculation</p></li>
+<li><p>Supply a geometry from a previous <a class="reference external" href="https://siesta-project.org">TBtrans</a> calculation</p></li>
 <li><p>Manually define the applied bias’ for each electrode</p></li>
 <li><p>Define the shape of the grid, use values from Siesta output;
 search for line <code class="docutils literal notranslate"><span class="pre">InitMesh:</span> <span class="pre">MESH</span> <span class="pre">=</span> <span class="pre">A</span> <span class="pre">x</span> <span class="pre">B</span> <span class="pre">x</span> <span class="pre">C</span></code></p></li>
@@ -304,7 +305,7 @@ you are encouraged to use that instead.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../visualization/ase/index.html" class="btn btn-neutral float-right" title="ASE" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="atom_plot.html" class="btn btn-neutral float-right" title="Plotting atom output" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../toolbox.html" class="btn btn-neutral float-left" title="Toolboxes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
