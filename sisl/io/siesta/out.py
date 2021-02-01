@@ -43,9 +43,13 @@ class outSileSiesta(SileSiesta):
     @sile_fh_open()
     def completed(self):
         """ True if the full file has been read and "Job completed" was found. """
-        if self._completed is not True:
-            self._completed = self.step_to("Job completed")[0]
-        return self._completed
+        if self._completed is None:
+            completed = self.step_to("Job completed")[0]
+        else:
+            completed = self._completed
+        if completed:
+            self._completed = True
+        return completed
 
     @sile_fh_open()
     def read_species(self):
@@ -561,8 +565,10 @@ class outSileSiesta(SileSiesta):
         PropertyDict : dictionary like lookup table ionic energies are stored in a nested `PropertyDict` at the key ``ion`` (all energies in eV)
         """
         found = self.step_to("siesta: Final energy", reread=False)[0]
+        out = PropertyDict()
+        out.ion = PropertyDict()
         if not found:
-            return None
+            return out
         itt = iter(self)
 
         # Read data
@@ -576,21 +582,19 @@ class outSileSiesta(SileSiesta):
             "Eso": "spin_orbit",
             "Ext. field": "extE",
             "Exch.-corr.": "xc",
-            "Ekinion": "ion_kinetic",
-            "Ion-electron": "ion_electron",
-            "Ion-ion": "ion_ion",
+            "Ekinion": "ion.kinetic",
+            "Ion-electron": "ion.electron",
+            "Ion-ion": "ion.ion",
             "Bulk bias": "bulkV",
             "Total": "total",
             "Fermi": "fermi",
             "Enegf": "negf",
         }
-        out = PropertyDict()
-        out.ion = PropertyDict()
         while len(line.strip()) > 0:
             key, val = line.split("=")
             key = key.split(":")[1].strip()
             key = name_conv.get(key, key)
-            if key.startswith("ion"):
+            if key.startswith("ion."):
                 # sub-nest
                 out.ion[key[4:]] = float(val)
             else:
