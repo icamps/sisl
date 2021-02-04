@@ -34,12 +34,17 @@ class FatbandsPlot(BandsPlot):
         Note that each group has an additional individual factor that you can
         also tweak.
     groups: array-like of dict, optional
-        The different groups that are displayed in the fatbands
+        The different groups that are displayed in the fatbands   Each item
+        is a dict. Structure of the expected dicts:{         'name':
+        'species':          'atoms':          'orbitals':          'spin':
+        'normalize':          'color':          'scale':  }
     bands_file: bandsSileSiesta, optional
         This parameter explicitly sets a .bands file. Otherwise, the bands
         file is attempted to read from the fdf file
     band_structure: BandStructure, optional
         The BandStructure object to be used.
+    aiida_bands:  optional
+                     An aiida BandsData node.
     add_band_trace_data:  optional
         A function that receives each band (as a DataArray) and adds data to
         the trace. It also recieves the plot object.              The
@@ -62,7 +67,9 @@ class FatbandsPlot(BandsPlot):
         Path along which bands are drawn in units of reciprocal lattice
         vectors.             Note that if you want to provide a path
         programatically you can do it more easily with the `band_structure`
-        setting
+        setting   Each item is a dict. Structure of the expected dicts:{
+        'x':          'y':          'z':          'divisions':
+        'tick': Tick that should be displayed at this corner of the path. }
     spin:  optional
         Determines how the different spin configurations should be displayed.
         In spin polarized calculations, it allows you to choose between spin
@@ -83,6 +90,15 @@ class FatbandsPlot(BandsPlot):
         where there are degenerated bands with exactly the same values.
     gap_color: str, optional
         Color to display the gap
+    custom_gaps: array-like of dict, optional
+        List of all the gaps that you want to display.   Each item is a dict.
+        Structure of the expected dicts:{         'from': K value where to
+        start measuring the gap.                      It can be either the
+        label of the k-point or the numeric value in the plot.         'to':
+        K value where to end measuring the gap.                      It can
+        be either the label of the k-point or the numeric value in the plot.
+        'color': The color with which the gap should be displayed
+        'spin': The spin components where the gap should be calculated. }
     bands_width: float, optional
         Width of the lines that represent the bands
     bands_color: str, optional
@@ -415,7 +431,7 @@ class FatbandsPlot(BandsPlot):
 
         Parameters
         --------
-        on: str, {"species", "atoms", "orbitals", "n", "l", "m", "Z", "spin"} or list of str
+        on: str, {"species", "atoms", "Z", "orbitals", "n", "l", "m", "zeta", "spin"} or list of str
             the parameter to split along.
             Note that you can combine parameters with a "+" to split along multiple parameters
             at the same time. You can get the same effect also by passing a list.

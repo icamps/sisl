@@ -1,3 +1,4 @@
+import importlib
 import pytest
 import inspect
 from pathlib import Path
@@ -144,8 +145,25 @@ def only_if_plot_initialized(request):
     """
 
     if request.function.__name__ != "test_plot_initialization":
+        # loop modules that viz.plotly depends on
+        importables = []
+        non_importables = []
+        for modname in ("plotly", "skimage", "pandas", "xarray"):
+            try:
+                importlib.import_module(modname)
+                importables.append(modname)
+            except ImportError:
+                non_importables.append(modname)
+
+        if importables:
+            msg = ", ".join(importables) + " is/are importable"
+            if non_importables:
+                msg += "; " + ", ".join(non_importables) + " is/are not importable"
+        elif non_importables:
+            msg = ", ".join(non_importables) + " is/are not importable"
+
         if "plot" not in request.cls._attrs:
-            pytest.skip("The plot was not initialized so we can not run the test")
+            pytest.skip(f"plot was not initialized ({msg})")
 
 
 def setup_multiple_tests(cls, params, global_scope):

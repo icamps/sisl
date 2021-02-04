@@ -22,6 +22,11 @@ class MinimizeSiesta(BaseMinimize): # no inheritance!
     keyword arguments.
     """
 
+    def __init__(self, runner, metric, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.runner = runner
+        self.metric = metric
+
     def get_constraints(self, factor=0.95):
         """ Return contraints for the zeta channels """
         # Now we define the constraints of the orbitals.
@@ -182,8 +187,8 @@ class MinimizeSiesta(BaseMinimize): # no inheritance!
 
         # Run the runner
         _log.debug(f"{self.__class__.__name__} running runners")
-        rets = self.opts.runner.run()
-        if not isinstance(self.opts.runner, AndRunner):
+        rets = self.runner.run()
+        if not isinstance(self.runner, AndRunner):
             rets = [rets]
         for ret in rets:
             if isinstance(ret, CompletedProcess):
@@ -193,7 +198,7 @@ class MinimizeSiesta(BaseMinimize): # no inheritance!
 
         # Calculate metric
         _log.debug(f"{self.__class__.__name__} running metrics")
-        metric = self.opts.metric.metric(variables)
+        metric = self.metric.metric(variables)
         _log.info(f"{self.__class__.__name__} final metric: {metric}")
         return metric
 

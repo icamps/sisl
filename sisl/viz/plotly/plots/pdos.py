@@ -3,8 +3,11 @@ import numpy as np
 import sisl
 from ..plot import Plot, entry_point
 from ..plotutils import find_files, random_color
-from ..input_fields import TextInput, SileInput, SwitchInput, ColorPicker, DropdownInput, CreatableDropdown, \
-    IntegerInput, FloatInput, RangeInput, RangeSlider, OrbitalQueries, ProgramaticInput, Array1DInput, ListInput
+from ..input_fields import (
+    TextInput, SileInput, SwitchInput, ColorPicker, DropdownInput, CreatableDropdown,
+    IntegerInput, FloatInput, RangeInput, RangeSlider, OrbitalQueries,
+    ProgramaticInput, Array1DInput, ListInput
+)
 from ..input_fields.range import ErangeInput
 
 
@@ -17,6 +20,8 @@ class PdosPlot(Plot):
     pdos_file: pdosSileSiesta, optional
         This parameter explicitly sets a .PDOS file. Otherwise, the PDOS file
         is attempted to read from the fdf file
+    tbt_nc: optional
+        TBtrans output for plotting PDOS from NEGF calculations
     Erange: array-like of shape (2,), optional
         Energy range where PDOS is displayed.
     nE: int, optional
@@ -170,7 +175,7 @@ class PdosPlot(Plot):
                     params={
                         "isMulti": True,
                         "isSearchable": True,
-                        "options": [{"value": option, "label": option} for option in ("species", "atoms", "orbitals", "spin", "n", "l", "m", "Z")]
+                        "options": [{"value": option, "label": option} for option in ("species", "atoms", "Z", "orbitals", "spin", "n", "l", "m", "zeta")]
                     }
                 )
             ]
@@ -571,7 +576,7 @@ class PdosPlot(Plot):
             will split the PDOS on the different orbitals but will take
             only those that belong to carbon atoms.
         """
-        keys = ["atoms", "orbitals", "species", "spin", "n", "l", "m", "Z"]
+        keys = ["atoms", "Z", "orbitals", "species", "spin", "n", "l", "m", "zeta"]
 
         # Merge all the requests (nice tree I built here, isn't it? :) )
         new_request = {key: [] for key in keys}
@@ -610,7 +615,7 @@ class PdosPlot(Plot):
             to spread it and use all items in your list as args
 
             If no query is provided, all the requests will be matched
-        on: str, {"species", "atoms", "orbitals", "n", "l", "m", "Z", "spin"}, or list of str
+        on: str, {"species", "atoms", "Z", "orbitals", "n", "l", "m", "zeta", "spin"}, or list of str
             the parameter to split along.
 
             Note that you can combine parameters with a "+" to split along multiple parameters
@@ -666,7 +671,7 @@ class PdosPlot(Plot):
 
         Parameters
         --------
-        on: str, {"species", "atoms", "orbitals", "n", "l", "m", "Z", "spin"}, or list of str
+        on: str, {"species", "atoms", "Z", "orbitals", "n", "l", "m", "zeta", "spin"}, or list of str
             the parameter to split along.
             Note that you can combine parameters with a "+" to split along multiple parameters
             at the same time. You can get the same effect also by passing a list.
