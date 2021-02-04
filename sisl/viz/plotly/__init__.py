@@ -1,18 +1,23 @@
-"""
-====================================
-Plotly utilities (:mod:`sisl.viz.plotly`)
-====================================
+r"""Plotly
+==========
 
 .. module:: sisl.viz.plotly
    :noindex:
 
-Classes that are used for visualizing simulations results
+Plotly is a backend that provides expert plotting utilities using `plotly`.
+It features a rich set of settings enabling fine-tuning of many parameters.
 
-Range routines
-==============
+.. autosummary::
+   :toctree:
 
-Miscellaneous routines
-======================
+   GeometryPlot
+   BandsPlot
+   FatbandsPlot
+   PdosPlot
+   BondLengthMap
+   ForcesPlot
+   GridPlot
+   WavefunctionPlot
 
 """
 from ._presets import *
