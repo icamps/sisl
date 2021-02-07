@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>sisl.io.openmx.omx &mdash; sisl |release| documentation</title>
+  <title>sisl.io.openmx.omx &mdash; sisl latest documentation</title>
   
 
   
@@ -18,7 +18,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -31,10 +34,10 @@
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
         <script src="../../../../_static/doctools.js"></script>
-        <script src="../../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -54,7 +57,7 @@
           
 
           
-            <a href="../../../../index.html" class="icon icon-home" alt="Documentation Home"> sisl
+            <a href="../../../../index.html" class="icon icon-home"> sisl
           
 
           
@@ -93,30 +96,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../contribute.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../other.html">Other resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Publications</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../cite.html">Citing sisl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../publications.html">Publications using sisl</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../scripts/scripts.html">Command line scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../rst/files.html">File formats</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolboxes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../toolbox.html">Toolboxes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../toolbox/index.html">Toolboxes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../visualization/plotly/index.html">Plotly</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/index.html">API documentation</a></li>
 </ul>
 
             
@@ -142,6 +141,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -206,7 +207,7 @@
 <span class="n">_LOGICAL</span> <span class="o">=</span> <span class="n">_LOGICAL_FALSE</span> <span class="o">+</span> <span class="n">_LOGICAL_TRUE</span>
 
 
-<div class="viewcode-block" id="omxSileOpenMX"><a class="viewcode-back" href="../../../../api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX">[docs]</a><span class="k">class</span> <span class="nc">omxSileOpenMX</span><span class="p">(</span><span class="n">SileOpenMX</span><span class="p">):</span>
+<div class="viewcode-block" id="omxSileOpenMX"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX">[docs]</a><span class="k">class</span> <span class="nc">omxSileOpenMX</span><span class="p">(</span><span class="n">SileOpenMX</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; OpenMX-input file</span>
 
 <span class="sd">    By supplying base you can reference files in other directories.</span>
@@ -376,7 +377,7 @@
 
         <span class="k">return</span> <span class="s1">&#39;n&#39;</span>
 
-<div class="viewcode-block" id="omxSileOpenMX.type"><a class="viewcode-back" href="../../../../api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.type">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
+<div class="viewcode-block" id="omxSileOpenMX.type"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.type">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the type of the fdf-keyword</span>
 
@@ -388,7 +389,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_seek</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_read_label</span><span class="p">(</span><span class="n">label</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="omxSileOpenMX.get"><a class="viewcode-back" href="../../../../api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.get">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
+<div class="viewcode-block" id="omxSileOpenMX.get"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.get">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Retrieve keyword from the file</span>
 
@@ -434,7 +435,7 @@
 
         <span class="k">return</span> <span class="n">value</span></div>
 
-<div class="viewcode-block" id="omxSileOpenMX.read_basis"><a class="viewcode-back" href="../../../../api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.read_basis">[docs]</a>    <span class="k">def</span> <span class="nf">read_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="omxSileOpenMX.read_basis"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.read_basis">[docs]</a>    <span class="k">def</span> <span class="nf">read_basis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reads basis</span>
 
 <span class="sd">        Parameters</span>
@@ -521,7 +522,7 @@
             <span class="n">atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Atom</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">orbs</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">atom</span>
 
-<div class="viewcode-block" id="omxSileOpenMX.read_supercell"><a class="viewcode-back" href="../../../../api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.read_supercell">[docs]</a>    <span class="k">def</span> <span class="nf">read_supercell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="omxSileOpenMX.read_supercell"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.read_supercell">[docs]</a>    <span class="k">def</span> <span class="nf">read_supercell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reads supercell</span>
 
 <span class="sd">        One can limit the tried files to only one file by passing</span>
@@ -569,7 +570,7 @@
 
     <span class="n">_r_supercell_dat</span> <span class="o">=</span> <span class="n">_r_supercell_omx</span>
 
-<div class="viewcode-block" id="omxSileOpenMX.read_geometry"><a class="viewcode-back" href="../../../../api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.read_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">read_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="omxSileOpenMX.read_geometry"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.openmx.omxSileOpenMX.html#sisl.io.openmx.omxSileOpenMX.read_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">read_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns Geometry object</span>
 
 <span class="sd">        One can limit the tried files to only one file by passing</span>
@@ -645,28 +646,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2021, Nick Papior
+        &#169; Copyright 2015-2021, Nick Papior.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

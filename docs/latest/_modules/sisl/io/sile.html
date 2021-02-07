@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>sisl.io.sile &mdash; sisl |release| documentation</title>
+  <title>sisl.io.sile &mdash; sisl latest documentation</title>
   
 
   
@@ -18,7 +18,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -31,10 +34,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -54,7 +57,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> sisl
+            <a href="../../../index.html" class="icon icon-home"> sisl
           
 
           
@@ -93,30 +96,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../other.html">Other resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Publications</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../cite.html">Citing sisl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications using sisl</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../scripts/scripts.html">Command line scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rst/files.html">File formats</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolboxes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../toolbox.html">Toolboxes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../toolbox/index.html">Toolboxes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../visualization/plotly/index.html">Plotly</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API documentation</a></li>
 </ul>
 
             
@@ -142,6 +141,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -204,7 +205,8 @@
     <span class="s1">&#39;get_sile_class&#39;</span><span class="p">,</span>
     <span class="s1">&#39;get_sile&#39;</span><span class="p">,</span>
     <span class="s1">&#39;get_siles&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;get_sile_rules&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;get_sile_rules&#39;</span>
+<span class="p">]</span>
 
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span>
     <span class="s1">&#39;BaseSile&#39;</span><span class="p">,</span>
@@ -214,12 +216,14 @@
     <span class="s1">&#39;SileError&#39;</span><span class="p">,</span>
     <span class="s1">&#39;SileWarning&#39;</span><span class="p">,</span>
     <span class="s1">&#39;SileInfo&#39;</span><span class="p">,</span>
-    <span class="p">]</span>
+<span class="p">]</span>
 
 <span class="c1"># Decorators or sile-specific functions</span>
-<span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;sile_fh_open&#39;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span>
+    <span class="s1">&#39;sile_fh_open&#39;</span><span class="p">,</span>
     <span class="s1">&#39;sile_raise_write&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;sile_raise_read&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;sile_raise_read&#39;</span>
+<span class="p">]</span>
 
 <span class="c1"># Global container of all Sile rules</span>
 <span class="c1"># This list of tuples is formed as</span>
@@ -550,17 +554,17 @@
         <span class="sd">&quot;&quot;&quot; File of the current `Sile` &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseSile.dir_file"><a class="viewcode-back" href="../../../api-generated/sisl.io.BaseSile.html#sisl.io.BaseSile.dir_file">[docs]</a>    <span class="k">def</span> <span class="nf">dir_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename_base</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dir_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename_base</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; File of the current `Sile` &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
-        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename_base</span> <span class="o">/</span> <span class="n">filename</span></div>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directory</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename_base</span> <span class="o">/</span> <span class="n">filename</span>
 
-<div class="viewcode-block" id="BaseSile.exist"><a class="viewcode-back" href="../../../api-generated/sisl.io.BaseSile.html#sisl.io.BaseSile.exist">[docs]</a>    <span class="k">def</span> <span class="nf">exist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">exist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Query whether the file exists &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">isfile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
 
-<div class="viewcode-block" id="BaseSile.read"><a class="viewcode-back" href="../../../api-generated/sisl.io.BaseSile.html#sisl.io.BaseSile.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Generic read method which should be overloaded in child-classes</span>
 
 <span class="sd">        Parameters</span>
@@ -574,7 +578,7 @@
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;read_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">):</span>
                 <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;read_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)</span>
                 <span class="c1"># Call read</span>
-                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="c1"># Options for writing</span>
     <span class="c1"># The default routine for writing</span>
@@ -583,7 +587,7 @@
     <span class="c1"># when issuing a write</span>
     <span class="n">_write_default_only</span> <span class="o">=</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="BaseSile.write"><a class="viewcode-back" href="../../../api-generated/sisl.io.BaseSile.html#sisl.io.BaseSile.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Generic write method which should be overloaded in child-classes</span>
 
 <span class="sd">        Parameters</span>
@@ -602,7 +606,7 @@
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;write_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">):</span>
                 <span class="n">func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;write_&quot;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)</span>
                 <span class="c1"># Call write</span>
-                <span class="n">func</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+                <span class="n">func</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Setup the `Sile` after initialization</span>
@@ -945,8 +949,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-<div class="viewcode-block" id="SileCDF.close"><a class="viewcode-back" href="../../../api-generated/sisl.io.SileCDF.html#sisl.io.SileCDF.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_dimension</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tree</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Local method for obtaing the dimension in a certain tree &quot;&quot;&quot;</span>
@@ -1066,7 +1070,7 @@
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">_netCDF4</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span>
     <span class="n">isRoot</span> <span class="o">=</span> <span class="n">isDataset</span>
 
-<div class="viewcode-block" id="SileCDF.iter"><a class="viewcode-back" href="../../../api-generated/sisl.io.SileCDF.html#sisl.io.SileCDF.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">levels</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">levels</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Iterator on all groups, variables and dimensions.</span>
 
 <span class="sd">        This iterator iterates through all groups, variables and dimensions in the ``Dataset``</span>
@@ -1129,7 +1133,7 @@
 
         <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">head</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
             <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span>
-                                 <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">grp</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
+                                 <span class="n">levels</span><span class="o">=</span><span class="n">levels</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="n">grp</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
 
     <span class="fm">__iter__</span> <span class="o">=</span> <span class="nb">iter</span>
 
@@ -1158,21 +1162,6 @@
         <span class="k">return</span> <span class="kc">False</span>
 
 
-<span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.io&quot;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">SileError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Define an error object related to the Sile objects &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span>
-
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s1">&#39; in &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
-
-
 <span class="k">def</span> <span class="nf">sile_raise_write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ok</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)):</span>
     <span class="n">is_ok</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">O</span> <span class="ow">in</span> <span class="n">ok</span><span class="p">:</span>
@@ -1187,9 +1176,23 @@
     <span class="k">for</span> <span class="n">O</span> <span class="ow">in</span> <span class="n">ok</span><span class="p">:</span>
         <span class="n">is_ok</span> <span class="o">=</span> <span class="n">is_ok</span> <span class="ow">or</span> <span class="p">(</span><span class="n">O</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ok</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="s1">&#39;Reading file not possible; allowed &#39;</span>
-                        <span class="s1">&#39;modes=</span><span class="si">{}</span><span class="s1">, used mode=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                            <span class="n">ok</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading file not possible; allowed &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;modes=</span><span class="si">{</span><span class="n">ok</span><span class="si">}</span><span class="s2">, used mode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+
+<span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.io&quot;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">SileError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Define an error object related to the Sile objects &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="s1">&#39; in &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
 
 
 <span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.io&quot;</span><span class="p">)</span>
@@ -1212,28 +1215,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2021, Nick Papior
+        &#169; Copyright 2015-2021, Nick Papior.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

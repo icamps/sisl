@@ -1,0 +1,580 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Cube &mdash; sisl latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Ellipsoid" href="sisl.shape.Ellipsoid.html" />
+    <link rel="prev" title="Cuboid" href="sisl.shape.Cuboid.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> sisl
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other.html">Other resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cite.html">Citing sisl</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scripts/scripts.html">Command line scripts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolboxes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../toolbox/index.html">Toolboxes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Visualization</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../basic.html">Basic classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../default_geom.html">Common geometries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../physics.html">Physical objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../unit_constant.html">Units and constants</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../utilities.html">Utilities</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../utilities.shape.html">Shapes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="sisl.shape.Shape.html">Shape</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sisl.shape.Cuboid.html">Cuboid</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Cube</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sisl.shape.Ellipsoid.html">Ellipsoid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sisl.shape.Sphere.html">Sphere</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sisl.shape.NullShape.html">NullShape</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../utilities.misc.html">Range routines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utilities.misc.html#miscellaneous-routines">Miscellaneous routines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../io.html">Input/Output</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">sisl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">API documentation</a> &raquo;</li>
+        
+          <li><a href="../utilities.html">Utilities</a> &raquo;</li>
+        
+          <li><a href="../utilities.shape.html">Shapes</a> &raquo;</li>
+        
+      <li>Cube</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/api/api-generated/sisl.shape.Cube.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="cube">
+<h1>Cube<a class="headerlink" href="#cube" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="sisl.shape.Cube">
+<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cube</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">side</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="sisl.shape.Cuboid.html#sisl.shape.Cuboid" title="sisl.shape.Cuboid"><code class="xref py py-class docutils literal notranslate"><span class="pre">sisl.shape.Cuboid</span></code></a></p>
+<p>3D Cube with equal sides</p>
+<p>Equivalent to <code class="docutils literal notranslate"><span class="pre">Cuboid([r,</span> <span class="pre">r,</span> <span class="pre">r])</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – side-length of the cube, or vector</p>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__dict__</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__doc__</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__module__</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__slots__</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__weakref__</span></code></p></td>
+<td><p>list of weak references to the object (if defined)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_center</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_iv</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_v</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.center" title="sisl.shape.Cube.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></p></td>
+<td><p>The geometric center of the shape</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.edge_length" title="sisl.shape.Cube.edge_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_length</span></code></a></p></td>
+<td><p>The lengths of each of the vector that defines the cuboid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.origo" title="sisl.shape.Cube.origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origo</span></code></a></p></td>
+<td><p>Return the origin of the Cuboid (lower-left corner)</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__add__</span></code>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__and__</span></code>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__contains__</span></code>(other)</p></td>
+<td><p>Checks whether all of <em class="xref py py-obj">other</em> is within the shape</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__delattr__</span></code>(name, /)</p></td>
+<td><p>Implement delattr(self, name).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__dir__</span></code>()</p></td>
+<td><p>Default dir() implementation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__eq__</span></code>(value, /)</p></td>
+<td><p>Return self==value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__format__</span></code>(format_spec, /)</p></td>
+<td><p>Default object formatter.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ge__</span></code>(value, /)</p></td>
+<td><p>Return self&gt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getattribute__</span></code>(name, /)</p></td>
+<td><p>Return getattr(self, name).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__gt__</span></code>(value, /)</p></td>
+<td><p>Return self&gt;value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__hash__</span></code>()</p></td>
+<td><p>Return hash(self).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code>(side[, center])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init_subclass__</span></code></p></td>
+<td><p>This method is called when a class is subclassed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__le__</span></code>(value, /)</p></td>
+<td><p>Return self&lt;=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__lt__</span></code>(value, /)</p></td>
+<td><p>Return self&lt;value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__ne__</span></code>(value, /)</p></td>
+<td><p>Return self!=value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__new__</span></code>(**kwargs)</p></td>
+<td><p>Create and return a new object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__or__</span></code>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__reduce__</span></code>()</p></td>
+<td><p>Helper for pickle.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__reduce_ex__</span></code>(protocol, /)</p></td>
+<td><p>Helper for pickle.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__repr__</span></code>()</p></td>
+<td><p>Return repr(self).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__setattr__</span></code>(name, value, /)</p></td>
+<td><p>Implement setattr(self, name, value).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sizeof__</span></code>()</p></td>
+<td><p>Size of object in memory, in bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__str__</span></code>()</p></td>
+<td><p>Return str(self).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__sub__</span></code>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__subclasshook__</span></code></p></td>
+<td><p>Abstract classes can override this to customize issubclass().</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__xor__</span></code>(other)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.copy" title="sisl.shape.Cube.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.expand" title="sisl.shape.Cube.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a>(length)</p></td>
+<td><p>Expand the cuboid by a constant value along side vectors</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.scale" title="sisl.shape.Cube.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(scale)</p></td>
+<td><p>Scale the cuboid box size (center is retained)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.set_center" title="sisl.shape.Cube.set_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_center</span></code></a>(center)</p></td>
+<td><p>Re-setting the center can sometimes be necessary</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.set_origo" title="sisl.shape.Cube.set_origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_origo</span></code></a>(origo)</p></td>
+<td><p>Re-setting the origo can sometimes be necessary</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.toCuboid" title="sisl.shape.Cube.toCuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toCuboid</span></code></a>()</p></td>
+<td><p>Return a copy of itself</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.toEllipsoid" title="sisl.shape.Cube.toEllipsoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toEllipsoid</span></code></a>()</p></td>
+<td><p>Return an ellipsoid that encompass this cuboid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.toSphere" title="sisl.shape.Cube.toSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toSphere</span></code></a>()</p></td>
+<td><p>Return a sphere that encompass this cuboid</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.volume" title="sisl.shape.Cube.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>()</p></td>
+<td><p>Return volume of Cuboid</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cube.within" title="sisl.shape.Cube.within"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within</span></code></a>(other, *args, **kwargs)</p></td>
+<td><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <em class="xref py py-obj">other</em> is fully within <em class="xref py py-obj">self</em></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cube.within_index" title="sisl.shape.Cube.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a>(other[, tol])</p></td>
+<td><p>Return indices of the <em class="xref py py-obj">other</em> object which are contained in the shape</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="sisl.shape.Cube.center">
+<em class="property">property </em><code class="sig-name descname">center</code><a class="headerlink" href="#sisl.shape.Cube.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>The geometric center of the shape</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.edge_length">
+<em class="property">property </em><code class="sig-name descname">edge_length</code><a class="headerlink" href="#sisl.shape.Cube.edge_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>The lengths of each of the vector that defines the cuboid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.expand">
+<code class="sig-name descname">expand</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand the cuboid by a constant value along side vectors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>length</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>(</em><em>3</em><em>,</em><em>)</em>) – the extension in Ang per cuboid vector.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.origo">
+<em class="property">property </em><code class="sig-name descname">origo</code><a class="headerlink" href="#sisl.shape.Cube.origo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the origin of the Cuboid (lower-left corner)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.scale">
+<code class="sig-name descname">scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale the cuboid box size (center is retained)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>(</em><em>3</em><em>,</em><em>)</em>) – the scale parameter for each of the vectors defining the <a class="reference internal" href="sisl.shape.Cuboid.html#sisl.shape.Cuboid" title="sisl.shape.Cuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Cuboid</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.set_center">
+<code class="sig-name descname">set_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">center</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.set_center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-setting the center can sometimes be necessary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.set_origo">
+<code class="sig-name descname">set_origo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origo</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.set_origo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-setting the origo can sometimes be necessary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.toCuboid">
+<code class="sig-name descname">toCuboid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.toCuboid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of itself</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.toEllipsoid">
+<code class="sig-name descname">toEllipsoid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.toEllipsoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an ellipsoid that encompass this cuboid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.toSphere">
+<code class="sig-name descname">toSphere</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.toSphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a sphere that encompass this cuboid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.volume">
+<code class="sig-name descname">volume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return volume of Cuboid</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.within">
+<code class="sig-name descname">within</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.within" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <em class="xref py py-obj">other</em> is fully within <em class="xref py py-obj">self</em></p>
+<p>If <em class="xref py py-obj">other</em> is an array, an array will be returned for each of these.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<em>array_like</em>) – the array/object that is checked for containment</p></li>
+<li><p><strong>*args</strong> – passed directly to <a class="reference internal" href="#sisl.shape.Cube.within_index" title="sisl.shape.Cube.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a></p></li>
+<li><p><strong>**kwargs</strong> – passed directly to <a class="reference internal" href="#sisl.shape.Cube.within_index" title="sisl.shape.Cube.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.shape.Cube.within_index">
+<code class="sig-name descname">within_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">tol</span><span class="o">=</span><span class="default_value">1e-08</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube.within_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return indices of the <em class="xref py py-obj">other</em> object which are contained in the shape</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>other</strong> (<em>array_like</em>) – the object that is checked for containment</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – absolute tolerance for boundaries</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="sisl.shape.Ellipsoid.html" class="btn btn-neutral float-right" title="Ellipsoid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sisl.shape.Cuboid.html" class="btn btn-neutral float-left" title="Cuboid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2015-2021, Nick Papior.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

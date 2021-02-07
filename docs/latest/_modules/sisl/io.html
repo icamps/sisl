@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>sisl.io &mdash; sisl |release| documentation</title>
+  <title>sisl.io &mdash; sisl latest documentation</title>
   
 
   
@@ -18,7 +18,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -31,10 +34,10 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -54,7 +57,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> sisl
+            <a href="../../index.html" class="icon icon-home"> sisl
           
 
           
@@ -93,30 +96,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../other.html">Other resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Publications</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../cite.html">Citing sisl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications using sisl</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../scripts/scripts.html">Command line scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../rst/files.html">File formats</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolboxes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../toolbox.html">Toolboxes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../toolbox/index.html">Toolboxes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API documentation</a></li>
 </ul>
 
             
@@ -142,6 +141,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -184,12 +185,8 @@
             
   <h1>Source code for sisl.io</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">=============================</span>
-<span class="sd">Input/Output (:mod:`sisl.io`)</span>
-<span class="sd">=============================</span>
-
-<span class="sd">.. module:: sisl.io</span>
-<span class="sd">   :noindex:</span>
+<span class="sd">Input/Output</span>
+<span class="sd">============</span>
 
 <span class="sd">Available files for reading/writing</span>
 
@@ -203,116 +200,52 @@
 <span class="sd">Basic IO methods/classes</span>
 <span class="sd">========================</span>
 
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
-
 <span class="sd">   add_sile - add a file to the list of files that sisl can interact with</span>
 <span class="sd">   get_sile - retrieve a file object via a file name by comparing the extension</span>
 <span class="sd">   SileError - sisl specific error</span>
 
-
-<span class="sd">.. _toc-io-supported:</span>
-
-<span class="sd">External code in/out put supported</span>
-<span class="sd">----------------------------------</span>
-
-<span class="sd">List the relevant codes that `sisl` can interact with. If there are files you think</span>
-<span class="sd">are missing, please create an issue `here &lt;issue&gt;`_.</span>
-
-<span class="sd">- :ref:`toc-io-generic`</span>
-<span class="sd">- :ref:`toc-io-bigdft`</span>
-<span class="sd">- :ref:`toc-io-gulp`</span>
-<span class="sd">- :ref:`toc-io-openmx`</span>
-<span class="sd">- :ref:`toc-io-scaleup`</span>
-<span class="sd">- :ref:`toc-io-siesta`</span>
-<span class="sd">- :ref:`toc-io-transiesta`</span>
-<span class="sd">- :ref:`toc-io-tbtrans`</span>
-<span class="sd">- :ref:`toc-io-vasp`</span>
-<span class="sd">- :ref:`toc-io-wannier90`</span>
-
-
-<span class="sd">.. _toc-io-generic:</span>
 
 <span class="sd">Generic files</span>
 <span class="sd">=============</span>
 
 <span class="sd">Files not specificly related to any code.</span>
 
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">   tableSile - data file in tabular form</span>
+<span class="sd">   xyzSile - atomic coordinate file</span>
+<span class="sd">   pdbSile - atomic coordinates and MD content</span>
+<span class="sd">   cubeSile - atomic coordinates *and* 3D grid values</span>
+<span class="sd">   moldenSile - atomic coordinate file specific for Molden</span>
+<span class="sd">   xsfSile - atomic coordinate file specific for XCrySDen</span>
 
-<span class="sd">   ~table.tableSile - data file in tabular form</span>
-<span class="sd">   ~xyz.xyzSile - atomic coordinate file</span>
-<span class="sd">   ~pdb.pdbSile - atomic coordinates and MD content</span>
-<span class="sd">   ~cube.cubeSile - atomic coordinates *and* 3D grid values</span>
-<span class="sd">   ~molden.moldenSile - atomic coordinate file specific for Molden</span>
-<span class="sd">   ~xsf.xsfSile - atomic coordinate file specific for XCrySDen</span>
-
-
-<span class="sd">.. _toc-io-bigdft:</span>
-
-<span class="sd">BigDFT (:mod:`~sisl.io.bigdft`)</span>
-<span class="sd">===============================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.bigdft</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">BigDFT</span>
+<span class="sd">======</span>
 
 <span class="sd">   asciiSileBigDFT - the input for BigDFT</span>
 
 
-<span class="sd">.. _toc-io-gulp:</span>
-
-<span class="sd">GULP (:mod:`~sisl.io.gulp`)</span>
-<span class="sd">===========================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.gulp</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">GULP</span>
+<span class="sd">====</span>
 
 <span class="sd">   gotSileGULP - the output from GULP</span>
 <span class="sd">   fcSileGULP - force constant output from GULP</span>
 
 
-<span class="sd">.. _toc-io-openmx:</span>
-
-<span class="sd">OpenMX (:mod:`~sisl.io.openmx`)</span>
-<span class="sd">===============================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.openmx</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">OpenMX</span>
+<span class="sd">======</span>
 
 <span class="sd">   omxSileOpenMX - input file</span>
 
 
-<span class="sd">.. _toc-io-scaleup:</span>
-
-<span class="sd">ScaleUp (:mod:`~sisl.io.scaleup`)</span>
-<span class="sd">=================================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.scaleup</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">ScaleUp</span>
+<span class="sd">=======</span>
 
 <span class="sd">   orboccSileScaleUp - orbital information</span>
 <span class="sd">   refSileScaleUp - reference coordinates</span>
 <span class="sd">   rhamSileScaleUp - Hamiltonian file</span>
 
 
-<span class="sd">.. _toc-io-siesta:</span>
-
-<span class="sd">Siesta (:mod:`~sisl.io.siesta`)</span>
-<span class="sd">===============================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.siesta</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">Siesta</span>
+<span class="sd">======</span>
 
 <span class="sd">   fdfSileSiesta - input file</span>
 <span class="sd">   outSileSiesta - output file</span>
@@ -336,13 +269,8 @@
 <span class="sd">   rkpSileSiesta - k-points to simulation</span>
 
 
-<span class="sd">.. _toc-io-transiesta:</span>
-
-<span class="sd">TranSiesta (:mod:`~sisl.io.siesta`)</span>
-<span class="sd">===================================</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">TranSiesta</span>
+<span class="sd">==========</span>
 
 <span class="sd">   tshsSileSiesta - TranSiesta Hamiltonian</span>
 <span class="sd">   tsdeSileSiesta - TranSiesta (energy) density matrix</span>
@@ -350,15 +278,8 @@
 <span class="sd">   tsvncSileSiesta - TranSiesta specific Hartree potential file</span>
 
 
-<span class="sd">.. _toc-io-tbtrans:</span>
-
-<span class="sd">TBtrans (:mod:`~sisl.io.tbtrans`)</span>
-<span class="sd">=================================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.tbtrans</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">TBtrans</span>
+<span class="sd">=======</span>
 
 <span class="sd">   tbtncSileTBtrans</span>
 <span class="sd">   deltancSileTBtrans</span>
@@ -369,24 +290,14 @@
 
 <span class="sd">Additionally the PHtrans code also has these files</span>
 
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
-
 <span class="sd">   phtncSilePHtrans</span>
 <span class="sd">   phtsencSilePHtrans</span>
 <span class="sd">   phtavncSilePHtrans</span>
 <span class="sd">   phtprojncSilePHtrans</span>
 
 
-<span class="sd">.. _toc-io-vasp:</span>
-
-<span class="sd">VASP (:mod:`~sisl.io.vasp`)</span>
-<span class="sd">===========================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.vasp</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">VASP</span>
+<span class="sd">====</span>
 
 <span class="sd">   carSileVASP</span>
 <span class="sd">   doscarSileVASP</span>
@@ -396,24 +307,10 @@
 <span class="sd">   outSileVASP</span>
 
 
-<span class="sd">.. _toc-io-wannier90:</span>
-
-<span class="sd">Wannier90 (:mod:`~sisl.io.wannier90`)</span>
-<span class="sd">=====================================</span>
-
-<span class="sd">.. currentmodule:: sisl.io.wannier90</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
+<span class="sd">Wannier90</span>
+<span class="sd">=========</span>
 
 <span class="sd">   winSileWannier90 - input file</span>
-
-
-<span class="sd">.. #################################</span>
-<span class="sd">.. Switch back to the sisl.io module</span>
-<span class="sd">.. #################################</span>
-
-<span class="sd">.. currentmodule:: sisl.io</span>
 
 
 <span class="sd">Low level methods/classes</span>
@@ -425,8 +322,6 @@
 <span class="sd">or `SileBin` (binary), then subsequently add it using `add_sile` which enables</span>
 <span class="sd">its generic use in all routines etc.</span>
 
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
 
 <span class="sd">   get_siles - retrieve all files with specific attributes or methods</span>
 <span class="sd">   get_sile_class - retrieve class via a file name by comparing the extension</span>
@@ -434,25 +329,6 @@
 <span class="sd">   Sile - a base class for ASCII files</span>
 <span class="sd">   SileCDF - a base class for NetCDF files</span>
 <span class="sd">   SileBin - a base class for binary files</span>
-
-
-<span class="sd">.. ###############################################</span>
-<span class="sd">.. Add all io modules to the toc (to be reachable)</span>
-<span class="sd">.. ###############################################</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
-<span class="sd">   :hidden:</span>
-
-<span class="sd">   bigdft</span>
-<span class="sd">   gulp</span>
-<span class="sd">   openmx</span>
-<span class="sd">   scaleup</span>
-<span class="sd">   siesta</span>
-<span class="sd">   tbtrans</span>
-<span class="sd">   vasp</span>
-<span class="sd">   wannier90</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">.sile</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -481,28 +357,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2021, Nick Papior
+        &#169; Copyright 2015-2021, Nick Papior.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

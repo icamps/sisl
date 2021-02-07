@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>sisl.physics.phonon &mdash; sisl |release| documentation</title>
+  <title>sisl.physics.phonon &mdash; sisl latest documentation</title>
   
 
   
@@ -18,7 +18,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -31,10 +34,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -54,7 +57,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> sisl
+            <a href="../../../index.html" class="icon icon-home"> sisl
           
 
           
@@ -93,30 +96,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../other.html">Other resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Publications</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../cite.html">Citing sisl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications using sisl</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../scripts/scripts.html">Command line scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rst/files.html">File formats</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolboxes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../toolbox.html">Toolboxes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../toolbox/index.html">Toolboxes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../visualization/plotly/index.html">Plotly</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API documentation</a></li>
 </ul>
 
             
@@ -142,6 +141,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -188,18 +189,12 @@
 <span></span><span class="sd">&quot;&quot;&quot;Phonon related functions and classes</span>
 <span class="sd">=======================================</span>
 
-<span class="sd">.. module:: sisl.physics.phonon</span>
-<span class="sd">   :noindex:</span>
-
 <span class="sd">In sisl phonon calculations are relying on routines</span>
 <span class="sd">specific for phonons. For instance density of states calculations from</span>
 <span class="sd">phonon eigenvalues and other quantities.</span>
 
 <span class="sd">This module implements the necessary tools required for calculating</span>
 <span class="sd">DOS, PDOS, group-velocities and real-space displacements.</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
 
 <span class="sd">   DOS</span>
 <span class="sd">   PDOS</span>
@@ -212,9 +207,6 @@
 
 <span class="sd">Certain classes aid in the usage of the above methods by implementing them</span>
 <span class="sd">using automatic arguments.</span>
-
-<span class="sd">.. autosummary::</span>
-<span class="sd">   :toctree:</span>
 
 <span class="sd">   CoefficientPhonon</span>
 <span class="sd">   ModePhonon</span>
@@ -245,7 +237,7 @@
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;EigenvaluePhonon&#39;</span><span class="p">,</span> <span class="s1">&#39;EigenvectorPhonon&#39;</span><span class="p">,</span> <span class="s1">&#39;EigenmodePhonon&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="DOS"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.DOS.html#sisl.physics.DOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="DOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.DOS.html#sisl.physics.phonon.DOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the density of modes (DOS) for a set of energies, `E`, with a distribution function</span>
 
@@ -281,7 +273,7 @@
     <span class="k">return</span> <span class="n">electron_DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PDOS"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.PDOS.html#sisl.physics.PDOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="PDOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.PDOS.html#sisl.physics.phonon.PDOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">PDOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the projected density of modes (PDOS) onto each each atom and direction for a set of energies, `E`, with a distribution function</span>
 
@@ -322,7 +314,7 @@
     <span class="k">return</span> <span class="n">electron_PDOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="n">distribution</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="velocity"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.velocity.html#sisl.physics.velocity">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="velocity"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.velocity.html#sisl.physics.phonon.velocity">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">velocity</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">dDk</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the velocity of a set of modes</span>
 
@@ -408,7 +400,7 @@
     <span class="k">return</span> <span class="n">v</span> <span class="o">*</span> <span class="n">_velocity_const</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hw</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="displacement"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.displacement.html#sisl.physics.displacement">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="displacement"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.displacement.html#sisl.physics.phonon.displacement">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">hw</span><span class="p">,</span> <span class="n">mass</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate real-space displacements for a given mode (in units of the characteristic length)</span>
 
@@ -515,24 +507,24 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="CoefficientPhonon"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.CoefficientPhonon.html#sisl.physics.CoefficientPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="CoefficientPhonon"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.CoefficientPhonon.html#sisl.physics.phonon.CoefficientPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CoefficientPhonon</span><span class="p">(</span><span class="n">Coefficient</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Coefficients describing some physical quantity related to phonons &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="ModePhonon"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.ModePhonon.html#sisl.physics.ModePhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="ModePhonon"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.ModePhonon.html#sisl.physics.phonon.ModePhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ModePhonon</span><span class="p">(</span><span class="n">_phonon_Mode</span><span class="p">,</span> <span class="n">State</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A mode describing a physical quantity related to phonons &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="ModeCPhonon"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.ModeCPhonon.html#sisl.physics.ModeCPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="ModeCPhonon"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.ModeCPhonon.html#sisl.physics.phonon.ModeCPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">ModeCPhonon</span><span class="p">(</span><span class="n">_phonon_Mode</span><span class="p">,</span> <span class="n">StateC</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A mode describing a physical quantity related to phonons, with associated coefficients of the mode &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="ModeCPhonon.velocity"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.ModeCPhonon.html#sisl.physics.ModeCPhonon.velocity">[docs]</a>    <span class="k">def</span> <span class="nf">velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ModeCPhonon.velocity"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.ModeCPhonon.html#sisl.physics.phonon.ModeCPhonon.velocity">[docs]</a>    <span class="k">def</span> <span class="nf">velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate velocity for the modes</span>
 
 <span class="sd">        This routine calls `~sisl.physics.phonon.velocity` with appropriate arguments</span>
@@ -564,7 +556,7 @@
         <span class="k">return</span> <span class="n">velocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dDk</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">),</span> <span class="n">degenerate</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="EigenvaluePhonon"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.EigenvaluePhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="EigenvaluePhonon"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.phonon.EigenvaluePhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">EigenvaluePhonon</span><span class="p">(</span><span class="n">CoefficientPhonon</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Eigenvalues of phonon modes, no eigenmodes retained</span>
 
@@ -577,7 +569,7 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Eigenmode values in units of :math:`\hbar \omega` [eV] &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
 
-<div class="viewcode-block" id="EigenvaluePhonon.occupation"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.EigenvaluePhonon.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;bose_einstein&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenvaluePhonon.occupation"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.phonon.EigenvaluePhonon.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;bose_einstein&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the occupations for the states according to a distribution function</span>
 
 <span class="sd">        Parameters</span>
@@ -594,7 +586,7 @@
             <span class="n">distribution</span> <span class="o">=</span> <span class="n">get_distribution</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenvaluePhonon.DOS"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.EigenvaluePhonon.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenvaluePhonon.DOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.phonon.EigenvaluePhonon.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate DOS for provided energies, `E`.</span>
 
 <span class="sd">        This routine calls `sisl.physics.phonon.DOS` with appropriate arguments</span>
@@ -605,13 +597,13 @@
         <span class="k">return</span> <span class="n">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hw</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="EigenvectorPhonon"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenvectorPhonon.html#sisl.physics.EigenvectorPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="EigenvectorPhonon"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenvectorPhonon.html#sisl.physics.phonon.EigenvectorPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">EigenvectorPhonon</span><span class="p">(</span><span class="n">ModePhonon</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Eigenvectors of phonon modes, no eigenvalues retained &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="EigenmodePhonon"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.EigenmodePhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="EigenmodePhonon"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">EigenmodePhonon</span><span class="p">(</span><span class="n">ModeCPhonon</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Eigenmodes of phonons with eigenvectors and eigenvalues.</span>
 
@@ -624,7 +616,7 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Eigenmode values in units of :math:`\hbar \omega` [eV] &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
 
-<div class="viewcode-block" id="EigenmodePhonon.occupation"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.EigenmodePhonon.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;bose_einstein&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenmodePhonon.occupation"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;bose_einstein&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the occupations for the states according to a distribution function</span>
 
 <span class="sd">        Parameters</span>
@@ -641,7 +633,7 @@
             <span class="n">distribution</span> <span class="o">=</span> <span class="n">get_distribution</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenmodePhonon.DOS"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.EigenmodePhonon.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenmodePhonon.DOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate DOS for provided energies, `E`.</span>
 
 <span class="sd">        This routine calls `sisl.physics.phonon.DOS` with appropriate arguments</span>
@@ -651,7 +643,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hw</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenmodePhonon.PDOS"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.EigenmodePhonon.PDOS">[docs]</a>    <span class="k">def</span> <span class="nf">PDOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenmodePhonon.PDOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon.PDOS">[docs]</a>    <span class="k">def</span> <span class="nf">PDOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate PDOS for provided energies, `E`.</span>
 
 <span class="sd">        This routine calls `~sisl.physics.phonon.PDOS` with appropriate arguments</span>
@@ -661,7 +653,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">PDOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hw</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenmodePhonon.displacement"><a class="viewcode-back" href="../../../api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.EigenmodePhonon.displacement">[docs]</a>    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenmodePhonon.displacement"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon.displacement">[docs]</a>    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate displacements for the modes</span>
 
 <span class="sd">        This routine calls `~sisl.physics.phonon.displacements` with appropriate arguments</span>
@@ -679,28 +671,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2021, Nick Papior
+        &#169; Copyright 2015-2021, Nick Papior.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

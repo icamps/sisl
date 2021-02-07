@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Intro to the framework &mdash; sisl |release| documentation</title>
+  <title>Intro to the framework &mdash; sisl latest documentation</title>
   
 
   
@@ -18,7 +18,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -31,10 +34,10 @@
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -54,7 +57,7 @@
           
 
           
-            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> sisl
+            <a href="../../../index.html" class="icon icon-home"> sisl
           
 
           
@@ -93,30 +96,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contribute.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../other.html">Other resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Publications</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../cite.html">Citing sisl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../publications.html">Publications using sisl</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../scripts/scripts.html">Command line scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../rst/files.html">File formats</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolboxes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../toolbox.html">Toolboxes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../toolbox/index.html">Toolboxes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Plotly</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">API documentation</a></li>
 </ul>
 
             
@@ -157,6 +156,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -168,7 +169,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../../_sources/visualization/plotly/diy/00-Intro.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -220,7 +221,7 @@ a dinamic feel to visualizations.</p>
 </div>
 </div>
 <div class="section" id="sisl-s-wrapper">
-<h2>Sisl’s wrapper<a class="headerlink" href="#sisl-s-wrapper" title="Permalink to this headline">¶</a></h2>
+<h2>sisl’s wrapper<a class="headerlink" href="#sisl-s-wrapper" title="Permalink to this headline">¶</a></h2>
 <p>If everything was done by plotting backend, we wouldn’t call this the sisl visualization module. Sisl <strong>wraps the
 plotting process</strong> to separate the data processing steps from the rendering steps, provide scientifically meaningful plot settings
 that know which steps to run when updated, as well as scientifically meaningful methods to modify the plot and support to be displayed in
@@ -244,7 +245,7 @@ sisl’s graphical interface.</p>
 </div>
 <div class="section" id="the-session-class">
 <h3>The <em class="xref py py-obj">Session</em> class<a class="headerlink" href="#the-session-class" title="Permalink to this headline">¶</a></h3>
-<p>Just as <code class="code docutils literal notranslate"><span class="pre">Plot</span></code> is the parent of all plots, <code class="code docutils literal notranslate"><span class="pre">Session</span></code> is the parent of all sessions. <strong>Sessions store plots and allow you to organize them into tabs.</strong> They are specially useful for the <a class="reference external" href="https://github.com/pfebrer96/sislGUIpublic)">graphical user interface</a>, where the users can easily see all their plots at the same time and easily modify them as they wish.</p>
+<p>Just as <code class="code docutils literal notranslate"><span class="pre">Plot</span></code> is the parent of all plots, <code class="code docutils literal notranslate"><span class="pre">Session</span></code> is the parent of all sessions. <strong>Sessions store plots and allow you to organize them into tabs.</strong> They are specially useful for the <a class="reference external" href="https://github.com/pfebrer/sisl-gui)">graphical user interface</a>, where the users can easily see all their plots at the same time and easily modify them as they wish.</p>
 <p>However, clicking things to create your plots may be slow and specially annoying if you have to repeat the same process time and time again. That’s why you have the possibility to <strong>create custom sessions that will do all the repetitive work with very little input</strong>, so that all the user needs to do is enjoy the beauty of their automatically created plots in the GUI.</p>
 <p>For an example on how to use sessions to your benefit, see <a class="reference external" href="../basic-tutorials/GUI%20with%20Python%20Demo.html">this notebook</a>.</p>
 <div class="admonition note">
@@ -260,28 +261,25 @@ sisl’s graphical interface.</p>
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2021, Nick Papior
+        &#169; Copyright 2015-2021, Nick Papior.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

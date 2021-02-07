@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>sisl.geometry &mdash; sisl |release| documentation</title>
+  <title>sisl.geometry &mdash; sisl latest documentation</title>
   
 
   
@@ -18,7 +18,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -31,10 +34,10 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
         <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -54,7 +57,7 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> sisl
+            <a href="../../index.html" class="icon icon-home"> sisl
           
 
           
@@ -93,30 +96,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../other.html">Other resources</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Publications</span></p>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../cite.html">Citing sisl</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications using sisl</a></li>
 </ul>
 <p class="caption"><span class="caption-text">User Guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../scripts/scripts.html">Command line scripts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../rst/files.html">File formats</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolboxes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../toolbox.html">Toolboxes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../toolbox/index.html">Toolboxes</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../api.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">API documentation</a></li>
 </ul>
 
             
@@ -142,6 +141,8 @@
         <div class="rst-content">
         
           
+
+
 
 
 
@@ -432,7 +433,7 @@
         <span class="sd">&quot;&quot;&quot; The mass of all atoms as an array &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">mass</span>
 
-<div class="viewcode-block" id="Geometry.maxR"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.maxR">[docs]</a>    <span class="k">def</span> <span class="nf">maxR</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.maxR"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.maxR">[docs]</a>    <span class="k">def</span> <span class="nf">maxR</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Maximum orbital range of the atoms &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">maxR</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span></div>
 
@@ -564,7 +565,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Indexing geometries with a multi-dimensional array is not supported, ensure 0D or 1D arrays.&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orbital</span>
 
-<div class="viewcode-block" id="Geometry.as_primary"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.as_primary">[docs]</a>    <span class="k">def</span> <span class="nf">as_primary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">na_primary</span><span class="p">,</span> <span class="n">ret_super</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.as_primary"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.as_primary">[docs]</a>    <span class="k">def</span> <span class="nf">as_primary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">na_primary</span><span class="p">,</span> <span class="n">ret_super</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Try and reduce the geometry to the primary unit-cell comprising `na_primary` atoms</span>
 
 <span class="sd">        This will basically try and find the tiling/repetitions required for the geometry to only have</span>
@@ -673,7 +674,7 @@
             <span class="k">return</span> <span class="n">geom</span><span class="p">,</span> <span class="n">supercell</span>
         <span class="k">return</span> <span class="n">geom</span></div>
 
-<div class="viewcode-block" id="Geometry.reorder"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.reorder">[docs]</a>    <span class="k">def</span> <span class="nf">reorder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.reorder"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.reorder">[docs]</a>    <span class="k">def</span> <span class="nf">reorder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reorders atoms according to first occurence in the geometry</span>
 
 <span class="sd">        Notes</span>
@@ -682,7 +683,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.reduce"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.reduce">[docs]</a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.reduce"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.reduce">[docs]</a>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove all atoms not currently used in the ``self.atoms`` object</span>
 
 <span class="sd">        Notes</span>
@@ -691,7 +692,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.rij"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.rij">[docs]</a>    <span class="k">def</span> <span class="nf">rij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">ja</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.rij"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.rij">[docs]</a>    <span class="k">def</span> <span class="nf">rij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">ja</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Distance between atom `ia` and `ja`, atoms can be in super-cell indices</span>
 
 <span class="sd">        Returns the distance between two atoms:</span>
@@ -713,7 +714,7 @@
 
         <span class="k">return</span> <span class="n">fnorm</span><span class="p">(</span><span class="n">R</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.Rij"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.Rij">[docs]</a>    <span class="k">def</span> <span class="nf">Rij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">ja</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.Rij"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.Rij">[docs]</a>    <span class="k">def</span> <span class="nf">Rij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">ja</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Vector between atom `ia` and `ja`, atoms can be in super-cell indices</span>
 
 <span class="sd">        Returns the vector between two atoms:</span>
@@ -738,7 +739,7 @@
 
         <span class="k">return</span> <span class="n">xj</span> <span class="o">-</span> <span class="n">xi</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span></div>
 
-<div class="viewcode-block" id="Geometry.orij"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.orij">[docs]</a>    <span class="k">def</span> <span class="nf">orij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">jo</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.orij"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.orij">[docs]</a>    <span class="k">def</span> <span class="nf">orij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">jo</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Distance between orbital `io` and `jo`, orbitals can be in super-cell indices</span>
 
 <span class="sd">        Returns the distance between two orbitals:</span>
@@ -755,7 +756,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rij</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">o2a</span><span class="p">(</span><span class="n">io</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">o2a</span><span class="p">(</span><span class="n">jo</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Geometry.oRij"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.oRij">[docs]</a>    <span class="k">def</span> <span class="nf">oRij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">jo</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.oRij"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.oRij">[docs]</a>    <span class="k">def</span> <span class="nf">oRij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">jo</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Vector between orbital `io` and `jo`, orbitals can be in super-cell indices</span>
 
 <span class="sd">        Returns the vector between two orbitals:</span>
@@ -772,7 +773,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Rij</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">o2a</span><span class="p">(</span><span class="n">io</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">o2a</span><span class="p">(</span><span class="n">jo</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Geometry.read"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.read">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Geometry.read"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.read">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">sile</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reads geometry from the `Sile` using `Sile.read_geometry`</span>
 
@@ -795,7 +796,7 @@
             <span class="k">with</span> <span class="n">get_sile</span><span class="p">(</span><span class="n">sile</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">fh</span><span class="o">.</span><span class="n">read_geometry</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.write"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sile</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.write"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sile</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Writes geometry to the `Sile` using `sile.write_geometry`</span>
 
 <span class="sd">        Parameters</span>
@@ -832,7 +833,7 @@
         <span class="sd">&quot;&quot;&quot; A simple, short string representation. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> na=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">na</span><span class="si">}</span><span class="s2">, no=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">no</span><span class="si">}</span><span class="s2">, nsc=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 
-<div class="viewcode-block" id="Geometry.iter"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iter"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; An iterator over all atomic indices</span>
 
 <span class="sd">        This iterator is the same as:</span>
@@ -854,7 +855,7 @@
 
     <span class="fm">__iter__</span> <span class="o">=</span> <span class="nb">iter</span>
 
-<div class="viewcode-block" id="Geometry.iter_species"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iter_species">[docs]</a>    <span class="k">def</span> <span class="nf">iter_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iter_species"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iter_species">[docs]</a>    <span class="k">def</span> <span class="nf">iter_species</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Iterator over all atoms (or a subset) and species as a tuple in this geometry</span>
 
 <span class="sd">        &gt;&gt;&gt; for ia, a, idx_specie in self.iter_species():</span>
@@ -882,7 +883,7 @@
             <span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
                 <span class="k">yield</span> <span class="n">ia</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ia</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">specie</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Geometry.iter_orbitals"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iter_orbitals">[docs]</a>    <span class="k">def</span> <span class="nf">iter_orbitals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iter_orbitals"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iter_orbitals">[docs]</a>    <span class="k">def</span> <span class="nf">iter_orbitals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">local</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an iterator over all atoms and their associated orbitals</span>
 
@@ -931,7 +932,7 @@
                     <span class="k">for</span> <span class="n">io</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">io1</span><span class="p">,</span> <span class="n">io2</span><span class="p">):</span>
                         <span class="k">yield</span> <span class="n">ia</span><span class="p">,</span> <span class="n">io</span></div>
 
-<div class="viewcode-block" id="Geometry.iR"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iR">[docs]</a>    <span class="k">def</span> <span class="nf">iR</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iR"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iR">[docs]</a>    <span class="k">def</span> <span class="nf">iR</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return an integer number of maximum radii (``self.maxR()``) which holds approximately `na` atoms</span>
 
 <span class="sd">        Parameters</span>
@@ -964,7 +965,7 @@
 
         <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">iR</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.iter_block_rand"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iter_block_rand">[docs]</a>    <span class="k">def</span> <span class="nf">iter_block_rand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iter_block_rand"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iter_block_rand">[docs]</a>    <span class="k">def</span> <span class="nf">iter_block_rand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Perform the *random* block-iteration by randomly selecting the next center of block &quot;&quot;&quot;</span>
 
         <span class="c1"># We implement yields as we can then do nested iterators</span>
@@ -1035,7 +1036,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">not_passed</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
             <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.iter_block_rand error on iterations. Not all atoms have been visited.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.iter_block_shape"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iter_block_shape">[docs]</a>    <span class="k">def</span> <span class="nf">iter_block_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iter_block_shape"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iter_block_shape">[docs]</a>    <span class="k">def</span> <span class="nf">iter_block_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Perform the *grid* block-iteration by looping a grid &quot;&quot;&quot;</span>
 
         <span class="c1"># We implement yields as we can then do nested iterators</span>
@@ -1155,7 +1156,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">not_passed</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
             <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.iter_block_shape error on iterations. Not all atoms have been visited.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.iter_block"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.iter_block">[docs]</a>    <span class="k">def</span> <span class="nf">iter_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.iter_block"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.iter_block">[docs]</a>    <span class="k">def</span> <span class="nf">iter_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iR</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Iterator for performance critical loops</span>
 
 <span class="sd">        NOTE: This requires that `R` has been set correctly as the maximum interaction range.</span>
@@ -1214,13 +1215,13 @@
 
             <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_block_shape</span><span class="p">(</span><span class="n">dS</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.copy"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.copy"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A copy of the object. &quot;&quot;&quot;</span>
         <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">),</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
         <span class="n">g</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">g</span></div>
 
-<div class="viewcode-block" id="Geometry.overlap"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.overlap">[docs]</a>    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">offset_other</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)):</span>
+<div class="viewcode-block" id="Geometry.overlap"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.overlap">[docs]</a>    <span class="k">def</span> <span class="nf">overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">),</span> <span class="n">offset_other</span><span class="o">=</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the overlapping indices between two geometries</span>
 
 <span class="sd">        Find equivalent atoms (in the primary unit-cell only) in two geometries.</span>
@@ -1275,7 +1276,7 @@
                 <span class="n">other_append</span><span class="p">(</span><span class="n">ja</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="n">idx_self</span><span class="p">),</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="n">idx_other</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.sort"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.sort"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Sort atoms in a nested fashion according to various criteria</span>
 
 <span class="sd">        There are many ways to sort a `Geometry`.</span>
@@ -1462,7 +1463,7 @@
 <span class="sd">        &gt;&gt;&gt; geom.xyz[:, 0]</span>
 <span class="sd">        [0.    0.1   0.2   0.205 0.305]</span>
 
-<span class="sd">        In this case a high tolerance (``atol&gt;0.005`) would group atoms 2 and 3</span>
+<span class="sd">        In this case a high tolerance (``atol&gt;0.005``) would group atoms 2 and 3</span>
 <span class="sd">        together</span>
 
 <span class="sd">        &gt;&gt;&gt; geom.sort(atol=0.01, axis=0, ret_atoms=True)[1]</span>
@@ -1755,7 +1756,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">atoms_flat</span><span class="p">),</span> <span class="n">atoms</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">atoms_flat</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.optimize_nsc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.optimize_nsc">[docs]</a>    <span class="k">def</span> <span class="nf">optimize_nsc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.optimize_nsc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.optimize_nsc">[docs]</a>    <span class="k">def</span> <span class="nf">optimize_nsc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Optimize the number of supercell connections based on ``self.maxR()``</span>
 
 <span class="sd">        After this routine the number of supercells may not necessarily be the same.</span>
@@ -1824,7 +1825,7 @@
 
         <span class="k">return</span> <span class="n">nsc</span></div>
 
-<div class="viewcode-block" id="Geometry.sub"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.sub"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a new `Geometry` with a subset of this `Geometry`</span>
 
 <span class="sd">        Indices passed *MUST* be unique.</span>
@@ -1850,7 +1851,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:],</span>
                               <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="n">sc</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.cut"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seps</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">seg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.cut"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.cut">[docs]</a>    <span class="k">def</span> <span class="nf">cut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seps</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">seg</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A subset of atoms from the geometry by cutting the geometry into `seps` parts along the direction `axis`.</span>
 
 <span class="sd">        This will effectively change the unit-cell in the `axis` as-well</span>
@@ -1909,7 +1910,7 @@
             <span class="n">warn</span><span class="p">(</span><span class="n">st</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">new</span></div>
 
-<div class="viewcode-block" id="Geometry.remove"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.remove"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Remove atoms from the geometry.</span>
 
 <span class="sd">        Indices passed *MUST* be unique.</span>
@@ -1929,7 +1930,7 @@
         <span class="n">atoms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">_a</span><span class="o">.</span><span class="n">arangei</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">na</span><span class="p">),</span> <span class="n">atoms</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.tile"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.tile">[docs]</a>    <span class="k">def</span> <span class="nf">tile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.tile"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.tile">[docs]</a>    <span class="k">def</span> <span class="nf">tile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Tile the geometry to create a bigger one</span>
 
 <span class="sd">        The atomic indices are retained for the base structure.</span>
@@ -1993,7 +1994,7 @@
         <span class="c1"># will also expand via tiling)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">reps</span><span class="p">),</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.repeat"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.repeat">[docs]</a>    <span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.repeat"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.repeat">[docs]</a>    <span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a repeated geometry</span>
 
 <span class="sd">        The atomic indices are *NOT* retained from the base structure.</span>
@@ -2151,7 +2152,7 @@
 
     <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
 
-<div class="viewcode-block" id="Geometry.angle"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.angle">[docs]</a>    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.angle"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.angle">[docs]</a>    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; The angle between atom `atoms` and the direction `dir`, with possibility of a reference coordinate `ref`</span>
 
 <span class="sd">        The calculated angle can be written as this</span>
@@ -2197,7 +2198,7 @@
             <span class="k">return</span> <span class="n">ang</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.rotate"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="s1">&#39;abc+xyz&#39;</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.rotate"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="s1">&#39;abc+xyz&#39;</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Rotate geometry around vector and return a new geometry</span>
 
 <span class="sd">        Per default will the entire geometry be rotated, such that everything</span>
@@ -2264,7 +2265,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.rotate_miller"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.rotate_miller">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_miller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.rotate_miller"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.rotate_miller">[docs]</a>    <span class="k">def</span> <span class="nf">rotate_miller</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Align Miller direction along ``v``</span>
 
 <span class="sd">        Rotate geometry and cell such that the Miller direction</span>
@@ -2286,7 +2287,7 @@
         <span class="n">a</span> <span class="o">=</span> <span class="n">acos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">lm</span> <span class="o">*</span> <span class="n">lv</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cp</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.move"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.move"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Translates the geometry by `v`</span>
 
 <span class="sd">        One can translate a subset of the atoms by supplying `atoms`.</span>
@@ -2313,7 +2314,7 @@
         <span class="k">return</span> <span class="n">g</span></div>
     <span class="n">translate</span> <span class="o">=</span> <span class="n">move</span>
 
-<div class="viewcode-block" id="Geometry.swap"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.swap">[docs]</a>    <span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms_a</span><span class="p">,</span> <span class="n">atoms_b</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.swap"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.swap">[docs]</a>    <span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms_a</span><span class="p">,</span> <span class="n">atoms_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Swap a set of atoms in the geometry and return a new one</span>
 
 <span class="sd">        This can be used to reorder elements of a geometry.</span>
@@ -2332,7 +2333,7 @@
         <span class="n">xyz</span><span class="p">[</span><span class="n">atoms_b</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms_a</span><span class="p">,</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">atoms_a</span><span class="p">,</span> <span class="n">atoms_b</span><span class="p">),</span> <span class="n">sc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Geometry.swapaxes"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.swapaxes">[docs]</a>    <span class="k">def</span> <span class="nf">swapaxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_a</span><span class="p">,</span> <span class="n">axis_b</span><span class="p">,</span> <span class="n">swap</span><span class="o">=</span><span class="s1">&#39;cell+xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.swapaxes"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.swapaxes">[docs]</a>    <span class="k">def</span> <span class="nf">swapaxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis_a</span><span class="p">,</span> <span class="n">axis_b</span><span class="p">,</span> <span class="n">swap</span><span class="o">=</span><span class="s1">&#39;cell+xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Swap the axis for the atomic coordinates and the cell vectors</span>
 
 <span class="sd">        If ``swapaxes(0,1)`` it returns the 0 and 1 values</span>
@@ -2361,7 +2362,7 @@
             <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.center"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.center">[docs]</a>    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.center"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.center">[docs]</a>    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="s1">&#39;xyz&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns the center of the geometry</span>
 
 <span class="sd">        By specifying `what` one can control whether it should be:</span>
@@ -2395,7 +2396,7 @@
                 <span class="s1">&#39;Unknown what, not one of [xyz,position,mass,cell]&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.append"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.append"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Appends two structures along `axis`</span>
 
 <span class="sd">        This will automatically add the ``self.cell[axis,:]`` to all atomic</span>
@@ -2472,7 +2473,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.prepend"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.prepend">[docs]</a>    <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.prepend"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.prepend">[docs]</a>    <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Prepend two structures along `axis`</span>
 
 <span class="sd">        This will automatically add the ``self.cell[axis,:]`` to all atomic</span>
@@ -2549,7 +2550,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.add"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<div class="viewcode-block" id="Geometry.add"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
         <span class="sd">&quot;&quot;&quot; Merge two geometries (or a Geometry and SuperCell) by adding the two atoms together</span>
 
 <span class="sd">        If `other` is a Geometry only the atoms gets added, to also add the supercell vectors</span>
@@ -2583,7 +2584,7 @@
             <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_names</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.insert"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.insert"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.insert">[docs]</a>    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Inserts other atoms right before index</span>
 
 <span class="sd">        We insert the `geometry` `Geometry` before `atom`.</span>
@@ -2671,7 +2672,7 @@
             <span class="k">return</span> <span class="n">b</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="o">+</span> <span class="n">b</span>
 
-<div class="viewcode-block" id="Geometry.attach"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.attach">[docs]</a>    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">other_atom</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="s1">&#39;calc&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.attach"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.attach">[docs]</a>    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">other_atom</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="s1">&#39;calc&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Attaches another `Geometry` at the `atom` index with respect to `other_atom` using different methods.</span>
 
 <span class="sd">        The attached geometry will be inserted at the end of the geometry via `add`.</span>
@@ -2737,7 +2738,7 @@
         <span class="c1"># so we will do nothing...</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">o</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.reverse"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.reverse">[docs]</a>    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.reverse"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.reverse">[docs]</a>    <span class="k">def</span> <span class="nf">reverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns a reversed geometry</span>
 
 <span class="sd">        Also enables reversing a subset of the atoms.</span>
@@ -2756,7 +2757,7 @@
             <span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">reverse</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="n">sc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Geometry.mirror"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.mirror">[docs]</a>    <span class="k">def</span> <span class="nf">mirror</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.mirror"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.mirror">[docs]</a>    <span class="k">def</span> <span class="nf">mirror</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Mirrors the atomic coordinates about the plane</span>
 
 <span class="sd">        This will typically move the atomic coordinates outside of the unit-cell.</span>
@@ -2819,7 +2820,7 @@
         <span class="sd">&quot;&quot;&quot; Returns geometry coordinates in fractional coordinates &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">icell</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Geometry.axyz"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.axyz">[docs]</a>    <span class="k">def</span> <span class="nf">axyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.axyz"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.axyz">[docs]</a>    <span class="k">def</span> <span class="nf">axyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the atomic coordinates in the supercell of a given atom.</span>
 
 <span class="sd">        The ``Geometry[...]`` slicing is calling this function with appropriate options.</span>
@@ -2870,7 +2871,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axyz</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span></div>
 
-<div class="viewcode-block" id="Geometry.scale"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.scale"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Scale coordinates and unit-cell to get a new geometry with proper scaling</span>
 
 <span class="sd">        Parameters</span>
@@ -2884,7 +2885,7 @@
         <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">atoms</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.within_sc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.within_sc">[docs]</a>    <span class="k">def</span> <span class="nf">within_sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Geometry.within_sc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.within_sc">[docs]</a>    <span class="k">def</span> <span class="nf">within_sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                   <span class="n">ret_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ret_rij</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Indices of atoms in a given supercell within a given shape from a given coordinate</span>
@@ -3045,7 +3046,7 @@
             <span class="k">return</span> <span class="n">ret</span>
         <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="Geometry.close_sc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.close_sc">[docs]</a>    <span class="k">def</span> <span class="nf">close_sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_ia</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Geometry.close_sc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.close_sc">[docs]</a>    <span class="k">def</span> <span class="nf">close_sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_ia</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">ret_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ret_rij</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Indices of atoms in a given supercell within a given radius from a given coordinate</span>
@@ -3309,7 +3310,7 @@
         <span class="n">mod</span><span class="p">(</span><span class="n">c_i</span><span class="p">,</span> <span class="n">divisions</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">out</span><span class="o">=</span><span class="n">c_i</span><span class="p">)</span>
         <span class="n">c_pos</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">c_a</span><span class="p">,</span> <span class="n">celld</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Geometry.bond_correct"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.bond_correct">[docs]</a>    <span class="k">def</span> <span class="nf">bond_correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;calc&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.bond_correct"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.bond_correct">[docs]</a>    <span class="k">def</span> <span class="nf">bond_correct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;calc&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Corrects the bond between `ia` and the `atoms`.</span>
 
 <span class="sd">        Corrects the bond-length between atom `ia` and `atoms` in such</span>
@@ -3368,7 +3369,7 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
                 <span class="s1">&#39;Changing bond-length dependent on several lacks implementation.&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.within"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.within">[docs]</a>    <span class="k">def</span> <span class="nf">within</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span>
+<div class="viewcode-block" id="Geometry.within"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.within">[docs]</a>    <span class="k">def</span> <span class="nf">within</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span>
                <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">ret_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ret_rij</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ret_isc</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Indices of atoms in the entire supercell within a given shape from a given coordinate</span>
@@ -3476,7 +3477,7 @@
             <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
-<div class="viewcode-block" id="Geometry.close"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_ia</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="Geometry.close"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xyz_ia</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms_xyz</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">ret_xyz</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ret_rij</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ret_isc</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Indices of atoms in the entire supercell within a given radius from a given coordinate</span>
@@ -3605,7 +3606,7 @@
             <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">ret</span></div>
 
-<div class="viewcode-block" id="Geometry.a2transpose"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.a2transpose">[docs]</a>    <span class="k">def</span> <span class="nf">a2transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms1</span><span class="p">,</span> <span class="n">atoms2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.a2transpose"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.a2transpose">[docs]</a>    <span class="k">def</span> <span class="nf">a2transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms1</span><span class="p">,</span> <span class="n">atoms2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transposes connections from `atoms1` to `atoms2` such that supercell connections are transposed</span>
 
 <span class="sd">        When handling supercell indices it is useful to get the *transposed* connection. I.e. if you have</span>
@@ -3667,7 +3668,7 @@
         <span class="n">atoms2</span> <span class="o">=</span> <span class="n">atoms2</span> <span class="o">%</span> <span class="n">na</span> <span class="o">+</span> <span class="n">sc_index</span><span class="p">(</span><span class="o">-</span><span class="n">isc1</span><span class="p">)</span> <span class="o">*</span> <span class="n">na</span>
         <span class="k">return</span> <span class="n">atoms2</span><span class="p">,</span> <span class="n">atoms1</span></div>
 
-<div class="viewcode-block" id="Geometry.o2transpose"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.o2transpose">[docs]</a>    <span class="k">def</span> <span class="nf">o2transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.o2transpose"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.o2transpose">[docs]</a>    <span class="k">def</span> <span class="nf">o2transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb1</span><span class="p">,</span> <span class="n">orb2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Transposes connections from `orb1` to `orb2` such that supercell connections are transposed</span>
 
 <span class="sd">        When handling supercell indices it is useful to get the *transposed* connection. I.e. if you have</span>
@@ -3729,7 +3730,7 @@
         <span class="n">orb2</span> <span class="o">=</span> <span class="n">orb2</span> <span class="o">%</span> <span class="n">no</span> <span class="o">+</span> <span class="n">sc_index</span><span class="p">(</span><span class="o">-</span><span class="n">isc1</span><span class="p">)</span> <span class="o">*</span> <span class="n">no</span>
         <span class="k">return</span> <span class="n">orb2</span><span class="p">,</span> <span class="n">orb1</span></div>
 
-<div class="viewcode-block" id="Geometry.a2o"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.a2o">[docs]</a>    <span class="k">def</span> <span class="nf">a2o</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.a2o"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.a2o">[docs]</a>    <span class="k">def</span> <span class="nf">a2o</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an orbital index of the first orbital of said atom.</span>
 <span class="sd">        This is particularly handy if you want to create</span>
@@ -3759,7 +3760,7 @@
 
         <span class="k">return</span> <span class="n">array_arange</span><span class="p">(</span><span class="n">ob</span><span class="p">,</span> <span class="n">oe</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.o2a"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.o2a">[docs]</a>    <span class="k">def</span> <span class="nf">o2a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.o2a"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.o2a">[docs]</a>    <span class="k">def</span> <span class="nf">o2a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Atomic index corresponding to the orbital indicies.</span>
 
 <span class="sd">        This is a particurlaly slow algorithm due to for-loops.</span>
@@ -3784,7 +3785,7 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">isc</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">na</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">isc</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">na</span></div>
 
-<div class="viewcode-block" id="Geometry.uc2sc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.uc2sc">[docs]</a>    <span class="k">def</span> <span class="nf">uc2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.uc2sc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.uc2sc">[docs]</a>    <span class="k">def</span> <span class="nf">uc2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns atom from unit-cell indices to supercell indices, possibly removing dublicates</span>
 
 <span class="sd">        Parameters</span>
@@ -3801,7 +3802,7 @@
         <span class="k">return</span> <span class="n">atoms</span></div>
     <span class="n">auc2sc</span> <span class="o">=</span> <span class="n">uc2sc</span>
 
-<div class="viewcode-block" id="Geometry.sc2uc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.sc2uc">[docs]</a>    <span class="k">def</span> <span class="nf">sc2uc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.sc2uc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.sc2uc">[docs]</a>    <span class="k">def</span> <span class="nf">sc2uc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns atoms from supercell indices to unit-cell indices, possibly removing dublicates</span>
 
 <span class="sd">        Parameters</span>
@@ -3817,7 +3818,7 @@
         <span class="k">return</span> <span class="n">atoms</span></div>
     <span class="n">asc2uc</span> <span class="o">=</span> <span class="n">sc2uc</span>
 
-<div class="viewcode-block" id="Geometry.osc2uc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.osc2uc">[docs]</a>    <span class="k">def</span> <span class="nf">osc2uc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.osc2uc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.osc2uc">[docs]</a>    <span class="k">def</span> <span class="nf">osc2uc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orb</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns orbitals from supercell indices to unit-cell indices, possibly removing dublicates</span>
 
 <span class="sd">        Parameters</span>
@@ -3832,7 +3833,7 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">orb</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orb</span></div>
 
-<div class="viewcode-block" id="Geometry.ouc2sc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.ouc2sc">[docs]</a>    <span class="k">def</span> <span class="nf">ouc2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.ouc2sc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.ouc2sc">[docs]</a>    <span class="k">def</span> <span class="nf">ouc2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns orbitals from unit-cell indices to supercell indices, possibly removing dublicates</span>
 
 <span class="sd">        Parameters</span>
@@ -3849,7 +3850,7 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">orbitals</span></div>
 
-<div class="viewcode-block" id="Geometry.a2isc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.a2isc">[docs]</a>    <span class="k">def</span> <span class="nf">a2isc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.a2isc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.a2isc">[docs]</a>    <span class="k">def</span> <span class="nf">a2isc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns super-cell index for a specific/list atom</span>
 
 <span class="sd">        Returns a vector of 3 numbers with integers.</span>
@@ -3860,13 +3861,13 @@
     <span class="c1"># This function is a bit weird, it returns a real array,</span>
     <span class="c1"># however, there should be no ambiguity as it corresponds to th</span>
     <span class="c1"># offset and &quot;what else&quot; is there to query?</span>
-<div class="viewcode-block" id="Geometry.a2sc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.a2sc">[docs]</a>    <span class="k">def</span> <span class="nf">a2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.a2sc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.a2sc">[docs]</a>    <span class="k">def</span> <span class="nf">a2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the super-cell offset for a specific atom</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">offset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a2isc</span><span class="p">(</span><span class="n">atoms</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Geometry.o2isc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.o2isc">[docs]</a>    <span class="k">def</span> <span class="nf">o2isc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.o2isc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.o2isc">[docs]</a>    <span class="k">def</span> <span class="nf">o2isc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the super-cell index for a specific orbital.</span>
 
@@ -3875,7 +3876,7 @@
         <span class="n">orbitals</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayi</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">no</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">sc_off</span><span class="p">[</span><span class="n">orbitals</span><span class="p">,</span> <span class="p">:]</span></div>
 
-<div class="viewcode-block" id="Geometry.o2sc"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.o2sc">[docs]</a>    <span class="k">def</span> <span class="nf">o2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.o2sc"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.o2sc">[docs]</a>    <span class="k">def</span> <span class="nf">o2sc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the super-cell offset for a specific orbital.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -3945,7 +3946,7 @@
 
         <span class="k">return</span> <span class="n">axes</span>
 
-<div class="viewcode-block" id="Geometry.fromASE"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.fromASE">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Geometry.fromASE"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.fromASE">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="nd">@deprecate_method</span><span class="p">(</span><span class="s2">&quot;Geometry.fromASE is deprecated in favor of Geometry.new(ase_obj)&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">fromASE</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">aseg</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns geometry from an ASE object.</span>
@@ -3962,14 +3963,14 @@
         <span class="c1"># Convert to sisl object</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="n">cell</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.toASE"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.toASE">[docs]</a>    <span class="nd">@deprecate_method</span><span class="p">(</span><span class="s2">&quot;Geometry.toASE is deprecated in favor of Geometry.to.ase()&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="Geometry.toASE"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.toASE">[docs]</a>    <span class="nd">@deprecate_method</span><span class="p">(</span><span class="s2">&quot;Geometry.toASE is deprecated in favor of Geometry.to.ase()&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">toASE</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns the geometry as an ASE ``Atoms`` object &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">ase</span> <span class="kn">import</span> <span class="n">Atoms</span> <span class="k">as</span> <span class="n">ASE_Atoms</span>
         <span class="k">return</span> <span class="n">ASE_Atoms</span><span class="p">(</span><span class="n">symbols</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
                          <span class="n">cell</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">pbc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.equal"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.equal">[docs]</a>    <span class="k">def</span> <span class="nf">equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.equal"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.equal">[docs]</a>    <span class="k">def</span> <span class="nf">equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Whether two geometries are the same (optional not check of the orbital radius)</span>
 
 <span class="sd">        Parameters</span>
@@ -3995,7 +3996,7 @@
     <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span> <span class="o">==</span> <span class="n">other</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Geometry.sparserij"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.sparserij">[docs]</a>    <span class="k">def</span> <span class="nf">sparserij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">na_iR</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.sparserij"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.sparserij">[docs]</a>    <span class="k">def</span> <span class="nf">sparserij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">na_iR</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;rand&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the sparse matrix with all distances in the matrix</span>
 
 <span class="sd">        The sparse matrix will only be defined for the elements which have</span>
@@ -4044,7 +4045,7 @@
 
         <span class="k">return</span> <span class="n">rij</span></div>
 
-<div class="viewcode-block" id="Geometry.distance"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.distance"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the distances for all atoms in shells of radius `tol` within `max_R`</span>
 
 <span class="sd">        Parameters</span>
@@ -4194,7 +4195,7 @@
 
         <span class="k">return</span> <span class="n">d</span></div>
 
-<div class="viewcode-block" id="Geometry.within_inf"><a class="viewcode-back" href="../../api-generated/sisl.Geometry.html#sisl.Geometry.within_inf">[docs]</a>    <span class="k">def</span> <span class="nf">within_inf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.within_inf"><a class="viewcode-back" href="../../api/api-generated/sisl.Geometry.html#sisl.Geometry.within_inf">[docs]</a>    <span class="k">def</span> <span class="nf">within_inf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find all atoms within a provided supercell</span>
 
 <span class="sd">        Note this function is rather different from `close` and `within`.</span>
@@ -4916,28 +4917,25 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2015-2021, Nick Papior
+        &#169; Copyright 2015-2021, Nick Papior.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 

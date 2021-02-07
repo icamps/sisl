@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Siesta — creating initial DM input &mdash; sisl latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.18.0/dist/embed-amd.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> sisl
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                latest
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other.html">Other resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cite.html">Citing sisl</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scripts/scripts.html">Command line scripts</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolboxes</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../toolbox/index.html">Toolboxes</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Visualization</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../visualization/ase/index.html">ASE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualization/plotly/index.html">Plotly</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API documentation</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">sisl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Siesta — creating initial DM input</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/tutorials/tutorial_siesta_3.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div align="right">
+Download IPython notebook <a href="https://raw.githubusercontent.com/zerothi/sisl/master/docs/tutorials/tutorial_siesta_3.ipynb"> here</a>.
+<span style="white-space: nowrap;"><a href="https://mybinder.org/v2/gh/zerothi/sisl/master?filepath=docs/tutorials/tutorial_siesta_3.ipynb"><img alt="Binder badge" src="https://mybinder.org/badge_logo.svg" style="vertical-align:text-bottom"></a>.</span>
+</div><div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;siesta_3&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<div class="section" id="Siesta-—-creating-initial-DM-input">
+<h1>Siesta — creating initial DM input<a class="headerlink" href="#Siesta-—-creating-initial-DM-input" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will describe how one can re-use a density matrix file (DM) from a primary unit-cell and tile it to create a bigger initial DM file for restart capabilities in bigger calculations.</p>
+<p>The outline of the procedure is something like this:</p>
+<ol class="arabic simple">
+<li><p>Calculate the electronic structure (DM) for the primary cell of interest</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">sisl</span></code> to read in the DM, then tile/repeate and manipulate the DM at will</p></li>
+<li><p>Write out the finalized DM that will be used in the final calculation and restart the calculation.</p></li>
+</ol>
+<div class="section" id="Creating-the-geometry">
+<h2>Creating the geometry<a class="headerlink" href="#Creating-the-geometry" title="Permalink to this headline">¶</a></h2>
+<p>Our system of interest will be the smallest graphene cell, and we will expand it to a bigger one with an atom removed.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">graphene</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">graphene</span><span class="p">(</span><span class="mf">1.44</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let us plot the geometry.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plot</span><span class="p">(</span><span class="n">graphene</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;matplotlib.axes._subplots.AxesSubplot at 0x145a397b9b70&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_tutorial_siesta_3_4_1.png" src="../_images/tutorials_tutorial_siesta_3_4_1.png" />
+</div>
+</div>
+<p>Now we need to create the input fdf file for Siesta:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;RUN.fdf&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="si">%i</span><span class="s2">nclude STRUCT.fdf</span>
+<span class="s2">SystemLabel siesta_3</span>
+<span class="s2">PAO.BasisSize SZP</span>
+<span class="s2">MeshCutoff 250. Ry</span>
+<span class="s2">CDF.Save true</span>
+<span class="s2">CDF.Compress 9</span>
+<span class="s2">SaveHS true</span>
+<span class="s2">SaveRho true</span>
+<span class="s2">%block kgrid.MonkhorstPack</span>
+<span class="s2">  61  1 1 0.</span>
+<span class="s2">   1 61 1 0.</span>
+<span class="s2">   0  0 1 0.</span>
+<span class="si">%e</span><span class="s2">ndblock</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="n">graphene</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;STRUCT.fdf&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Creating-the-electronic-structure">
+<h2>Creating the electronic structure<a class="headerlink" href="#Creating-the-electronic-structure" title="Permalink to this headline">¶</a></h2>
+<p>Before proceeding, run Siesta to calculate the ground state electronic structure.</p>
+<p>After having completed the Siesta run we may read the Hamiltonian to manipulate and extract different information. After reading the Hamiltonian it is obvious that a great deal of new data has been associated with the Hamiltonian.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">fdf</span> <span class="o">=</span> <span class="n">get_sile</span><span class="p">(</span><span class="s1">&#39;RUN.fdf&#39;</span><span class="p">)</span>
+<span class="n">DM</span> <span class="o">=</span> <span class="n">fdf</span><span class="o">.</span><span class="n">read_density_matrix</span><span class="p">()</span>
+<span class="n">rij</span> <span class="o">=</span> <span class="n">DM</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">ret_rij</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">rij</span><span class="p">))</span>
+<span class="n">M_bulk</span> <span class="o">=</span> <span class="n">DM</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">group_atom_data</span><span class="p">(</span><span class="n">DM</span><span class="o">.</span><span class="n">mulliken</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[ 0.          1.44        1.44        1.44        2.49415316  2.49415316
+  2.49415316  2.49415316  2.49415316  2.49415316  2.88        2.88
+  2.88        3.80988188  3.80988188  3.80988189  3.80988189  3.80988189
+  3.80988189  4.32        4.32        4.32        4.32        4.32
+  4.32        4.98830632  4.98830632  4.98830632  4.98830632  4.98830632
+  4.98830632  5.19199383  5.19199383  5.19199383  5.19199383  5.19199384
+  5.19199384  5.76        6.27681448  6.27681448  6.598909    6.598909
+  6.598909    6.598909    7.2         8.01758068  8.01758068  8.64
+  8.64       10.08      ]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Creating-the-extended-DM">
+<h2>Creating the extended DM<a class="headerlink" href="#Creating-the-extended-DM" title="Permalink to this headline">¶</a></h2>
+<p>In this case we will duplicate the primary graphene cell 4 times along each lattice vector, and then remove one atom.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_big</span> <span class="o">=</span> <span class="n">DM</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">xyz_rem</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">DM_big</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">g_big</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">geometry</span>
+</pre></div>
+</div>
+</div>
+<div class="line-block">
+<div class="line">Now we have a much bigger geometry + its associated density matrix. However, when removing an atom one also removes electrons living in the overlap region of the basis sets; between the new geometry and the removed atom. This translates to a charge loss and should be compensated in the system.</div>
+<div class="line">If Siesta reads in this DM <em>as is</em> it will compensate the charge in the entire cell. However, the most natural charge re-arrangement is typically close to the removed atom.</div>
+<div class="line">First lets check how the charge distribution looks like with respect to the neutral atom. I.e. a big</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">M</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">mulliken</span><span class="p">(</span><span class="s2">&quot;atom&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">g_big</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">g_big</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="c1"># note we just scale enourmously.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">g_big</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">g_big</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_tutorial_siesta_3_12_0.png" src="../_images/tutorials_tutorial_siesta_3_12_0.png" />
+</div>
+</div>
+<p>Let us print the total missing charge:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">M</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-1.3482183042176508
+</pre></div></div>
+</div>
+<p>Which means we are ~1.3 short of an electron.</p>
+<div class="section" id="Using-atomic-filling">
+<h3>Using atomic filling<a class="headerlink" href="#Using-atomic-filling" title="Permalink to this headline">¶</a></h3>
+<p>When calculating the electronic structure using the default Siesta implementation you’ll use <em>atomic fillings</em> for all orbitals. This will converge in approximately <span class="math notranslate nohighlight">\(106\)</span> SCF steps.</p>
+</div>
+<div class="section" id="Correcting-DM:-Siesta-rescaling">
+<h3>Correcting DM: Siesta rescaling<a class="headerlink" href="#Correcting-DM:-Siesta-rescaling" title="Permalink to this headline">¶</a></h3>
+<p>Lets first try to run without changing the DM and thus letting Siesta rescale the entire DM</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_big</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;siesta_3_input.DM&quot;</span><span class="p">)</span>
+<span class="n">DM_big</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;STRUCT_BIG.fdf&quot;</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="s1">&#39;RUN_BIG.fdf&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span><span class="si">%i</span><span class="s2">nclude STRUCT_BIG.fdf</span>
+<span class="s2">SystemLabel siesta_3_big</span>
+<span class="s2">PAO.BasisSize SZP</span>
+<span class="s2">MeshCutoff 250. Ry</span>
+<span class="s2">CDF.Save true</span>
+<span class="s2">CDF.Compress 9</span>
+<span class="s2">SaveHS true</span>
+<span class="s2">SaveRho true</span>
+<span class="s2">WriteMullikenPop 1</span>
+<span class="s2">DM.UseSaveDM</span>
+<span class="s2">%block kgrid.MonkhorstPack</span>
+<span class="s2">  11  1 1 0.</span>
+<span class="s2">   1 11 1 0.</span>
+<span class="s2">   0  0 1 0.</span>
+<span class="si">%e</span><span class="s2">ndblock</span>
+<span class="s2">DM.MixingWeight 0.01</span>
+<span class="s2"> &quot;&quot;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Correcting-DM:-p_z">
+<h3>Correcting DM: <span class="math notranslate nohighlight">\(p_z\)</span><a class="headerlink" href="#Correcting-DM:-p_z" title="Permalink to this headline">¶</a></h3>
+<p>An attempt at correcting the DM will be to add the missing charges on each <span class="math notranslate nohighlight">\(p_z\)</span> orbital in the system so that in total the system becomes charge-neutral.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_pz</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span> <span class="n">g_big</span><span class="p">:</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">firsto</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">orb</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pz&quot;</span><span class="p">)</span> <span class="c1"># retrive all orbitals with pz name in them</span>
+    <span class="n">DM_pz</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">orb</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">orb</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">M</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">M_pz</span> <span class="o">=</span> <span class="n">DM_pz</span><span class="o">.</span><span class="n">mulliken</span><span class="p">(</span><span class="s2">&quot;atom&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mf">4.</span>
+<span class="n">M_pz</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-2.6278410558688847e-09
+</pre></div></div>
+</div>
+<p>Write out the density matrix and restart a calculation using the faked DM:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_pz</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;siesta_3_pz.DM&quot;</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="s1">&#39;RUN_pz.fdf&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SystemLabel siesta_3_pz</span>
+<span class="si">%i</span><span class="s2">nclude RUN_BIG.fdf</span>
+<span class="s2"> &quot;&quot;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>Now rerun <code class="docutils literal notranslate"><span class="pre">RUN_pz.fdf</span></code> and you’ll find one convergence pattern. It converges in approximately <span class="math notranslate nohighlight">\(132\)</span> steps.</p>
+</div>
+<div class="section" id="Correcting-DM:-s-and-p_z">
+<h3>Correcting DM: <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(p_z\)</span><a class="headerlink" href="#Correcting-DM:-s-and-p_z" title="Permalink to this headline">¶</a></h3>
+<p>When running the above you’ll see that it is still not an effective initial guess for the final DM, instead lets loop the orbitals and redistribute charge based on both <span class="math notranslate nohighlight">\(s\)</span> and <span class="math notranslate nohighlight">\(p_z\)</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">atoms_q</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">group_atom_data</span><span class="p">(</span><span class="n">DM_big</span><span class="o">.</span><span class="n">mulliken</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_spz</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span> <span class="n">g_big</span><span class="p">:</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">firsto</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span> <span class="c1"># retrive all orbitals with pz name in them</span>
+    <span class="n">pz</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pz&quot;</span><span class="p">)</span> <span class="c1"># retrive all orbitals with pz name in them</span>
+    <span class="n">DM_spz</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">M</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">DM_spz</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">pz</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">pz</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">M</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">DM_spz</span><span class="o">.</span><span class="n">mulliken</span><span class="p">(</span><span class="s2">&quot;atom&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+-4.480255277883316e-09
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_spz</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;siesta_3_spz.DM&quot;</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="s1">&#39;RUN_spz.fdf&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">SystemLabel siesta_3_spz</span>
+<span class="si">%i</span><span class="s2">nclude RUN_BIG.fdf</span>
+<span class="s2"> &quot;&quot;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<p>Now run <code class="docutils literal notranslate"><span class="pre">RUN_spz.fdf</span></code> and you’ll find another convergence pattern. It converges in approximately <span class="math notranslate nohighlight">\(132\)</span> steps.</p>
+</div>
+<div class="section" id="Correcting-DM:-range-based">
+<h3>Correcting DM: range based<a class="headerlink" href="#Correcting-DM:-range-based" title="Permalink to this headline">¶</a></h3>
+<p>In reality the DM changes depending on the distance to the <em>hole</em> and as such we should change the charges based on this (a sort of ripple effect).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">DM_range</span> <span class="o">=</span> <span class="n">DM_big</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1"># Retrieve ranges</span>
+<span class="n">idxs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">g_big</span><span class="o">.</span><span class="n">sc2uc</span><span class="p">,</span> <span class="n">g_big</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">xyz_rem</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="p">(</span><span class="mf">1.44</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))))</span>
+<span class="n">missing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">g_big</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">(</span><span class="n">idxs</span><span class="p">))</span>
+
+<span class="c1"># nearest neighbours will have slightly less charge</span>
+<span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">firsto</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+    <span class="n">px</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;px&quot;</span><span class="p">)</span>
+    <span class="n">py</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;py&quot;</span><span class="p">)</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.1</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">px</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">px</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.03</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">py</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">py</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.03</span>
+
+<span class="c1"># next-nearest neighbours will have slightly more charge</span>
+<span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span> <span class="n">idxs</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">firsto</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">pz</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;pz&quot;</span><span class="p">)</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">pz</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">pz</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.04</span>
+
+<span class="n">M_pz</span> <span class="o">=</span> <span class="n">DM_pz</span><span class="o">.</span><span class="n">mulliken</span><span class="p">(</span><span class="s2">&quot;atom&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mf">4.</span>
+<span class="n">M_pz</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">DM</span>
+
+<span class="k">for</span> <span class="n">ia</span> <span class="ow">in</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">firsto</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">atom</span> <span class="o">=</span> <span class="n">g_big</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">ia</span><span class="p">]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+    <span class="n">px</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;px&quot;</span><span class="p">)</span>
+    <span class="n">py</span> <span class="o">=</span> <span class="n">atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;py&quot;</span><span class="p">)</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">0.1</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">px</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">px</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.05</span>
+    <span class="n">DM_range</span><span class="p">[</span><span class="n">o</span> <span class="o">+</span> <span class="n">py</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">py</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">0.05</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">DM_spz</span><span class="o">.</span><span class="n">mulliken</span><span class="p">(</span><span class="s2">&quot;atom&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[array([ 0, 24,  6], dtype=int32), array([ 1,  7, 23, 25,  5, 13], dtype=int32), array([30, 26, 14], dtype=int32)]
+[ 2  3  4  8  9 10 11 12 15 16 17 18 19 20 21 22 27 28 29]
+5.392873194469324
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2015-2021, Nick Papior.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
