@@ -3,7 +3,7 @@
 Constants
 =========
 
-.. currentmodule:: sisl.constant
+.. module:: sisl.constant
 
 
 A pre-set set of physical constants. The SI units are following the *new* convention
@@ -12,7 +12,7 @@ that takes effect on 20 May 2019.
 The currently stored constants are (all are given in SI units):
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    PhysicalConstant
    q

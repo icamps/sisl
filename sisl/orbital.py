@@ -92,15 +92,6 @@ class Orbital:
     tag : str, optional
         user defined tag
 
-    Attributes
-    ----------
-    R : float
-        maximum radius (in Ang)
-    q0 : float
-        initial electronic charge
-    tag : str
-        user defined tag
-
     Examples
     --------
     >>> orb = Orbital(1)
@@ -121,14 +112,17 @@ class Orbital:
 
     @property
     def R(self):
+        """ Maxmimum radius of orbital """
         return self._R
 
     @property
     def q0(self):
+        """ Initial charge """
         return self._q0
 
     @property
     def tag(self):
+        """ Named tag of orbital """
         return self._tag
 
     def __str__(self):
@@ -262,7 +256,7 @@ class Orbital:
 
         return axes
 
-    def toGrid(self, precision=0.05, c=1., R=None, dtype=np.float64, Z=1):
+    def toGrid(self, precision=0.05, c=1., R=None, dtype=np.float64, atom=1):
         """ Create a Grid with *only* this orbital wavefunction on it
 
         Parameters
@@ -275,8 +269,9 @@ class Orbital:
             box size of the grid (default to the orbital range)
         dtype : numpy.dtype, optional
             the used separation in the `Grid` between voxels
-        Z : int, optional
-            atomic number associated with the grid
+        atom : optional
+            atom associated with the grid; either an atom instance or
+            something that ``Atom(atom)`` would convert to a proper atom.
         """
         if R is None:
             R = self.R
@@ -292,7 +287,11 @@ class Orbital:
         from .atom import Atom
         from .physics.electron import wavefunction
         sc = SuperCell(R*2, origo=[-R] * 3)
-        g = Geometry([0] * 3, Atom(Z, self), sc=sc)
+        if isinstance(atom, Atom):
+            atom = atom.copy(orbitals=self)
+        else:
+            atom = Atom(atom, self)
+        g = Geometry([0] * 3, atom, sc=sc)
         G = Grid(precision, dtype=dtype, geometry=g)
         wavefunction(np.full(1, c), G, geometry=g)
         return G
@@ -342,16 +341,8 @@ class SphericalOrbital(Orbital):
 
     Attributes
     ----------
-    R : float
-        maximum radius (in Ang)
-    q0 : float
-        initial electronic charge
-    l : int
-        azimuthal quantum number
     f : func
         interpolation function that returns `f(r)` for a given radius
-    tag : str
-       user defined tag
 
     Examples
     --------
@@ -386,6 +377,7 @@ class SphericalOrbital(Orbital):
 
     @property
     def l(self):
+        r""" :math:`l` quantum number """
         return self._l
 
     def copy(self):
@@ -721,27 +713,6 @@ class AtomicOrbital(Orbital):
     tag : str, optional
         user defined tag
 
-    Attributes
-    ----------
-    R : float
-        maximum radius (in Ang)
-    n : int
-        principal quantum number
-    l : int
-        azimuthal quantum number
-    m : int
-        magnetic quantum number
-    zeta : int
-        zeta shell
-    P : bool
-        whether this corresponds to a polarized shell (``True``)
-    f : func
-        interpolation function that returns `f(r)` for a given radius
-    q0 : float
-        initial electronic charge
-    tag : str
-        user defined tag
-
     Examples
     --------
     >>> r = np.linspace(0, 5, 50)
@@ -920,35 +891,43 @@ class AtomicOrbital(Orbital):
 
     @property
     def n(self):
+        r""" :math:`n` shell """
         return self._n
 
     @property
     def l(self):
+        r""" :math:`l` quantum number """
         return self._l
 
     @property
     def m(self):
+        r""" :math:`m` quantum number """
         return self._m
 
     @property
     def zeta(self):
+        r""" :math:`\zeta` shell """
         return self._zeta
 
     @property
     @deprecate_method("AtomicOrbital.Z is deprecated, please use .zeta instead")
     def Z(self):
+        r""" :math:`\zeta` shell """
         return self._zeta
 
     @property
     def P(self):
+        r""" Whether this is polarized shell or not """
         return self._P
 
     @property
     def orb(self):
+        r""" Orbital with radial part """
         return self._orb
 
     @property
     def f(self):
+        r""" Radial function """
         return self.orb.f
 
     def copy(self):

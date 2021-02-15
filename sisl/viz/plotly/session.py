@@ -7,6 +7,7 @@ from pathlib import Path
 from copy import deepcopy, copy
 
 import sisl
+from sisl.messages import warn
 from sisl._environ import register_environ_variable, get_environ_variable
 from .plot import Plot
 from .configurable import Configurable, vizplotly_settings
@@ -229,7 +230,7 @@ class Session(Configurable):
 
         Returns
         ---------
-        plot: sisl.viz.Plot()
+        plot: sisl.viz.plotly.Plot()
             The instance of the desired plot
         """
         plot = self.plots[plotID]
@@ -301,7 +302,7 @@ class Session(Configurable):
 
         Returns
         -----------
-        new_plot: sisl.viz.Plot()
+        new_plot: sisl.viz.plotly.Plot()
             The initialized new plot
         """
         args = []
@@ -314,7 +315,7 @@ class Session(Configurable):
                     ReqPlotClass = PlotClass
                     break
             else:
-                raise Exception("Didn't find the desired plot class: {}".format(plotClass))
+                raise ValueError(f"Didn't find the desired plot class: {plotClass}")
 
         if plotable_path is not None:
             args = (plotable_path,)
@@ -351,7 +352,7 @@ class Session(Configurable):
 
         Returns
         ---------
-        plot: sisl.viz.Plot()
+        plot: sisl.viz.plotly.Plot()
             The instance of the updated plot
         """
         return self.plot(plotID).update_settings(**newSettings)
@@ -366,7 +367,7 @@ class Session(Configurable):
 
         Returns
         ---------
-        plot: sisl.viz.Plot()
+        plot: sisl.viz.plotly.Plot()
             The instance of the plot with the settings rolled back.
         """
         return self.plot(plotID).undo_settings()
@@ -469,7 +470,7 @@ class Session(Configurable):
             try:
                 self.plots[plotID].read_data(update_fig=True)
             except Exception as e:
-                print(f"Could not update plot {plotID}. \n Error: {e}")
+                warn(f"Could not update plot {plotID}.\nError: {e}")
 
         return self
 
@@ -596,7 +597,7 @@ class Session(Configurable):
 
         Parameters
         ----------
-        plot: str or sisl.viz.Plot
+        plot: str or sisl.viz.plotly.Plot
             the plot's ID or the plot's instance
         tab: str
             the tab's id or the tab's name.
@@ -624,7 +625,7 @@ class Session(Configurable):
 
         Parameters
         ----------
-        plot: str or sisl.viz.Plot
+        plot: str or sisl.viz.plotly.Plot
             the plot's ID or the plot's instance
         tab: str
             the tab's id or the tab's name.
@@ -674,7 +675,7 @@ class Session(Configurable):
         --------
         tab: str
             tab's id or name
-        plots: array-like of str or sisl.viz.Plot (or combination of the two)
+        plots: array-like of str or sisl.viz.plotly.Plot (or combination of the two)
             plots ids or plot instances.
         """
         tab = self.tab(tab)

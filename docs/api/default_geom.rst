@@ -4,7 +4,7 @@
 Common geometries
 *****************
 
-.. currentmodule:: sisl.geom
+.. module:: sisl.geom
 
 
 A selection of default geometries that `sisl` can construct on the fly.
@@ -19,7 +19,7 @@ Bulk
 ====
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    sc
    bcc
@@ -32,7 +32,7 @@ Bulk
 ============
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    nanoribbon
    agnr
@@ -45,7 +45,7 @@ Bulk
 ============
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    honeycomb
    bilayer

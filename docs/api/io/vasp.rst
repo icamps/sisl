@@ -3,10 +3,10 @@
 VASP
 ====
 
-.. currentmodule:: sisl.io.vasp
+.. module:: sisl.io.vasp
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    carSileVASP
    doscarSileVASP
@@ -15,4 +15,12 @@ VASP
    locpotSileVASP
    outSileVASP
 
+
+.. autosummary::
+   :toctree: generated/
+   :hidden:
+
+   SileVASP
+   SileCDFVASP
+   SileBinVASP
 

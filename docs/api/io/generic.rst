@@ -6,13 +6,13 @@ Generic files
 .. currentmodule:: sisl.io
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
-   tableSile
-   xyzSile
-   pdbSile
-   cubeSile
-   moldenSile
-   xsfSile
-   axsfSile
+   ~sisl.io.tableSile
+   ~sisl.io.xyzSile
+   ~sisl.io.pdbSile
+   ~sisl.io.cubeSile
+   ~sisl.io.moldenSile
+   ~sisl.io.xsfSile
+   ~sisl.io.axsfSile
 

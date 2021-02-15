@@ -158,6 +158,35 @@ def sisl_system():
     return d
 
 
+# We are ignoring stuff in sisl.viz.plotly if plotly cannot be imported
+# collect - ignore seems not to fully work... I should report this upstream.
+# however, the pytest_ignore_collect seems very stable and favourable
+collect_ignore = ["setup.py"]
+collect_ignore_glob = []
+
+# skip paths
+_skip_paths = []
+try:
+    import plotly
+except ImportError:
+    _skip_paths.append(os.path.join("sisl", "viz", "plotly"))
+
+
+def pytest_ignore_collect(path, config):
+    # ensure we only compare against final *sisl* stuff
+    global _skip_paths
+    parts = list(Path(path).parts)
+    parts.reverse()
+    sisl_parts = parts[:parts.index("sisl")]
+    sisl_parts.reverse()
+    sisl_path = str(Path("sisl").joinpath(*sisl_parts))
+
+    for skip_path in _skip_paths:
+        if skip_path in sisl_path:
+            return True
+    return False
+
+
 def pytest_configure(config):
 
     pytest.sisl_travis_skip = pytest.mark.skipif(
@@ -166,16 +195,16 @@ def pytest_configure(config):
     )
 
     # Locally manage pytest.ini input
-    for mark in ['io', 'bloch', 'hamiltonian', 'geometry', 'geom', 'shape',
+    for mark in ['io', 'generic', 'bloch', 'hamiltonian', 'geometry', 'geom', 'shape',
                  'state', 'electron', 'phonon', 'utils', 'unit', 'distribution',
                  'spin', 'self_energy', 'help', 'messages', 'namedindex', 'sparse',
                  'supercell', 'sc', 'quaternion', 'sparse_geometry', 'ranges',
                  'orbital', 'oplist', 'grid', 'atoms', 'atom', 'sgrid', 'sdata', 'sgeom',
                  'version', 'bz', 'brillouinzone', 'inv', 'eig', 'linalg',
                  'density_matrix', 'dynamicalmatrix', 'energydensity_matrix',
-                 'siesta', 'tbtrans', 'ham', 'vasp', 'w90', 'wannier90', 'gulp', 'fdf',
+                 'siesta', 'tbtrans', 'vasp', 'w90', 'wannier90', 'gulp', 'fdf',
                  "category", "geom_category", "plot",
-                 'table', 'cube', 'slow', 'selector', 'overlap', 'mixing',
+                 'slow', 'selector', 'overlap', 'mixing',
                  'viz', 'plotly', 'blender']:
         config.addinivalue_line(
             "markers", f"{mark}: mark test to run only on named environment"

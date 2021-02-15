@@ -1,12 +1,21 @@
 .. _io.bigdft:
 
-.. currentmodule:: sisl.io.bigdft
+.. module:: sisl.io.bigdft
 
 BigDFT
 ======
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    asciiSileBigDFT
+
+
+.. autosummary::
+   :toctree: generated/
+   :hidden:
+
+   SileBigDFT
+   SileCDFBigDFT
+   SileBinBigDFT
 

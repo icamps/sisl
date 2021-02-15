@@ -3,7 +3,7 @@
 Unit conversion
 ===============
 
-.. currentmodule:: sisl.unit
+.. module:: sisl.unit
 
 Generic conversion utility between different units.
 
@@ -14,7 +14,7 @@ code where specific unit conversions are required. I.e. if
 the codes unit conversion are not the same as the sisl defaults.
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    unit_group - which group does the unit belong to
    unit_convert - conversion factor between two units
@@ -30,10 +30,11 @@ complex units (Ry/kg/Bohr N) while `unit_convert` is the basic unit-conversion
 table that only converts simple units. E.g. Ry to eV etc.
 
 
-.. currentmodule:: sisl.unit.siesta
 
 Siesta units
 ------------
+
+.. module:: sisl.unit.siesta
 
 This subpackage implements the unit conversions used in `Siesta`_.
 

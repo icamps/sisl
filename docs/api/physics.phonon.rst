@@ -3,7 +3,7 @@
 Phonon related functions
 ==========================
 
-.. currentmodule:: sisl.physics.phonon
+.. module:: sisl.physics.phonon
 
 In sisl phonon calculations are relying on routines
 specific for phonons. For instance density of states calculations from
@@ -13,7 +13,7 @@ This module implements the necessary tools required for calculating
 DOS, PDOS, group-velocities and real-space displacements.
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    DOS
    PDOS
@@ -28,7 +28,7 @@ Certain classes aid in the usage of the above methods by implementing them
 using automatic arguments.
 
 .. autosummary::
-   :toctree: api-generated/
+   :toctree: generated/
 
    CoefficientPhonon
    ModePhonon

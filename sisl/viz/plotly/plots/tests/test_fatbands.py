@@ -9,7 +9,7 @@ from xarray import DataArray
 import numpy as np
 
 import sisl
-from sisl.viz import FatbandsPlot
+from sisl.viz.plotly import FatbandsPlot
 from sisl.viz.plotly.plots.tests.test_bands import BandsPlotTester, NCSpinBandsTester
 
 
@@ -125,7 +125,7 @@ class TestNCSpinFatbands(FatbandsPlotTester, NCSpinBandsTester):
             "bands_shape": (3, 1, 90),
             "weights_shape": (1, 3, 90, 45),
             "ticklabels": ["Gamma", "X"],
-            "tickvals": [0., 0.93490333],
-            "gap": 5.457,
+            "tickvals": [0., 0.49472934],
+            "gap": 0.40109,
         }
     }

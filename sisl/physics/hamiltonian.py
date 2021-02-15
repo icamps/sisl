@@ -3,6 +3,7 @@ from scipy.interpolate import CubicSpline
 
 from sisl._internal import set_module
 import sisl._array as _a
+from ..messages import deprecate_method
 from .distribution import get_distribution
 from .electron import EigenvalueElectron, EigenstateElectron, spin_squared
 from .sparse import SparseOrbitalBZSpin
@@ -375,6 +376,7 @@ class Hamiltonian(SparseOrbitalBZSpin):
             with get_sile(sile, 'w') as fh:
                 fh.write_hamiltonian(self, *args, **kwargs)
 
+    @deprecate_method("Please use Hamiltonian.eigenstate(...).spin_squared() instead")
     def spin_squared(self, k=(0, 0, 0), n_up=None, n_down=None, **kwargs):
         r""" Calculate spin-squared expectation value, see `~sisl.physics.electron.spin_squared` for details
 
@@ -401,6 +403,7 @@ class Hamiltonian(SparseOrbitalBZSpin):
         # es_alpha.Sk should equal es_beta.Sk, so just pass one of them
         return spin_squared(es_alpha.state, es_beta.state, es_alpha.Sk())
 
+    @deprecate_method("Please use Hamiltonian.eigenstate(...).velocity() instead")
     def velocity(self, k=(0, 0, 0), project=False, **kwargs):
         r""" Calculate the velocity for the eigenstates for a given `k` point
 
@@ -420,6 +423,7 @@ class Hamiltonian(SparseOrbitalBZSpin):
         """
         return self.eigenstate(k, **kwargs).velocity(project=project)
 
+    @deprecate_method("Please use Hamiltonian.eigenstate(...).spin_moment() instead")
     def spin_moment(self, k=(0, 0, 0), project=False, **kwargs):
         r""" Calculate the spin moment for the eigenstates for a given `k` point
 
@@ -439,6 +443,7 @@ class Hamiltonian(SparseOrbitalBZSpin):
         """
         return self.eigenstate(k, **kwargs).spin_moment()
 
+    @deprecate_method("Please use Hamiltonian.eigenstate(...).DOS() instead")
     def DOS(self, E, k=(0, 0, 0), distribution='gaussian', **kwargs):
         r""" Calculate the DOS at the given energies for a specific `k` point
 
@@ -463,6 +468,7 @@ class Hamiltonian(SparseOrbitalBZSpin):
         """
         return self.eigenvalue(k, **kwargs).DOS(E, distribution)
 
+    @deprecate_method("Please use Hamiltonian.eigenstate(...).PDOS() instead")
     def PDOS(self, E, k=(0, 0, 0), distribution='gaussian', **kwargs):
         r""" Calculate the projected DOS at the given energies for a specific `k` point
 

@@ -13,7 +13,7 @@ from xarray import DataArray
 import numpy as np
 
 import sisl
-from sisl.viz import BandsPlot
+from sisl.viz.plotly import BandsPlot
 from sisl.viz.plotly.plots.tests.conftest import PlotTester
 
 
@@ -200,7 +200,7 @@ class TestNCSpinBands(NCSpinBandsTester):
             "init_func": NC_init_func,
             "bands_shape": (3, 1, 90),
             "ticklabels": ["Gamma", "X"],
-            "tickvals": [0., 0.93490333],
-            "gap": 5.457,
+            "tickvals": [0., 0.49472934],
+            "gap": 0.40109,
         }
     }
