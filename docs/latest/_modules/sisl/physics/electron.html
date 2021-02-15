@@ -277,7 +277,7 @@
     <span class="k">return</span> <span class="n">eigh_destroy</span><span class="p">(</span><span class="n">M</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
 
 
-<div class="viewcode-block" id="DOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.DOS.html#sisl.physics.electron.DOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="DOS"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.DOS.html#sisl.physics.electron.DOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">eig</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the density of states (DOS) for a set of energies, `E`, with a distribution function</span>
 
@@ -317,7 +317,7 @@
     <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">DOS</span><span class="p">,</span> <span class="n">eig</span><span class="p">:</span> <span class="n">DOS</span> <span class="o">+</span> <span class="n">distribution</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">eig</span><span class="p">),</span> <span class="n">eig</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="PDOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.PDOS.html#sisl.physics.electron.PDOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="PDOS"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.PDOS.html#sisl.physics.electron.PDOS">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">PDOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">eig</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the projected density of states (PDOS) for a set of energies, `E`, with a distribution function</span>
 
@@ -453,7 +453,7 @@
     <span class="k">return</span> <span class="n">PDOS</span></div>
 
 
-<div class="viewcode-block" id="spin_moment"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.spin_moment.html#sisl.physics.electron.spin_moment">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="spin_moment"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.spin_moment.html#sisl.physics.electron.spin_moment">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">spin_moment</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Spin magnetic moment (spin texture) and optionally orbitally resolved moments</span>
 
@@ -548,7 +548,7 @@
     <span class="k">return</span> <span class="n">s</span></div>
 
 
-<div class="viewcode-block" id="spin_squared"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.spin_squared.html#sisl.physics.electron.spin_squared">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="spin_squared"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.spin_squared.html#sisl.physics.electron.spin_squared">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">spin_squared</span><span class="p">(</span><span class="n">state_alpha</span><span class="p">,</span> <span class="n">state_beta</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the spin squared expectation value between two spin states</span>
 
@@ -634,7 +634,7 @@
     <span class="k">return</span> <span class="n">oplist</span><span class="p">((</span><span class="n">Sa</span><span class="p">,</span> <span class="n">Sb</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="velocity"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.velocity.html#sisl.physics.electron.velocity">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="velocity"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.velocity.html#sisl.physics.electron.velocity">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">velocity</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dHk</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dSk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the velocity of a set of states</span>
 
@@ -769,7 +769,7 @@
     <span class="k">return</span> <span class="n">v</span> <span class="o">*</span> <span class="n">_velocity_const</span>
 
 
-<div class="viewcode-block" id="velocity_matrix"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.velocity_matrix.html#sisl.physics.electron.velocity_matrix">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="velocity_matrix"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.velocity_matrix.html#sisl.physics.electron.velocity_matrix">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">velocity_matrix</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">dHk</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dSk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the velocity matrix of a set of states</span>
 
@@ -891,7 +891,7 @@
     <span class="k">return</span> <span class="n">v</span> <span class="o">*</span> <span class="n">_velocity_const</span>
 
 
-<div class="viewcode-block" id="berry_curvature"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.berry_curvature.html#sisl.physics.electron.berry_curvature">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="berry_curvature"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.berry_curvature.html#sisl.physics.electron.berry_curvature">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">berry_curvature</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">dHk</span><span class="p">,</span> <span class="n">dSk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the Berry curvature matrix for a set of states (using Kubo)</span>
 
@@ -999,7 +999,7 @@
     <span class="k">return</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">_berry_curvature_const</span>
 
 
-<div class="viewcode-block" id="conductivity"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.conductivity.html#sisl.physics.electron.conductivity">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="conductivity"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.conductivity.html#sisl.physics.electron.conductivity">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">conductivity</span><span class="p">(</span><span class="n">bz</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;fermi-dirac&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ahc&#39;</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Electronic conductivity for a given `BrillouinZone` integral</span>
 
@@ -1208,7 +1208,7 @@
     <span class="k">return</span> <span class="n">M</span> <span class="o">*</span> <span class="n">_inv_eff_mass_const</span>
 
 
-<div class="viewcode-block" id="berry_phase"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.berry_phase.html#sisl.physics.electron.berry_phase">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="berry_phase"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.berry_phase.html#sisl.physics.electron.berry_phase">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">berry_phase</span><span class="p">(</span><span class="n">contour</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eigvals</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;berry&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the Berry-phase on a loop using a predefined path</span>
 
@@ -1377,7 +1377,7 @@
     <span class="k">return</span> <span class="n">ret</span></div>
 
 
-<div class="viewcode-block" id="wavefunction"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.wavefunction.html#sisl.physics.electron.wavefunction">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="wavefunction"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.wavefunction.html#sisl.physics.electron.wavefunction">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">wavefunction</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spinor</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Add the wave-function (`Orbital.psi`) component of each orbital to the grid</span>
 
@@ -1908,18 +1908,12 @@
 <span class="sd">        See `~sisl.physics.electron.wavefunction` for argument details, the arguments not present</span>
 <span class="sd">        in this method are automatically passed from this object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">spin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">spin</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">spin</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">spin</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">Geometry</span><span class="p">):</span>
             <span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">geometry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">geometry</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="n">geometry</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">geometry</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;geometry&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
         <span class="c1"># Ensure we are dealing with the R gauge</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">change_gauge</span><span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">)</span>
@@ -1978,24 +1972,24 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="CoefficientElectron"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.CoefficientElectron.html#sisl.physics.electron.CoefficientElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="CoefficientElectron"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.CoefficientElectron.html#sisl.physics.electron.CoefficientElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CoefficientElectron</span><span class="p">(</span><span class="n">Coefficient</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Coefficients describing some physical quantity related to electrons &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="StateElectron"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.StateElectron.html#sisl.physics.electron.StateElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="StateElectron"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.StateElectron.html#sisl.physics.electron.StateElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">StateElectron</span><span class="p">(</span><span class="n">_electron_State</span><span class="p">,</span> <span class="n">State</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; A state describing a physical quantity related to electrons &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="StateCElectron"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="StateCElectron"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">StateCElectron</span><span class="p">(</span><span class="n">_electron_State</span><span class="p">,</span> <span class="n">StateC</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; A state describing a physical quantity related to electrons, with associated coefficients of the state &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span>
 
-<div class="viewcode-block" id="StateCElectron.velocity"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.velocity">[docs]</a>    <span class="k">def</span> <span class="nf">velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="StateCElectron.velocity"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.velocity">[docs]</a>    <span class="k">def</span> <span class="nf">velocity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate velocity for the states</span>
 
 <span class="sd">        This routine calls `~sisl.physics.electron.velocity` with appropriate arguments</span>
@@ -2038,7 +2032,7 @@
             <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.velocity requires the parent to have a spin associated.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">velocity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dHk</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">dSk</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="n">project</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StateCElectron.velocity_matrix"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.velocity_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">velocity_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<div class="viewcode-block" id="StateCElectron.velocity_matrix"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.velocity_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">velocity_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate velocity matrix for the states</span>
 
 <span class="sd">        This routine calls `~sisl.physics.electron.velocity_matrix` with appropriate arguments</span>
@@ -2075,7 +2069,7 @@
             <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.velocity_matrix requires the parent to have a spin associated.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">velocity_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dHk</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">dSk</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="n">deg</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StateCElectron.berry_curvature"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.berry_curvature">[docs]</a>    <span class="k">def</span> <span class="nf">berry_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<div class="viewcode-block" id="StateCElectron.berry_curvature"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.berry_curvature">[docs]</a>    <span class="k">def</span> <span class="nf">berry_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate Berry curvature for the states</span>
 
 <span class="sd">        This routine calls `~sisl.physics.electron.berry_curvature` with appropriate arguments</span>
@@ -2113,7 +2107,7 @@
             <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.berry_curvature requires the parent to have a spin associated.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">berry_curvature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">dHk</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">),</span> <span class="n">dSk</span><span class="p">,</span> <span class="n">degenerate</span><span class="o">=</span><span class="n">deg</span><span class="p">,</span> <span class="nb">complex</span><span class="o">=</span><span class="nb">complex</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StateCElectron.inv_eff_mass_tensor"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.inv_eff_mass_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">inv_eff_mass_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_matrix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+<div class="viewcode-block" id="StateCElectron.inv_eff_mass_tensor"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.StateCElectron.html#sisl.physics.electron.StateCElectron.inv_eff_mass_tensor">[docs]</a>    <span class="k">def</span> <span class="nf">inv_eff_mass_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_matrix</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate inverse effective mass tensor for the states</span>
 
 <span class="sd">        This routine calls `~sisl.physics.electron.inv_eff_mass` with appropriate arguments</span>
@@ -2164,7 +2158,7 @@
         <span class="k">return</span> <span class="n">inv_eff_mass_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ddHk</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">ddSk</span><span class="p">,</span> <span class="n">degenerate</span><span class="p">,</span> <span class="n">as_matrix</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="EigenvalueElectron"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenvalueElectron.html#sisl.physics.electron.EigenvalueElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="EigenvalueElectron"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenvalueElectron.html#sisl.physics.electron.EigenvalueElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">EigenvalueElectron</span><span class="p">(</span><span class="n">CoefficientElectron</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Eigenvalues of electronic states, no eigenvectors retained</span>
 
@@ -2177,7 +2171,7 @@
         <span class="sd">&quot;&quot;&quot; Eigenvalues &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
 
-<div class="viewcode-block" id="EigenvalueElectron.occupation"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenvalueElectron.html#sisl.physics.electron.EigenvalueElectron.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;fermi_dirac&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenvalueElectron.occupation"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenvalueElectron.html#sisl.physics.electron.EigenvalueElectron.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;fermi_dirac&quot;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the occupations for the states according to a distribution function</span>
 
 <span class="sd">        Parameters</span>
@@ -2194,7 +2188,7 @@
             <span class="n">distribution</span> <span class="o">=</span> <span class="n">get_distribution</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eig</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenvalueElectron.DOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenvalueElectron.html#sisl.physics.electron.EigenvalueElectron.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenvalueElectron.DOS"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenvalueElectron.html#sisl.physics.electron.EigenvalueElectron.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate DOS for provided energies, `E`.</span>
 
 <span class="sd">        This routine calls `sisl.physics.electron.DOS` with appropriate arguments</span>
@@ -2205,7 +2199,7 @@
         <span class="k">return</span> <span class="n">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">eig</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="EigenvectorElectron"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenvectorElectron.html#sisl.physics.electron.EigenvectorElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="EigenvectorElectron"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenvectorElectron.html#sisl.physics.electron.EigenvectorElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">EigenvectorElectron</span><span class="p">(</span><span class="n">StateElectron</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Eigenvectors of electronic states, no eigenvalues retained</span>
 
@@ -2214,7 +2208,7 @@
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
-<div class="viewcode-block" id="EigenstateElectron"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="EigenstateElectron"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">EigenstateElectron</span><span class="p">(</span><span class="n">StateCElectron</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Eigen states of electrons with eigenvectors and eigenvalues.</span>
 
@@ -2228,7 +2222,7 @@
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Eigenvalues for each state &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
 
-<div class="viewcode-block" id="EigenstateElectron.occupation"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;fermi_dirac&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenstateElectron.occupation"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.occupation">[docs]</a>    <span class="k">def</span> <span class="nf">occupation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;fermi_dirac&quot;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the occupations for the states according to a distribution function</span>
 
 <span class="sd">        Parameters</span>
@@ -2245,7 +2239,7 @@
             <span class="n">distribution</span> <span class="o">=</span> <span class="n">get_distribution</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">distribution</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eig</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenstateElectron.DOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenstateElectron.DOS"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.DOS">[docs]</a>    <span class="k">def</span> <span class="nf">DOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate DOS for provided energies, `E`.</span>
 
 <span class="sd">        This routine calls `sisl.physics.electron.DOS` with appropriate arguments</span>
@@ -2255,7 +2249,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EigenstateElectron.PDOS"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.PDOS">[docs]</a>    <span class="k">def</span> <span class="nf">PDOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="EigenstateElectron.PDOS"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.PDOS">[docs]</a>    <span class="k">def</span> <span class="nf">PDOS</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate PDOS for provided energies, `E`.</span>
 
 <span class="sd">        This routine calls `~sisl.physics.electron.PDOS` with appropriate arguments</span>

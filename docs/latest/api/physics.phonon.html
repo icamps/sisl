@@ -44,8 +44,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="DOS" href="api-generated/sisl.physics.phonon.DOS.html" />
-    <link rel="prev" title="EigenstateElectron" href="api-generated/sisl.physics.electron.EigenstateElectron.html" /> 
+    <link rel="next" title="DOS" href="generated/sisl.physics.phonon.DOS.html" />
+    <link rel="prev" title="sisl.physics.electron.EigenstateElectron" href="generated/sisl.physics.electron.EigenstateElectron.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -125,10 +125,10 @@
 <li class="toctree-l3"><a class="reference internal" href="physics.matrix.html">Physical quantites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="physics.electron.html">Electron related functions</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Phonon related functions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api-generated/sisl.physics.phonon.DOS.html">DOS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api-generated/sisl.physics.phonon.PDOS.html">PDOS</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api-generated/sisl.physics.phonon.velocity.html">velocity</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api-generated/sisl.physics.phonon.displacement.html">displacement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/sisl.physics.phonon.DOS.html">DOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/sisl.physics.phonon.PDOS.html">PDOS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/sisl.physics.phonon.velocity.html">velocity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/sisl.physics.phonon.displacement.html">displacement</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#supporting-classes">Supporting classes</a></li>
 </ul>
 </li>
@@ -138,7 +138,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="unit_constant.html">Units and constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io.html">Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/index.html">Input/Output</a></li>
 </ul>
 </li>
 </ul>
@@ -236,8 +236,8 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="phonon-related-functions">
-<span id="physics-phonon"></span><h1>Phonon related functions<a class="headerlink" href="#phonon-related-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-sisl.physics.phonon">
+<span id="phonon-related-functions"></span><span id="physics-phonon"></span><h1>Phonon related functions<a class="headerlink" href="#module-sisl.physics.phonon" title="Permalink to this headline">¶</a></h1>
 <p>In sisl phonon calculations are relying on routines
 specific for phonons. For instance density of states calculations from
 phonon eigenvalues and other quantities.</p>
@@ -249,16 +249,16 @@ DOS, PDOS, group-velocities and real-space displacements.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.DOS.html#sisl.physics.phonon.DOS" title="sisl.physics.phonon.DOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOS</span></code></a>(E, hw[, distribution])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.DOS.html#sisl.physics.phonon.DOS" title="sisl.physics.phonon.DOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOS</span></code></a>(E, hw[, distribution])</p></td>
 <td><p>Calculate the density of modes (DOS) for a set of energies, <em class="xref py py-obj">E</em>, with a distribution function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.PDOS.html#sisl.physics.phonon.PDOS" title="sisl.physics.phonon.PDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDOS</span></code></a>(E, mode, hw[, distribution])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.PDOS.html#sisl.physics.phonon.PDOS" title="sisl.physics.phonon.PDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDOS</span></code></a>(E, mode, hw[, distribution])</p></td>
 <td><p>Calculate the projected density of modes (PDOS) onto each each atom and direction for a set of energies, <em class="xref py py-obj">E</em>, with a distribution function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.velocity.html#sisl.physics.phonon.velocity" title="sisl.physics.phonon.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>(mode, hw, dDk[, degenerate, project])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.velocity.html#sisl.physics.phonon.velocity" title="sisl.physics.phonon.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>(mode, hw, dDk[, degenerate, project])</p></td>
 <td><p>Calculate the velocity of a set of modes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.displacement.html#sisl.physics.phonon.displacement" title="sisl.physics.phonon.displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">displacement</span></code></a>(mode, hw, mass)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.displacement.html#sisl.physics.phonon.displacement" title="sisl.physics.phonon.displacement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">displacement</span></code></a>(mode, hw, mass)</p></td>
 <td><p>Calculate real-space displacements for a given mode (in units of the characteristic length)</p></td>
 </tr>
 </tbody>
@@ -273,22 +273,22 @@ using automatic arguments.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.CoefficientPhonon.html#sisl.physics.phonon.CoefficientPhonon" title="sisl.physics.phonon.CoefficientPhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CoefficientPhonon</span></code></a>(c[, parent])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.CoefficientPhonon.html#sisl.physics.phonon.CoefficientPhonon" title="sisl.physics.phonon.CoefficientPhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CoefficientPhonon</span></code></a>(c[, parent])</p></td>
 <td><p>Coefficients describing some physical quantity related to phonons</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.ModePhonon.html#sisl.physics.phonon.ModePhonon" title="sisl.physics.phonon.ModePhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModePhonon</span></code></a>(state[, parent])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.ModePhonon.html#sisl.physics.phonon.ModePhonon" title="sisl.physics.phonon.ModePhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModePhonon</span></code></a>(state[, parent])</p></td>
 <td><p>A mode describing a physical quantity related to phonons</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.ModeCPhonon.html#sisl.physics.phonon.ModeCPhonon" title="sisl.physics.phonon.ModeCPhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModeCPhonon</span></code></a>(state, c[, parent])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.ModeCPhonon.html#sisl.physics.phonon.ModeCPhonon" title="sisl.physics.phonon.ModeCPhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModeCPhonon</span></code></a>(state, c[, parent])</p></td>
 <td><p>A mode describing a physical quantity related to phonons, with associated coefficients of the mode</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.phonon.EigenvaluePhonon" title="sisl.physics.phonon.EigenvaluePhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EigenvaluePhonon</span></code></a>(c[, parent])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.EigenvaluePhonon.html#sisl.physics.phonon.EigenvaluePhonon" title="sisl.physics.phonon.EigenvaluePhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EigenvaluePhonon</span></code></a>(c[, parent])</p></td>
 <td><p>Eigenvalues of phonon modes, no eigenmodes retained</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.EigenvectorPhonon.html#sisl.physics.phonon.EigenvectorPhonon" title="sisl.physics.phonon.EigenvectorPhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EigenvectorPhonon</span></code></a>(state[, parent])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.EigenvectorPhonon.html#sisl.physics.phonon.EigenvectorPhonon" title="sisl.physics.phonon.EigenvectorPhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EigenvectorPhonon</span></code></a>(state[, parent])</p></td>
 <td><p>Eigenvectors of phonon modes, no eigenvalues retained</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api-generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon" title="sisl.physics.phonon.EigenmodePhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EigenmodePhonon</span></code></a>(state, c[, parent])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.physics.phonon.EigenmodePhonon.html#sisl.physics.phonon.EigenmodePhonon" title="sisl.physics.phonon.EigenmodePhonon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EigenmodePhonon</span></code></a>(state, c[, parent])</p></td>
 <td><p>Eigenmodes of phonons with eigenvectors and eigenvalues.</p></td>
 </tr>
 </tbody>
@@ -302,8 +302,8 @@ using automatic arguments.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="api-generated/sisl.physics.phonon.DOS.html" class="btn btn-neutral float-right" title="DOS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="api-generated/sisl.physics.electron.EigenstateElectron.html" class="btn btn-neutral float-left" title="EigenstateElectron" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generated/sisl.physics.phonon.DOS.html" class="btn btn-neutral float-right" title="DOS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/sisl.physics.electron.EigenstateElectron.html" class="btn btn-neutral float-left" title="sisl.physics.electron.EigenstateElectron" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

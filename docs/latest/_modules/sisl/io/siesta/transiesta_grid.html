@@ -218,7 +218,7 @@
 <span class="sd">    Grid.topyamg : intrinsic grid conversion to the Poisson equation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="tsvncSileSiesta.read_grid"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.siesta.tsvncSileSiesta.html#sisl.io.siesta.tsvncSileSiesta.read_grid">[docs]</a>    <span class="k">def</span> <span class="nf">read_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="tsvncSileSiesta.read_grid"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.tsvncSileSiesta.html#sisl.io.siesta.tsvncSileSiesta.read_grid">[docs]</a>    <span class="k">def</span> <span class="nf">read_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reads the TranSiesta potential input grid &quot;&quot;&quot;</span>
         <span class="n">sc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_supercell</span><span class="p">()</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -238,7 +238,7 @@
         <span class="c1"># looping direction, hence x,y,z == 0,1,2</span>
         <span class="k">return</span> <span class="n">grid</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="tsvncSileSiesta.write_grid"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.siesta.tsvncSileSiesta.html#sisl.io.siesta.tsvncSileSiesta.write_grid">[docs]</a>    <span class="k">def</span> <span class="nf">write_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
+<div class="viewcode-block" id="tsvncSileSiesta.write_grid"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.tsvncSileSiesta.html#sisl.io.siesta.tsvncSileSiesta.write_grid">[docs]</a>    <span class="k">def</span> <span class="nf">write_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write the Poisson solution to the TSV.nc file &quot;&quot;&quot;</span>
         <span class="n">sile_raise_write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 

@@ -256,13 +256,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">):</span>
+<div class="viewcode-block" id="Coefficient.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The string representation of this object &quot;&quot;&quot;</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__name</span><span class="si">}</span><span class="se">{{</span><span class="s2">coefficients: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">, kind: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dkind</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="se">{{</span><span class="s2">coefficients: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">, kind: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dkind</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;}}&#39;</span>
         <span class="k">else</span><span class="p">:</span>
@@ -288,13 +288,13 @@
         <span class="sd">&quot;&quot;&quot; Returns the shape of the coefficients &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">shape</span>
 
-<div class="viewcode-block" id="Coefficient.copy"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Coefficient.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a copy (only the coefficients are copied). ``parent`` and ``info`` are passed by reference &quot;&quot;&quot;</span>
         <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
         <span class="n">copy</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">copy</span></div>
 
-<div class="viewcode-block" id="Coefficient.degenerate"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.degenerate">[docs]</a>    <span class="k">def</span> <span class="nf">degenerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+<div class="viewcode-block" id="Coefficient.degenerate"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.degenerate">[docs]</a>    <span class="k">def</span> <span class="nf">degenerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find degenerate coefficients with a specified precision</span>
 
 <span class="sd">        Parameters</span>
@@ -324,7 +324,7 @@
             <span class="n">deg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_append</span><span class="p">(</span><span class="n">sidx</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">sidx</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">deg</span></div>
 
-<div class="viewcode-block" id="Coefficient.sub"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<div class="viewcode-block" id="Coefficient.sub"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a new coefficient with only the specified coefficients</span>
 
 <span class="sd">        Parameters</span>
@@ -357,7 +357,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Coefficient.iter"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asarray</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Coefficient.iter"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Coefficient.html#sisl.physics.Coefficient.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asarray</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; An iterator looping over the coefficients in this system</span>
 
 <span class="sd">        Parameters</span>
@@ -412,14 +412,14 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;state&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">):</span>
+<div class="viewcode-block" id="State.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Define a state container with a given set of states &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The string representation of this object &quot;&quot;&quot;</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">__name</span><span class="si">}</span><span class="se">{{</span><span class="s2">states: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">, kind: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dkind</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="se">{{</span><span class="s2">states: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2">, kind: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dkind</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">s</span> <span class="o">+=</span> <span class="s1">&#39;}&#39;</span>
         <span class="k">else</span><span class="p">:</span>
@@ -445,13 +445,13 @@
         <span class="sd">&quot;&quot;&quot; Returns the shape of the state &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">shape</span>
 
-<div class="viewcode-block" id="State.copy"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="State.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a copy (only the state is copied). ``parent`` and ``info`` are passed by reference &quot;&quot;&quot;</span>
         <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
         <span class="n">copy</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">copy</span></div>
 
-<div class="viewcode-block" id="State.sub"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<div class="viewcode-block" id="State.sub"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a new state with only the specified states</span>
 
 <span class="sd">        Parameters</span>
@@ -484,7 +484,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-<div class="viewcode-block" id="State.iter"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asarray</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="State.iter"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.iter">[docs]</a>    <span class="k">def</span> <span class="nf">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">asarray</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; An iterator looping over the states in this system</span>
 
 <span class="sd">        Parameters</span>
@@ -509,7 +509,7 @@
 
     <span class="fm">__iter__</span> <span class="o">=</span> <span class="nb">iter</span>
 
-<div class="viewcode-block" id="State.norm"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="State.norm"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.norm">[docs]</a>    <span class="k">def</span> <span class="nf">norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return a vector with the Euclidean norm of each state :math:`\sqrt{\langle\psi|\psi\rangle}`</span>
 
 <span class="sd">        Returns</span>
@@ -519,7 +519,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm2</span><span class="p">()</span> <span class="o">**</span> <span class="mf">0.5</span></div>
 
-<div class="viewcode-block" id="State.norm2"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.norm2">[docs]</a>    <span class="k">def</span> <span class="nf">norm2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="State.norm2"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.norm2">[docs]</a>    <span class="k">def</span> <span class="nf">norm2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return a vector with the norm of each state :math:`\langle\psi|\psi\rangle`</span>
 
 <span class="sd">        Parameters</span>
@@ -537,7 +537,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span></div>
 
-<div class="viewcode-block" id="State.normalize"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="State.normalize"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return a normalized state where each state has :math:`|\psi|^2=1`</span>
 
 <span class="sd">        This is roughly equivalent to:</span>
@@ -560,7 +560,7 @@
         <span class="n">s</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
-<div class="viewcode-block" id="State.outer"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.outer">[docs]</a>    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="State.outer"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.outer">[docs]</a>    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return the outer product by :math:`\sum_i|\psi_i\rangle\langle\psi&#39;_i|`</span>
 
 <span class="sd">        Parameters</span>
@@ -589,7 +589,7 @@
             <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">align_phase</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ki,kj-&gt;ij&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="State.inner"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="State.inner"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return the inner product as :math:`\mathbf M_{ij} = \langle\psi_i|\psi&#39;_j\rangle`</span>
 
 <span class="sd">        Parameters</span>
@@ -634,7 +634,7 @@
             <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,ij-&gt;i&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span> <span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="State.phase"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.phase">[docs]</a>    <span class="k">def</span> <span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="State.phase"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.phase">[docs]</a>    <span class="k">def</span> <span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the Euler angle (phase) for the elements of the state, in the range :math:`]-\pi;\pi]`</span>
 
 <span class="sd">        Parameters</span>
@@ -654,7 +654,7 @@
             <span class="k">return</span> <span class="n">_phase</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.phase only accepts method in [max, all]&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="State.align_phase"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.align_phase">[docs]</a>    <span class="k">def</span> <span class="nf">align_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="State.align_phase"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.align_phase">[docs]</a>    <span class="k">def</span> <span class="nf">align_phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Align `other.state` with the phases for this state, a copy of `other` is returned with rotated elements</span>
 
 <span class="sd">        States will be rotated by :math:`\pi` provided the phase difference between the states are above :math:`|\Delta\theta| &gt; \pi/2`.</span>
@@ -687,7 +687,7 @@
         <span class="n">out</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="k">return</span> <span class="n">out</span></div>
 
-<div class="viewcode-block" id="State.align_norm"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.align_norm">[docs]</a>    <span class="k">def</span> <span class="nf">align_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">ret_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="State.align_norm"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.align_norm">[docs]</a>    <span class="k">def</span> <span class="nf">align_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">ret_index</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Align `other.state` with the site-norms for this state, a copy of `other` is returned with re-ordered states</span>
 
 <span class="sd">        To determine the new ordering of `other` we first calculate the residual norm of the site-norms.</span>
@@ -748,7 +748,7 @@
             <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">idxr</span><span class="p">),</span> <span class="n">idxr</span>
         <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">idxr</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="State.rotate"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.State.html#sisl.physics.State.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">individual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="State.rotate"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">individual</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Rotate all states (in-place) to rotate the largest component to be along the angle `phi`</span>
 
 <span class="sd">        The states will be rotated according to:</span>
@@ -861,21 +861,21 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Define a state container with a given set of states and coefficients for the states &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="o">**</span><span class="n">info</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> could not be created with coefficients and states &quot;</span>
-                             <span class="s2">&quot;having unequal length.&quot;</span><span class="p">)</span>
+                             <span class="s2">&quot;having unequal length.&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StateC.copy"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a copy (only the coefficients and states are copied), ``parent`` and ``info`` are passed by reference &quot;&quot;&quot;</span>
         <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
         <span class="n">copy</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">copy</span></div>
 
-<div class="viewcode-block" id="StateC.normalize"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.normalize"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return a normalized state where each state has :math:`|\psi|^2=1`</span>
 
 <span class="sd">        This is roughly equivalent to:</span>
@@ -895,7 +895,7 @@
         <span class="n">s</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
-<div class="viewcode-block" id="StateC.outer"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.outer">[docs]</a>    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.outer"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.outer">[docs]</a>    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return the outer product for the indices `idx` (or all if ``None``) by :math:`\sum_i|\psi_i\rangle c_i\langle\psi_i|`</span>
 
 <span class="sd">        Parameters</span>
@@ -913,7 +913,7 @@
         <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_index</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;k,ki,kj-&gt;ij&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span></div>
 
-<div class="viewcode-block" id="StateC.sort"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.sort"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Sort and return a new `StateC` by sorting the coefficients (default to ascending)</span>
 
 <span class="sd">        Parameters</span>
@@ -927,7 +927,7 @@
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="StateC.degenerate"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.degenerate">[docs]</a>    <span class="k">def</span> <span class="nf">degenerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.degenerate"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.degenerate">[docs]</a>    <span class="k">def</span> <span class="nf">degenerate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find degenerate coefficients with a specified precision</span>
 
 <span class="sd">        Parameters</span>
@@ -957,7 +957,7 @@
             <span class="n">deg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_append</span><span class="p">(</span><span class="n">sidx</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">sidx</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">deg</span></div>
 
-<div class="viewcode-block" id="StateC.sub"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.sub"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a new state with only the specified states</span>
 
 <span class="sd">        Parameters</span>
@@ -975,12 +975,12 @@
         <span class="n">sub</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">sub</span></div>
 
-<div class="viewcode-block" id="StateC.asState"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.asState">[docs]</a>    <span class="k">def</span> <span class="nf">asState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.asState"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.asState">[docs]</a>    <span class="k">def</span> <span class="nf">asState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">State</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
         <span class="n">s</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
-<div class="viewcode-block" id="StateC.asCoefficient"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.StateC.html#sisl.physics.StateC.asCoefficient">[docs]</a>    <span class="k">def</span> <span class="nf">asCoefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="StateC.asCoefficient"><a class="viewcode-back" href="../../../api/generated/sisl.physics.StateC.html#sisl.physics.StateC.asCoefficient">[docs]</a>    <span class="k">def</span> <span class="nf">asCoefficient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">Coefficient</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
         <span class="n">c</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">c</span></div>

@@ -251,14 +251,14 @@
 <span class="sd">    &gt;&gt;&gt; bloch.unfold(M, k_unfold)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">bloch</span><span class="p">):</span>
+<div class="viewcode-block" id="Bloch.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Bloch.html#sisl.physics.Bloch.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">bloch</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create `Bloch` object &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="n">bloch</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39; requires 3 input values&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39; requires all unfoldings to be larger than 0&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s1">&#39; requires all unfoldings to be larger than 0&#39;</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return unfolded size &quot;&quot;&quot;</span>
@@ -274,7 +274,7 @@
         <span class="sd">&quot;&quot;&quot; Number of Bloch expansions along each lattice vector &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span>
 
-<div class="viewcode-block" id="Bloch.unfold_points"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.Bloch.html#sisl.physics.Bloch.unfold_points">[docs]</a>    <span class="k">def</span> <span class="nf">unfold_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<div class="viewcode-block" id="Bloch.unfold_points"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Bloch.html#sisl.physics.Bloch.unfold_points">[docs]</a>    <span class="k">def</span> <span class="nf">unfold_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return a list of k-points to be evaluated for this objects unfolding</span>
 
 <span class="sd">        The k-point `k` is with respect to the unfolded geometry.</span>
@@ -303,7 +303,7 @@
         <span class="c1"># Back-transform shape</span>
         <span class="k">return</span> <span class="n">unfold</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Bloch.__call__"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Bloch.html#sisl.physics.Bloch.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a functions return values as the Bloch unfolded equivalent according to this object</span>
 
 <span class="sd">        Calling the `Bloch` object is a shorthand for the manual use of the `Bloch.unfold_points` and `Bloch.unfold`</span>
@@ -344,9 +344,9 @@
         <span class="k">del</span> <span class="n">M0</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">K_unfold</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">K_unfold</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">bloch_unfold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span><span class="p">,</span> <span class="n">K_unfold</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bloch_unfold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_bloch</span><span class="p">,</span> <span class="n">K_unfold</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Bloch.unfold"><a class="viewcode-back" href="../../../api/api-generated/sisl.physics.Bloch.html#sisl.physics.Bloch.unfold">[docs]</a>    <span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">k_unfold</span><span class="p">):</span>
+<div class="viewcode-block" id="Bloch.unfold"><a class="viewcode-back" href="../../../api/generated/sisl.physics.Bloch.html#sisl.physics.Bloch.unfold">[docs]</a>    <span class="k">def</span> <span class="nf">unfold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">k_unfold</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Unfold the matrix list of matrices `M` into a corresponding k-point (unfolding k-points are `k_unfold`)</span>
 
 <span class="sd">        Parameters</span>

@@ -230,13 +230,15 @@
 
 <span class="c1"># Import bibtex, version string and the major, minor, micro as well</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">info</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">bibtex</span> <span class="k">as</span> <span class="n">__bibtex__</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">git_revision</span> <span class="k">as</span> <span class="n">__git_revision__</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">version</span> <span class="k">as</span> <span class="n">__version__</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">major</span> <span class="k">as</span> <span class="n">__major__</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">minor</span> <span class="k">as</span> <span class="n">__minor__</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">micro</span> <span class="k">as</span> <span class="n">__micro__</span>
-<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="n">cite</span>
+<span class="kn">from</span> <span class="nn">.info</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">bibtex</span> <span class="k">as</span> <span class="n">__bibtex__</span><span class="p">,</span>
+    <span class="n">git_revision</span> <span class="k">as</span> <span class="n">__git_revision__</span><span class="p">,</span>
+    <span class="n">version</span> <span class="k">as</span> <span class="n">__version__</span><span class="p">,</span>
+    <span class="n">major</span> <span class="k">as</span> <span class="n">__major__</span><span class="p">,</span>
+    <span class="n">minor</span> <span class="k">as</span> <span class="n">__minor__</span><span class="p">,</span>
+    <span class="n">micro</span> <span class="k">as</span> <span class="n">__micro__</span><span class="p">,</span>
+    <span class="n">cite</span>
+<span class="p">)</span>
 
 <span class="c1"># Import the Selector</span>
 <span class="kn">from</span> <span class="nn">.selector</span> <span class="kn">import</span> <span class="o">*</span>
@@ -301,9 +303,11 @@
 <span class="c1"># This will reduce the cluttering of the separate entities</span>
 <span class="c1"># that sisl is made of.</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">io</span>
-<span class="kn">from</span> <span class="nn">.io.sile</span> <span class="kn">import</span> <span class="p">(</span><span class="n">add_sile</span><span class="p">,</span> <span class="n">get_sile_class</span><span class="p">,</span> <span class="n">get_sile</span><span class="p">,</span>
-                      <span class="n">get_siles</span><span class="p">,</span> <span class="n">get_sile_rules</span><span class="p">,</span> <span class="n">SileError</span><span class="p">,</span>
-                      <span class="n">BaseSile</span><span class="p">,</span> <span class="n">Sile</span><span class="p">,</span> <span class="n">SileCDF</span><span class="p">,</span> <span class="n">SileBin</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.io.sile</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">add_sile</span><span class="p">,</span> <span class="n">get_sile_class</span><span class="p">,</span> <span class="n">get_sile</span><span class="p">,</span>
+    <span class="n">get_siles</span><span class="p">,</span> <span class="n">get_sile_rules</span><span class="p">,</span> <span class="n">SileError</span><span class="p">,</span>
+    <span class="n">BaseSile</span><span class="p">,</span> <span class="n">Sile</span><span class="p">,</span> <span class="n">SileCDF</span><span class="p">,</span> <span class="n">SileBin</span>
+<span class="p">)</span>
 
 <span class="c1"># Allow geometry to register siles</span>
 <span class="c1"># Ensure BaseSile works as a str</span>

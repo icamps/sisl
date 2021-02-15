@@ -258,13 +258,13 @@
         <span class="sd">&quot;&quot;&quot; Setup the `tableSile` after initialization &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_comment</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="tableSile.write_data"><a class="viewcode-back" href="../../../api/io/api-generated/sisl.io.tableSile.html#sisl.io.tableSile.write_data">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
+<div class="viewcode-block" id="tableSile.write_data"><a class="viewcode-back" href="../../../api/io/generated/sisl.io.tableSile.html#sisl.io.tableSile.write_data">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">write_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Write tabular data to the file with optional header.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        *args : array_like or list of array_like</span>
+<span class="sd">        args : array_like or list of array_like</span>
 <span class="sd">            the different columns in the tabular data.</span>
 <span class="sd">            This may either be several 1D data, or 2D arrays.</span>
 <span class="sd">            Internally the data is stacked via `numpy.vstack` and for</span>
@@ -276,9 +276,9 @@
 <span class="sd">            The formatting string (for all columns), defaults to ``fmt * len(args)``.</span>
 <span class="sd">            `fmts` has precedence over `fmt`.</span>
 <span class="sd">        newline : str, optional</span>
-<span class="sd">            Defaults to ``\n``.</span>
+<span class="sd">            Defaults to ``\\n``.</span>
 <span class="sd">        delimiter : str, optional</span>
-<span class="sd">            Defaults to ``\t``.</span>
+<span class="sd">            Defaults to ``\\t``.</span>
 <span class="sd">        comment : str or list of str, optional</span>
 <span class="sd">            A pre-header text at the top of the file.</span>
 <span class="sd">            This comment is automatically prepended a ``#`` at the</span>
@@ -388,7 +388,7 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">footer</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="n">newline</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">footer</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="tableSile.read_data"><a class="viewcode-back" href="../../../api/io/api-generated/sisl.io.tableSile.html#sisl.io.tableSile.read_data">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
+<div class="viewcode-block" id="tableSile.read_data"><a class="viewcode-back" href="../../../api/io/generated/sisl.io.tableSile.html#sisl.io.tableSile.read_data">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read tabular data from the file.</span>
 

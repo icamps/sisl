@@ -220,11 +220,11 @@
 <span class="sd">    Data file containing the PDOS as calculated by Siesta.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="pdosSileSiesta.read_geometry"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.siesta.pdosSileSiesta.html#sisl.io.siesta.pdosSileSiesta.read_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">read_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="pdosSileSiesta.read_geometry"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.pdosSileSiesta.html#sisl.io.siesta.pdosSileSiesta.read_geometry">[docs]</a>    <span class="k">def</span> <span class="nf">read_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read the geometry with coordinates and correct orbital counts &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_data</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="pdosSileSiesta.read_data"><a class="viewcode-back" href="../../../../api/io/api-generated/sisl.io.siesta.pdosSileSiesta.html#sisl.io.siesta.pdosSileSiesta.read_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_dataarray</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="pdosSileSiesta.read_data"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.pdosSileSiesta.html#sisl.io.siesta.pdosSileSiesta.read_data">[docs]</a>    <span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">as_dataarray</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Returns data associated with the PDOS file</span>
 
 <span class="sd">        For spin-polarized calculations the returned values are up/down, orbitals, energy.</span>
@@ -308,11 +308,10 @@
                 <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">process</span><span class="p">(</span><span class="n">DOS</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span>
                                     <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;PDOS&#39;</span><span class="p">)</span>
 
-            <span class="n">D</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">([])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">def</span> <span class="nf">to</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">DOS</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">process</span><span class="p">(</span><span class="n">DOS</span><span class="p">)</span>
-            <span class="n">D</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s1">&#39;orbital&#39;</span><span class="p">):</span>
 
@@ -356,18 +355,17 @@
             <span class="c1"># it is formed like : spin-1, spin-2 (however already in eV)</span>
             <span class="n">DOS</span> <span class="o">=</span> <span class="n">arrayd</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nspin</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">as_dataarray</span><span class="p">:</span>
-                <span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">combine_first</span><span class="p">(</span><span class="n">to</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">DOS</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">D</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">process</span><span class="p">(</span><span class="n">DOS</span><span class="p">))</span>
+            <span class="n">D</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to</span><span class="p">(</span><span class="n">O</span><span class="p">,</span> <span class="n">DOS</span><span class="p">))</span>
 
         <span class="c1"># Now we need to parse the data</span>
         <span class="c1"># First reduce the atom</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="p">[[</span><span class="n">o</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">a</span> <span class="k">if</span> <span class="n">o</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">]</span>
-        <span class="n">atoms</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">([</span><span class="n">Atom</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">os</span><span class="p">)</span> <span class="k">for</span> <span class="n">Z</span><span class="p">,</span> <span class="n">os</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">atom_species</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)])</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="n">Atoms</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Atom</span><span class="p">,</span> <span class="n">atom_species</span><span class="p">,</span> <span class="n">atoms</span><span class="p">))</span>
         <span class="n">geom</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">(</span><span class="n">arrayd</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="o">*</span> <span class="n">Bohr2Ang</span><span class="p">,</span> <span class="n">atoms</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">as_dataarray</span><span class="p">:</span>
+            <span class="c1"># Create a new dimension without coordinates (orbital index)</span>
+            <span class="n">D</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="s1">&#39;orbital&#39;</span><span class="p">)</span>
             <span class="c1"># Add attributes</span>
             <span class="n">D</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">geom</span>
             <span class="n">D</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;unit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1/eV&#39;</span>

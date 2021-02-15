@@ -44,7 +44,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="BrillouinZone" href="api-generated/sisl.physics.BrillouinZone.html" />
+    <link rel="next" title="sisl.physics.BrillouinZone" href="generated/sisl.physics.BrillouinZone.html" />
     <link rel="prev" title="Physical objects" href="physics.html" /> 
 </head>
 
@@ -135,7 +135,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="unit_constant.html">Units and constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="io.html">Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io/index.html">Input/Output</a></li>
 </ul>
 </li>
 </ul>
@@ -247,9 +247,9 @@ This is best shown with an example:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bz</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">eigh</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>This will calculate eigenvalues for all k-points associated with the <a class="reference internal" href="api-generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> and
+<p>This will calculate eigenvalues for all k-points associated with the <a class="reference internal" href="generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> and
 return everything as an array. The <em class="xref py py-obj">dispatch</em> property of
-the <a class="reference internal" href="api-generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> object has several use cases (here <code class="docutils literal notranslate"><span class="pre">array</span></code> is shown).</p>
+the <a class="reference internal" href="generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> object has several use cases (here <code class="docutils literal notranslate"><span class="pre">array</span></code> is shown).</p>
 <p>This may be extremely convenient when calculating band-structures:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">bs</span> <span class="o">=</span> <span class="n">BandStructure</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="mi">100</span><span class="p">)</span>
@@ -279,7 +279,7 @@ calculating the average:</p>
 <p>This will, calculate the Monkhorst pack k-averaged DOS split into 3 Cartesian
 directions based on the eigenstates velocity direction. This method of manipulating
 the result can be extremely powerful to calculate many quantities while running an
-efficient <a class="reference internal" href="api-generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> average. The <em class="xref py py-obj">eta</em> flag will print, to stdout, a progress-bar.
+efficient <a class="reference internal" href="generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> average. The <em class="xref py py-obj">eta</em> flag will print, to stdout, a progress-bar.
 The usage of the <code class="docutils literal notranslate"><span class="pre">wrap</span></code> method are also passed optional arguments, <code class="docutils literal notranslate"><span class="pre">parent</span></code> which is
 <code class="docutils literal notranslate"><span class="pre">H</span></code> in the above example. <code class="docutils literal notranslate"><span class="pre">k</span></code> and <code class="docutils literal notranslate"><span class="pre">weight</span></code> are the current k-point and weight of the
 corresponding k-point. An example could be to manipulate the DOS depending on the k-point and
@@ -294,7 +294,7 @@ weight:</p>
 </pre></div>
 </div>
 <p>When using wrap to calculate more than one quantity per eigenstate it may be advantageous
-to use <a class="reference internal" href="api-generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a> to handle cases of <code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone.apply.average</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone.apply.sum</span></code>.</p>
+to use <a class="reference internal" href="generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a> to handle cases of <code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone.apply.average</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone.apply.sum</span></code>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mp</span> <span class="o">=</span> <span class="n">MonkhorstPack</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -308,7 +308,7 @@ to use <a class="reference internal" href="api-generated/sisl.oplist.html#sisl.o
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DOS</span><span class="p">,</span> <span class="n">PDOS</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">average</span><span class="o">.</span><span class="n">eigenstate</span><span class="p">(</span><span class="n">wrap</span><span class="o">=</span><span class="n">wrap_multiple</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Which does mathematical operations (averaging/summing) using <a class="reference internal" href="api-generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a>.</p>
+<p>Which does mathematical operations (averaging/summing) using <a class="reference internal" href="generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a>.</p>
 </div>
 <div class="section" id="parallel-calculations">
 <h2>Parallel calculations<a class="headerlink" href="#parallel-calculations" title="Permalink to this headline">¶</a></h2>
@@ -316,7 +316,7 @@ to use <a class="reference internal" href="api-generated/sisl.oplist.html#sisl.o
 To run parallel do:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mp</span> <span class="o">=</span> <span class="n">MonkhorstPack</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">par</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">renew</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">par</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">par</span><span class="o">.</span><span class="n">eigh</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -335,7 +335,7 @@ HPC environment).</p>
 <p>Alternatively one can control the number of processors locally by doing:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mp</span> <span class="o">=</span> <span class="n">MonkhorstPack</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">par</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">renew</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">as</span> <span class="n">par</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">par</span><span class="o">.</span><span class="n">eigh</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -346,7 +346,7 @@ will be used for the parallel processing.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mp</span> <span class="o">=</span> <span class="n">MonkhorstPack</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">par</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">renew</span><span class="p">(</span><span class="n">pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span> <span class="k">as</span> <span class="n">par</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">par</span><span class="o">.</span><span class="n">eigh</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -359,13 +359,13 @@ and <code class="docutils literal notranslate"><span class="pre">imap</span></co
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a>(parent[, k, weight])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a>(parent[, k, weight])</p></td>
 <td><p>A class to construct Brillouin zone related quantities</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="api-generated/sisl.physics.MonkhorstPack.html#sisl.physics.MonkhorstPack" title="sisl.physics.MonkhorstPack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MonkhorstPack</span></code></a>(parent, nkpt[, displacement, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.physics.MonkhorstPack.html#sisl.physics.MonkhorstPack" title="sisl.physics.MonkhorstPack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MonkhorstPack</span></code></a>(parent, nkpt[, displacement, …])</p></td>
 <td><p>Create a Monkhorst-Pack grid for the Brillouin zone</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="api-generated/sisl.physics.BandStructure.html#sisl.physics.BandStructure" title="sisl.physics.BandStructure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BandStructure</span></code></a>(parent, point, division[, name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.physics.BandStructure.html#sisl.physics.BandStructure" title="sisl.physics.BandStructure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BandStructure</span></code></a>(parent, point, division[, name])</p></td>
 <td><p>Create a path in the Brillouin zone for plotting band-structures etc.</p></td>
 </tr>
 </tbody>
@@ -379,7 +379,7 @@ and <code class="docutils literal notranslate"><span class="pre">imap</span></co
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="api-generated/sisl.physics.BrillouinZone.html" class="btn btn-neutral float-right" title="BrillouinZone" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generated/sisl.physics.BrillouinZone.html" class="btn btn-neutral float-right" title="sisl.physics.BrillouinZone" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="physics.html" class="btn btn-neutral float-left" title="Physical objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
