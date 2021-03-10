@@ -40,8 +40,8 @@ min_version ={
 
 viz = {
     "plotly": [
-        'dill >= 0.3.2', # for pathos and for saving plots (a lower version raises https://github.com/pfebrer96/sisl/issues/11)
-        'pathos', # for multiprocessing,
+        'dill >= 0.3.2', # see https://github.com/pfebrer/sisl/issues/11
+        'pathos',
         'plotly',
         'pandas',
         "xarray >= " + min_version["xarray"],
@@ -384,12 +384,12 @@ def cythonizer(extensions, *args, **kwargs):
 
 
 MAJOR = 0
-MINOR = 10
+MINOR = 11
 MICRO = 0
-ISRELEASED = True
-VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
-GIT_REVISION = "ed02b72d44a47c475a253874e51683ed6a6cc169"
-REVISION_YEAR = 2020
+ISRELEASED = False
+VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
+GIT_REVISION = "ad878e687045793c53d0c628c5345832beb60695"
+REVISION_YEAR = 2021
 
 
 DISTNAME = "sisl"
@@ -427,6 +427,7 @@ setuptools_kwargs = {
     "python_requires": ">= " + min_version["python"],
     "install_requires": [
         "setuptools",
+        "Cython",
         "numpy >= " + min_version["numpy"],
         "scipy",
         "netCDF4",
@@ -439,6 +440,7 @@ setuptools_kwargs = {
         # We currently use xarray for additional data-analysis
         # And tqdm for progressbars
         "analysis": [
+            # this also encompass pandas
             "xarray >= " + min_version["xarray"],
             "tqdm",
         ],

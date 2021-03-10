@@ -74,7 +74,7 @@ class AbstractDispatch(metaclass=ABCMeta):
         return attr
 
 
-class AbstractDispatcher:
+class AbstractDispatcher(metaclass=ABCMeta):
     """ A container for dispatchers
 
     This is an abstract class holding the dispatch classes (`AbstractDispatch`)
@@ -101,7 +101,7 @@ class AbstractDispatcher:
     def __str__(self):
         def toline(kv):
             k, v = kv
-            v = str(v(object())).replace("\n", "\n ")
+            v = str(v("<self>")).replace("\n", "\n ")
             if k == self._default:
                 return f"*{k} = {v}"
             return f" {k} = {v}"
@@ -123,6 +123,10 @@ class AbstractDispatcher:
         """
         self.register(key, dispatch)
 
+    def __dir__(self):
+        """ Return instances belonging to this object """
+        return list(self._dispatchs.keys()) + ["renew", "register"]
+
     def register(self, key, dispatch, default=False, overwrite=False):
         """ Register a dispatch class to this container
 
@@ -138,7 +142,7 @@ class AbstractDispatcher:
             if true and `key` already exists in the list of dispatchs, then
             it will be overwritten, otherwise a `LookupError` is raised.
         """
-        if not overwrite and key in self._dispatchs:
+        if key in self._dispatchs and not overwrite:
             raise LookupError(f"{self.__class__.__name__} already has {key} registered (and overwrite is false)")
         self._dispatchs[key] = dispatch
         if default:
@@ -385,7 +389,7 @@ class ClassDispatcher(AbstractDispatcher):
     def __init__(self, attr_name, dispatchs=None, default=None,
                  obj_getattr=None,
                  instance_dispatcher=ObjectDispatcher,
-                 type_dispatcher=TypeDispatcher,
+                 type_dispatcher=None,
                  **attrs):
         # obj_getattr is necessary for the ObjectDispatcher to create the correct
         # MethodDispatcher
@@ -411,11 +415,14 @@ class ClassDispatcher(AbstractDispatcher):
     def __get__(self, instance, owner):
         """ Class dispatcher retrieval
 
-        When directly retrieved from the class we return it-self to
-        allow interaction with the dispatcher.
+        The returned class depends on the setup of the `ClassDispatcher`.
 
-        When retrieved from an object it returns an `ObjectDispatcher`.
-        When retrieved from a class it returns an `TypeDispatcher`.
+        If called on an instance, it will return a class ``self._get.instance``
+        class object.
+
+        If called on a class (type), it will return a class ``self._get.type``.
+
+        If the returned class is None, it will return ``self``.
         """
         if instance is None:
             inst = owner
@@ -426,6 +433,8 @@ class ClassDispatcher(AbstractDispatcher):
                 inst = owner
             else:
                 inst = instance
+        if cls is None:
+            return self
         return cls(inst, self._dispatchs, default=self._default,
                    cls_attr_name=self._attr_name,
                    obj_getattr=self._obj_getattr,
