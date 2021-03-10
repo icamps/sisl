@@ -339,6 +339,7 @@
 <span class="kn">from</span> <span class="nn">sisl.messages</span> <span class="kn">import</span> <span class="n">info</span><span class="p">,</span> <span class="n">SislError</span><span class="p">,</span> <span class="n">tqdm_eta</span><span class="p">,</span> <span class="n">deprecate_method</span><span class="p">,</span> <span class="n">deprecate</span>
 <span class="kn">from</span> <span class="nn">sisl.supercell</span> <span class="kn">import</span> <span class="n">SuperCell</span>
 <span class="kn">from</span> <span class="nn">sisl.grid</span> <span class="kn">import</span> <span class="n">Grid</span>
+<span class="kn">from</span> <span class="nn">sisl._dispatcher</span> <span class="kn">import</span> <span class="n">ClassDispatcher</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">xarray</span>
@@ -348,6 +349,39 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;BrillouinZone&quot;</span><span class="p">,</span> <span class="s2">&quot;MonkhorstPack&quot;</span><span class="p">,</span> <span class="s2">&quot;BandStructure&quot;</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">BrillouinZoneDispatcher</span><span class="p">(</span><span class="n">ClassDispatcher</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Loop over all k-points by applying `parent` methods for all k.</span>
+
+<span class="sd">    This allows potential for running and collecting various computationally</span>
+<span class="sd">    heavy methods from a single point on all k-points.</span>
+
+<span class="sd">    The `apply` method will *dispatch* the parent methods through all k-points</span>
+<span class="sd">    and passing `k` as arguments to the parent methods in a straight-forward manner.</span>
+
+<span class="sd">    For instance to iterate over all eigenvalues of a Hamiltonian</span>
+
+<span class="sd">    &gt;&gt;&gt; H = Hamiltonian(...)</span>
+<span class="sd">    &gt;&gt;&gt; bz = BrillouinZone(H)</span>
+<span class="sd">    &gt;&gt;&gt; for ik, eigh in enumerate(bz.apply.eigh()):</span>
+<span class="sd">    ...    # do something with eigh which corresponds to bz.k[ik]</span>
+
+<span class="sd">    By default the `apply` method exposes a set of dispatch methods:</span>
+
+<span class="sd">    - `apply.iter`, the default iterator module</span>
+<span class="sd">    - `apply.average` reduced result by averaging (using `BrillouinZone.weight` as the weight per k-point.</span>
+<span class="sd">    - `apply.sum` reduced result without weighing</span>
+<span class="sd">    - `apply.array` return a single array with all values; has `len` equal to number of k-points</span>
+<span class="sd">    - `apply.none`, specialized method that is mainly useful when wrapping methods</span>
+<span class="sd">    - `apply.list` same as `apply.array` but using Python list as return value</span>
+<span class="sd">    - `apply.oplist` using `sisl.oplist` allows greater flexibility for mathematical operations element wise</span>
+<span class="sd">    - `apply.datarray` if `xarray` is available one can retrieve an `xarray.DataArray` instance</span>
+
+<span class="sd">    Please see :ref:`physics.brillouinzone` for further examples.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
 
 
 <span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics&quot;</span><span class="p">)</span>
@@ -400,41 +434,7 @@
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">asarray</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Loop over all k-points by applying `parent` methods for all k.</span>
-
-<span class="sd">        This allows great potential for running and collecting various computationally</span>
-<span class="sd">        heavy methods from a single point on all k-points.</span>
-
-<span class="sd">        The `apply` method will *dispatch* the parent methods through all k-points</span>
-<span class="sd">        and passing `k` as arguments to the parent methods in a straight-forward manner.</span>
-
-<span class="sd">        For instance to iterate over all eigenvalues of a Hamiltonian</span>
-
-<span class="sd">        &gt;&gt;&gt; H = Hamiltonian(...)</span>
-<span class="sd">        &gt;&gt;&gt; bz = BrillouinZone(H)</span>
-<span class="sd">        &gt;&gt;&gt; for ik, eigh in enumerate(bz.apply.eigh()):</span>
-<span class="sd">        ...    # do something with eigh which corresponds to bz.k[ik]</span>
-
-<span class="sd">        By default the `apply` method exposes a set of dispatch methods:</span>
-
-<span class="sd">        - `apply.iter`, the default iterator module</span>
-<span class="sd">        - `apply.average` reduced result by averaging (using `BrillouinZone.weight`</span>
-<span class="sd">           as the weight per k-point.</span>
-<span class="sd">        - `apply.sum` reduced result without weighing</span>
-<span class="sd">        - `apply.array` return a single array with all values; has `len` equal to</span>
-<span class="sd">           number of k-points</span>
-<span class="sd">        - `apply.none`, specialized method that is mainly useful when wrapping</span>
-<span class="sd">           methods</span>
-<span class="sd">        - `apply.list` same as `apply.array` but using Python list as return value</span>
-<span class="sd">        - `apply.oplist` using `sisl.oplist` allows greater flexibility for mathematical</span>
-<span class="sd">           operations element wise</span>
-<span class="sd">        - `apply.datarray` if `xarray` is available one can retrieve an `xarray.DataArray`</span>
-<span class="sd">           instance</span>
-
-<span class="sd">        Please see `sisl.physics.brillouinzone` for further examples.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span>
+    <span class="n">apply</span> <span class="o">=</span> <span class="n">BrillouinZoneDispatcher</span><span class="p">(</span><span class="s2">&quot;apply&quot;</span><span class="p">,</span> <span class="n">obj_getattr</span><span class="o">=</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
 
 <div class="viewcode-block" id="BrillouinZone.set_parent"><a class="viewcode-back" href="../../../api/generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone.set_parent">[docs]</a>    <span class="k">def</span> <span class="nf">set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Update the parent associated to this object</span>
@@ -605,9 +605,17 @@
 
         <span class="k">return</span> <span class="n">BrillouinZone</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="BrillouinZone.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a copy of this object &quot;&quot;&quot;</span>
-        <span class="n">bz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
+<div class="viewcode-block" id="BrillouinZone.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object, optionally changing the parent</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent : optional</span>
+<span class="sd">           change the parent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+        <span class="n">bz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">)</span>
         <span class="n">bz</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">bz</span><span class="o">.</span><span class="n">_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">bz</span></div>
@@ -745,8 +753,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Please use ``self.apply.array`` instead. This method will be deprecated</span>
-<span class="sd">        &gt;0.9.9.</span>
+<span class="sd">        This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">        Please use ``self.apply.array`` instead.</span>
 
 <span class="sd">        All invocations of sub-methods are added these keyword-only arguments:</span>
 
@@ -827,8 +835,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Please use ``self.apply.none`` instead. This method will be deprecated</span>
-<span class="sd">        &gt;0.9.9.</span>
+<span class="sd">        This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">        Please use ``self.apply.none`` instead.</span>
 
 <span class="sd">        All invocations of sub-methods are added these keyword-only arguments:</span>
 
@@ -876,8 +884,8 @@
 
 <span class="sd">            Notes</span>
 <span class="sd">            -----</span>
-<span class="sd">            Please use ``self.apply.dataarray`` instead. This method will be deprecated</span>
-<span class="sd">            &gt;0.9.9.</span>
+<span class="sd">            This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">            Please use ``self.apply.dataarray`` instead.</span>
 
 <span class="sd">            If you wrap the sub-method to return multiple data-sets, you should use `asdataset`</span>
 <span class="sd">            instead which returns a combination of data-arrays (so-called `xarray.Dataset`).</span>
@@ -973,8 +981,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Please use ``self.apply.list`` instead. This method will be deprecated</span>
-<span class="sd">        &gt;0.9.9.</span>
+<span class="sd">        This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">        Please use ``self.apply.list`` instead.</span>
 
 <span class="sd">        All invocations of sub-methods are added these keyword-only arguments:</span>
 
@@ -1033,8 +1041,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Please use ``self.apply.iter`` instead. This method will be deprecated</span>
-<span class="sd">        &gt;0.9.9.</span>
+<span class="sd">        This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">        Please use ``self.apply.iter`` instead.</span>
 
 <span class="sd">        All invocations of sub-methods are added these keyword-only arguments:</span>
 
@@ -1088,8 +1096,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Please use ``self.apply.average`` instead. This method will be deprecated</span>
-<span class="sd">        &gt;0.9.9.</span>
+<span class="sd">        This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">        Please use ``self.apply.average`` instead.</span>
 
 <span class="sd">        All invocations of sub-methods are added these keyword-only arguments:</span>
 
@@ -1160,8 +1168,8 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        Please use ``self.apply.sum`` instead. This method will be deprecated</span>
-<span class="sd">        &gt;0.9.9.</span>
+<span class="sd">        This method will be deprecated &gt;0.9.9.</span>
+<span class="sd">        Please use ``self.apply.sum`` instead.</span>
 
 <span class="sd">        All invocations of sub-methods are added these keyword-only arguments:</span>
 
@@ -1495,9 +1503,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_centered</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;centered&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_trs</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;trs&#39;</span><span class="p">]</span>
 
-<div class="viewcode-block" id="MonkhorstPack.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.MonkhorstPack.html#sisl.physics.MonkhorstPack.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a copy of this object &quot;&quot;&quot;</span>
-        <span class="n">bz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_diag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_displ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_centered</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trs</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+<div class="viewcode-block" id="MonkhorstPack.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.MonkhorstPack.html#sisl.physics.MonkhorstPack.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object, optionally changing the parent</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent : optional</span>
+<span class="sd">           change the parent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+        <span class="n">bz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_diag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_displ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_centered</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trs</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">bz</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="n">bz</span><span class="o">.</span><span class="n">_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">bz</span></div>
@@ -1926,8 +1942,7 @@
 
             <span class="n">division</span> <span class="o">=</span> <span class="n">div</span><span class="p">[:]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">division</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="n">division</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">division</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">division</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="n">division</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;ABCDEFGHIJKLMNOPQRSTUVXYZ&#39;</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">)]</span>
@@ -1936,6 +1951,19 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_k</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayd</span><span class="p">([</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_w</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">fulld</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">),</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="BandStructure.copy"><a class="viewcode-back" href="../../../api/generated/sisl.physics.BandStructure.html#sisl.physics.BandStructure.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object, optionally changing the parent</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent : optional</span>
+<span class="sd">           change the parent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+        <span class="n">bz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">point</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">division</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bz</span></div>
 
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return dictionary with the current state &quot;&quot;&quot;</span>

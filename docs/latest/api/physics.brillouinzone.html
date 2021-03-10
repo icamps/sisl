@@ -294,7 +294,7 @@ weight:</p>
 </pre></div>
 </div>
 <p>When using wrap to calculate more than one quantity per eigenstate it may be advantageous
-to use <a class="reference internal" href="generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a> to handle cases of <code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone.apply.average</span></code> and <code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone.apply.sum</span></code>.</p>
+to use <code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code> to handle cases of <em class="xref py py-obj">BrillouinZone.apply.average</em> and <em class="xref py py-obj">BrillouinZone.apply.sum</em>.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">H</span> <span class="o">=</span> <span class="n">Hamiltonian</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">mp</span> <span class="o">=</span> <span class="n">MonkhorstPack</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -308,7 +308,23 @@ to use <a class="reference internal" href="generated/sisl.oplist.html#sisl.oplis
 <span class="gp">&gt;&gt;&gt; </span><span class="n">DOS</span><span class="p">,</span> <span class="n">PDOS</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">average</span><span class="o">.</span><span class="n">eigenstate</span><span class="p">(</span><span class="n">wrap</span><span class="o">=</span><span class="n">wrap_multiple</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Which does mathematical operations (averaging/summing) using <a class="reference internal" href="generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a>.</p>
+<p>Which does mathematical operations (averaging/summing) using <code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code>.</p>
+<p>In some cases quantities are needed for all <span class="math notranslate nohighlight">\(k\)</span> points and in such cases
+it may not always be that the returned quantities are commensurate.
+Lets re-use the previous <code class="docutils literal notranslate"><span class="pre">wrap_multiple</span></code> function and try and return the
+full quantity:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DOS_PDOS_v</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">eigenstate</span><span class="p">(</span><span class="n">wrap</span><span class="o">=</span><span class="n">wrap_multiple</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will raise an error since <code class="docutils literal notranslate"><span class="pre">wrap_multiple</span></code> returns an <em class="xref py py-obj">oplist</em> (same as a <em class="xref py py-obj">list</em>)
+and thus is unable to convert this into an equivalent <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>. Additionally
+this can not be merged together in a single <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> since the shapes of the returned
+quantities are not commensurate. One cannot concatenate the 3 different quantities.</p>
+<p>To accomblish this one may use an <code class="docutils literal notranslate"><span class="pre">unzip</span></code> flag:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">DOS</span><span class="p">,</span> <span class="n">PDOS</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">renew</span><span class="p">(</span><span class="n">unzip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">eigenstate</span><span class="p">(</span><span class="n">wrap</span><span class="o">=</span><span class="n">wrap_multiple</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and the data is unpacked as wanted.</p>
 </div>
 <div class="section" id="parallel-calculations">
 <h2>Parallel calculations<a class="headerlink" href="#parallel-calculations" title="Permalink to this headline">¶</a></h2>

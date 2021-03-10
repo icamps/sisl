@@ -132,11 +132,15 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#advanced-classes">Advanced classes</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="generated/sisl.oplist.html">sisl.oplist</a></li>
 <li class="toctree-l4"><a class="reference internal" href="generated/sisl.Quaternion.html">sisl.Quaternion</a></li>
 <li class="toctree-l4"><a class="reference internal" href="generated/sisl.SparseCSR.html">sisl.SparseCSR</a></li>
 <li class="toctree-l4"><a class="reference internal" href="generated/sisl.SparseAtom.html">sisl.SparseAtom</a></li>
 <li class="toctree-l4"><a class="reference internal" href="generated/sisl.SparseOrbital.html">sisl.SparseOrbital</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utility-classes">Utility classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="generated/sisl.oplist.oplist.html">sisl.oplist.oplist</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generated/sisl.utils.PropertyDict.html">sisl.utils.PropertyDict</a></li>
 </ul>
 </li>
 </ul>
@@ -295,20 +299,38 @@ in <a class="reference internal" href="physics.matrix.html#physics-matrix"><span
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.oplist.html#sisl.oplist" title="sisl.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a>([iterable])</p></td>
-<td><p>list with element-wise operations</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.Quaternion.html#sisl.Quaternion" title="sisl.Quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Quaternion</span></code></a>([angle, v, rad])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.Quaternion.html#sisl.Quaternion" title="sisl.Quaternion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Quaternion</span></code></a>([angle, v, rad])</p></td>
 <td><p>Quaternion object to enable easy rotational quantities.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.SparseCSR.html#sisl.SparseCSR" title="sisl.SparseCSR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SparseCSR</span></code></a>(arg1[, dim, dtype, nnzpr, nnz])</p></td>
-<td><p>A compressed sparse row matrix, slightly different than <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.SparseCSR.html#sisl.SparseCSR" title="sisl.SparseCSR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SparseCSR</span></code></a>(arg1[, dim, dtype, nnzpr, nnz])</p></td>
+<td><p>A compressed sparse row matrix, slightly different than <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.SparseAtom.html#sisl.SparseAtom" title="sisl.SparseAtom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SparseAtom</span></code></a>(geometry[, dim, dtype, nnzpr])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.SparseAtom.html#sisl.SparseAtom" title="sisl.SparseAtom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SparseAtom</span></code></a>(geometry[, dim, dtype, nnzpr])</p></td>
 <td><p>Sparse object with number of rows equal to the total number of atoms in the <a class="reference internal" href="generated/sisl.Geometry.html#sisl.Geometry" title="sisl.Geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Geometry</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.SparseOrbital.html#sisl.SparseOrbital" title="sisl.SparseOrbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SparseOrbital</span></code></a>(geometry[, dim, dtype, nnzpr])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.SparseOrbital.html#sisl.SparseOrbital" title="sisl.SparseOrbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SparseOrbital</span></code></a>(geometry[, dim, dtype, nnzpr])</p></td>
 <td><p>Sparse object with number of rows equal to the total number of orbitals in the <a class="reference internal" href="generated/sisl.Geometry.html#sisl.Geometry" title="sisl.Geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Geometry</span></code></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="utility-classes">
+<h2>Utility classes<a class="headerlink" href="#utility-classes" title="Permalink to this headline">¶</a></h2>
+<p>A set of classes are utility classes that are used throughout the <a class="reference internal" href="index.html#module-sisl" title="sisl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sisl</span></code></a> code
+and using them will be encouraged in combination with sisl.</p>
+<p>In particular <code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code> is useful when calculating averages in Brillouin zones (see
+<span class="xref std std-ref">physics.brillouin</span>).</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sisl.oplist.oplist.html#sisl.oplist.oplist" title="sisl.oplist.oplist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oplist</span></code></a>([iterable])</p></td>
+<td><p>list with element-wise operations</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sisl.utils.PropertyDict.html#sisl.utils.PropertyDict" title="sisl.utils.PropertyDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PropertyDict</span></code></a></p></td>
+<td><p>Simple dictionary which may access items as properties as well</p></td>
 </tr>
 </tbody>
 </table>

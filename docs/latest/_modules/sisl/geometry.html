@@ -334,11 +334,13 @@
     <span class="c1"># new Geometries</span>
     <span class="c1">#  Geometry.new(&quot;run.fdf&quot;) will invoke Geometry.read(&quot;run.fdf&quot;)</span>
     <span class="n">new</span> <span class="o">=</span> <span class="n">ClassDispatcher</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">,</span>
+                          <span class="n">instance_dispatcher</span><span class="o">=</span><span class="n">TypeDispatcher</span><span class="p">,</span>
                           <span class="n">obj_getattr</span><span class="o">=</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span>
                           <span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">())</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span>
                               <span class="ne">AttributeError</span><span class="p">((</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">.new does not implement &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
                                               <span class="sa">f</span><span class="s2">&quot;dispatcher, are you using it incorrectly?&quot;</span><span class="p">))</span>
-                          <span class="p">),</span> <span class="n">instance_dispatcher</span><span class="o">=</span><span class="n">TypeDispatcher</span><span class="p">)</span>
+                          <span class="p">),</span>
+    <span class="p">)</span>
 
     <span class="c1"># Define a dispatcher for converting Geometries</span>
     <span class="c1">#  Geometry().to.ase() will convert to an ase.Atoms object</span>

@@ -1717,8 +1717,9 @@
 <span class="sd">        &gt;&gt;&gt; # all other orbitals are retained</span>
 <span class="sd">        &gt;&gt;&gt; obj.remove_orbital(1, 1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get specie index of the atom</span>
+        <span class="c1"># Get specie index of the atom (convert to list of indices)</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
         <span class="c1"># Figure out if all atoms have the same species</span>
         <span class="n">specie</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">specie</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span>
         <span class="n">uniq_specie</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">unique</span><span class="p">(</span><span class="n">specie</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -1728,18 +1729,21 @@
             <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">uniq_specie</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># now determine whether it is the whole atom</span>
+                <span class="c1"># or only part of the geometry</span>
                 <span class="n">new</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">remove_orbital</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">orbitals</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">new</span>
 
         <span class="c1"># Get the atom object we wish to reduce</span>
         <span class="c1"># We know np.all(geom.atoms[atom] == old_atom)</span>
         <span class="n">old_atom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-
         <span class="c1"># Retrieve index of orbital</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbitals</span><span class="p">,</span> <span class="n">Orbital</span><span class="p">):</span>
             <span class="n">orbitals</span> <span class="o">=</span> <span class="n">old_atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span>
         <span class="c1"># Create the reverse index-table to delete those not required</span>
         <span class="n">orbitals</span> <span class="o">=</span> <span class="n">delete</span><span class="p">(</span><span class="n">_a</span><span class="o">.</span><span class="n">arangei</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">old_atom</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+
+        <span class="c1"># now call sub_orbital</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.sub"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
@@ -1807,13 +1811,6 @@
 <span class="sd">        &gt;&gt;&gt; # all other orbitals are retained</span>
 <span class="sd">        &gt;&gt;&gt; obj.sub_orbital(1, 1)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Get specie index of the atom</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Atom</span><span class="p">):</span>
-                <span class="n">spg</span> <span class="o">=</span> <span class="bp">self</span>
-                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">:</span>
-                    <span class="n">spg</span> <span class="o">=</span> <span class="n">spg</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">spg</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
         <span class="c1"># Figure out if all atoms have the same species</span>
@@ -1825,6 +1822,8 @@
             <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">uniq_specie</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">indices</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># now determine whether it is the whole atom</span>
+                <span class="c1"># or only part of the geometry</span>
                 <span class="n">new</span> <span class="o">=</span> <span class="n">new</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">orbitals</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">new</span>
 
@@ -1833,22 +1832,43 @@
 
         <span class="c1"># Get the atom object we wish to reduce</span>
         <span class="n">old_atom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">old_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">old_atom</span><span class="p">)</span>
+        <span class="n">old_atom_count</span> <span class="o">=</span> <span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">specie</span> <span class="o">==</span> <span class="n">old_atom_specie</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
         <span class="c1"># Retrieve index of orbital</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">orbitals</span><span class="p">,</span> <span class="n">Orbital</span><span class="p">):</span>
             <span class="n">orbitals</span> <span class="o">=</span> <span class="n">old_atom</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span>
         <span class="n">orbitals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;trying to retain 0 orbitals on a given atom. This is not allowed!&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.sub_orbital trying to retain 0 orbitals on a given atom. This is not allowed!&quot;</span><span class="p">)</span>
 
+        <span class="c1"># create the new atom</span>
         <span class="n">new_atom</span> <span class="o">=</span> <span class="n">old_atom</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span>
         <span class="c1"># Rename the new-atom to &lt;&gt;_1_2 for orbital == [1, 2]</span>
         <span class="n">new_atom</span><span class="o">.</span><span class="n">_tag</span> <span class="o">+=</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">))</span>
 
-        <span class="c1"># We catch the warning about reducing the number of orbitals!</span>
-        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-            <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">replace_atom</span><span class="p">(</span><span class="n">old_atom</span><span class="p">,</span> <span class="n">new_atom</span><span class="p">)</span>
+        <span class="c1"># There are now 2 cases.</span>
+        <span class="c1">#  1. we replace all atoms of a given specie</span>
+        <span class="c1">#  2. we replace a subset of atoms of a given specie</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="n">old_atom_count</span><span class="p">:</span>
+            <span class="n">new_atom_specie</span> <span class="o">=</span> <span class="n">old_atom_specie</span>
+            <span class="c1"># We catch the warning about reducing the number of orbitals!</span>
+            <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+                <span class="c1"># this is in-place operation and we don&#39;t need to worry about</span>
+                <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">replace_atom</span><span class="p">(</span><span class="n">old_atom</span><span class="p">,</span> <span class="n">new_atom</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># we have to add the new one (in case it does not exist)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">new_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">new_atom</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">new_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">nspecie</span>
+                <span class="c1"># the above checks that it is indeed a new atom</span>
+                <span class="n">geom</span><span class="o">.</span><span class="n">_atoms</span><span class="o">.</span><span class="n">_atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_atom</span><span class="p">)</span>
+            <span class="c1"># transfer specie index</span>
+            <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">_specie</span><span class="p">[</span><span class="n">atoms</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_atom_specie</span>
+            <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">_update_orbitals</span><span class="p">()</span>
 
         <span class="c1"># Now create the new sparse orbital class</span>
         <span class="n">SG</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_cls_kwargs</span><span class="p">())</span>
@@ -1865,6 +1885,9 @@
         <span class="n">sc_off</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arangei</span><span class="p">(</span><span class="n">n_s</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">no</span>
         <span class="n">sub_idx</span> <span class="o">=</span> <span class="n">tile</span><span class="p">(</span><span class="n">sub_idx</span><span class="p">,</span> <span class="n">n_s</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_s</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">sc_off</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">SG</span><span class="o">.</span><span class="n">_csr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_csr</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">sub_idx</span><span class="p">)</span>
+
+        <span class="c1"># just ensure we are doing the correct thing</span>
+        <span class="k">assert</span> <span class="n">SG</span><span class="o">.</span><span class="n">_csr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">SG</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">no</span>
 
         <span class="k">return</span> <span class="n">SG</span></div>
 

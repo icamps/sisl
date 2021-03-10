@@ -192,8 +192,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">.sile</span> <span class="kn">import</span> <span class="n">SileSiesta</span>
-<span class="kn">from</span> <span class="nn">..sile</span> <span class="kn">import</span> <span class="n">add_sile</span><span class="p">,</span> <span class="n">sile_fh_open</span>
+<span class="kn">from</span> <span class="nn">..sile</span> <span class="kn">import</span> <span class="n">add_sile</span><span class="p">,</span> <span class="n">sile_fh_open</span><span class="p">,</span> <span class="n">SileError</span>
 
+<span class="kn">from</span> <span class="nn">sisl._common</span> <span class="kn">import</span> <span class="n">Opt</span>
 <span class="kn">from</span> <span class="nn">sisl._internal</span> <span class="kn">import</span> <span class="n">set_module</span>
 <span class="kn">import</span> <span class="nn">sisl._array</span> <span class="k">as</span> <span class="nn">_a</span>
 <span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">SuperCell</span>
@@ -1067,6 +1068,420 @@
         <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">MDstep_dataframe</span><span class="p">(</span><span class="n">scf</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">scf</span></div>
+
+<div class="viewcode-block" id="outSileSiesta.read_charge"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.outSileSiesta.html#sisl.io.siesta.outSileSiesta.read_charge">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">read_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">iscf</span><span class="o">=</span><span class="n">Opt</span><span class="o">.</span><span class="n">ANY</span><span class="p">,</span> <span class="n">imd</span><span class="o">=</span><span class="n">Opt</span><span class="o">.</span><span class="n">ANY</span><span class="p">,</span> <span class="n">key_scf</span><span class="o">=</span><span class="s2">&quot;scf&quot;</span><span class="p">,</span> <span class="n">as_dataframe</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Read charges calculated in SCF loop or MD loop (or both)</span>
+
+<span class="sd">        Siesta enables many different modes of writing out charges.</span>
+
+<span class="sd">        NOTE: currently Mulliken charges are not implemented.</span>
+
+<span class="sd">        The below table shows a list of different cases that</span>
+<span class="sd">        may be encountered, the letters are referred to in the</span>
+<span class="sd">        return section to indicate what is returned.</span>
+
+<span class="sd">        +-----------+-----+-----+--------+-------+------------------+</span>
+<span class="sd">        | Case      | *A* | *B* | *C*    | *D*   | *E*              |</span>
+<span class="sd">        +-----------+-----+-----+--------+-------+------------------+</span>
+<span class="sd">        | Charge    | MD  | SCF | MD+SCF | Final | Orbital resolved |</span>
+<span class="sd">        +-----------+-----+-----+--------+-------+------------------+</span>
+<span class="sd">        | Voronoi   | +   | +   | +      | +     | -                |</span>
+<span class="sd">        +-----------+-----+-----+--------+-------+------------------+</span>
+<span class="sd">        | Hirshfeld | +   | +   | +      | +     | -                |</span>
+<span class="sd">        +-----------+-----+-----+--------+-------+------------------+</span>
+<span class="sd">        | Mulliken  | +   | +   | +      | +     | +                |</span>
+<span class="sd">        +-----------+-----+-----+--------+-------+------------------+</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Errors will be raised if one requests information not present. I.e.</span>
+<span class="sd">        passing an integer or `Opt.ALL` for `iscf` will raise an error if</span>
+<span class="sd">        the SCF charges are not present. For `Opt.ANY` it will return</span>
+<span class="sd">        the most information, effectively SCF will be returned if present.</span>
+
+<span class="sd">        Currently Mulliken is not implemented, any help in reading this would be</span>
+<span class="sd">        very welcome.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name: {&quot;voronoi&quot;, &quot;hirshfeld&quot;}</span>
+<span class="sd">            the name of the charges that you want to read</span>
+<span class="sd">        iscf: int or Opt, optional</span>
+<span class="sd">            index (0-based) of the scf iteration you want the charges for.</span>
+<span class="sd">            If the enum specifier `Opt.ANY` or `Opt.ALL` are used, then</span>
+<span class="sd">            the returned quantities depend on what is present.</span>
+<span class="sd">            If ``None/Opt.NONE`` it will not return any SCF charges.</span>
+<span class="sd">            If both `imd` and `iscf` are ``None`` then only the final charges will be returned.</span>
+<span class="sd">        imd: int or Opt, optional</span>
+<span class="sd">            index (0-based) of the md step you want the charges for.</span>
+<span class="sd">            If the enum specifier `Opt.ANY` or `Opt.ALL` are used, then</span>
+<span class="sd">            the returned quantities depend on what is present.</span>
+<span class="sd">            If ``None/Opt.NONE`` it will not return any MD charges.</span>
+<span class="sd">            If both `imd` and `iscf` are ``None`` then only the final charges will be returned.</span>
+<span class="sd">        key_scf : str, optional</span>
+<span class="sd">            the key lookup for the scf iterations (a &quot;:&quot; will automatically be appended)</span>
+<span class="sd">        as_dataframe: boolean, optional</span>
+<span class="sd">            whether charges should be returned as a pandas dataframe.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            if a specific MD+SCF index is requested (or special cases where output is</span>
+<span class="sd">            not complete)</span>
+<span class="sd">        list of numpy.ndarray</span>
+<span class="sd">            if one both `iscf` or `imd` is different from ``None/Opt.NONE``.</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            if `as_dataframe` is requested. The dataframe will have multi-indices if multiple</span>
+<span class="sd">            SCF or MD steps are requested.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;fh&#39;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">read_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">iscf</span><span class="p">,</span> <span class="n">imd</span><span class="p">,</span> <span class="n">key_scf</span><span class="p">,</span> <span class="n">as_dataframe</span><span class="p">)</span>
+        <span class="n">namel</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+            <span class="k">def</span> <span class="nf">_empty_charge</span><span class="p">():</span>
+                <span class="c1"># build a fake dataframe with no indices</span>
+                <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">([],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;atom&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span>
+                                    <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pd</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">def</span> <span class="nf">_empty_charge</span><span class="p">():</span>
+                <span class="c1"># return for single value with nan values</span>
+                <span class="k">return</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayf</span><span class="p">([[</span><span class="kc">None</span><span class="p">]])</span>
+
+        <span class="c1"># define helper function for reading voronoi+hirshfeld charges</span>
+        <span class="k">def</span> <span class="nf">_voronoi_hirshfeld_charges</span><span class="p">():</span>
+            <span class="sd">&quot;&quot;&quot; Read output from Voronoi/Hirshfeld charges &quot;&quot;&quot;</span>
+            <span class="k">nonlocal</span> <span class="n">pd</span>
+
+            <span class="c1"># Expecting something like this:</span>
+            <span class="c1"># Voronoi Atomic Populations:</span>
+            <span class="c1"># Atom #     dQatom  Atom pop         S        Sx        Sy        Sz  Species</span>
+            <span class="c1">#      1   -0.02936   4.02936   0.00000  -0.00000   0.00000   0.00000  C</span>
+
+            <span class="c1"># Define the function that parses the charges</span>
+            <span class="k">def</span> <span class="nf">_parse_charge</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">atom_idx</span><span class="p">,</span> <span class="o">*</span><span class="n">vals</span><span class="p">,</span> <span class="n">symbol</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">vals</span><span class="p">))</span>
+
+            <span class="c1"># first line is the header</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                      <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dQatom&quot;</span><span class="p">,</span> <span class="s2">&quot;dq&quot;</span><span class="p">)</span> <span class="c1"># dQatom in master</span>
+                      <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; Qatom&quot;</span><span class="p">,</span> <span class="s2">&quot; dq&quot;</span><span class="p">)</span> <span class="c1"># Qatom in 4.1</span>
+                      <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;Atom pop&quot;</span><span class="p">,</span> <span class="s2">&quot;e&quot;</span><span class="p">)</span> <span class="c1"># not found in 4.1</span>
+                      <span class="o">.</span><span class="n">split</span><span class="p">())[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># We have found the header, prepare a list to read the charges</span>
+            <span class="n">atom_charges</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span>
+            <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="n">charge_vals</span> <span class="o">=</span> <span class="n">_parse_charge</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="n">atom_charges</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge_vals</span><span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="c1"># We already have the charge values and we reached a line that can&#39;t be parsed,</span>
+                    <span class="c1"># this means we have reached the end.</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="n">pd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># not as_dataframe</span>
+                <span class="k">return</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayf</span><span class="p">(</span><span class="n">atom_charges</span><span class="p">)</span>
+
+            <span class="c1"># determine how many columns we have</span>
+            <span class="c1"># this will remove atom indices and species, so only inside</span>
+            <span class="n">ncols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atom_charges</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">assert</span> <span class="n">ncols</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+
+            <span class="c1"># the precision is limited, so no need for double precision</span>
+            <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">atom_charges</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">header</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
+                                <span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">atom_charges</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;atom&quot;</span><span class="p">))</span>
+
+        <span class="c1"># define helper function for reading voronoi+hirshfeld charges</span>
+        <span class="k">def</span> <span class="nf">_mulliken_charges</span><span class="p">():</span>
+            <span class="sd">&quot;&quot;&quot; Read output from Mulliken charges &quot;&quot;&quot;</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Mulliken charges are not implemented currently&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Check that a known charge has been requested</span>
+        <span class="k">if</span> <span class="n">namel</span> <span class="o">==</span> <span class="s2">&quot;voronoi&quot;</span><span class="p">:</span>
+            <span class="n">_read_charge</span> <span class="o">=</span> <span class="n">_voronoi_hirshfeld_charges</span>
+            <span class="n">charge_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Voronoi Atomic Populations&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;Voronoi Net Atomic Populations&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">namel</span> <span class="o">==</span> <span class="s2">&quot;hirshfeld&quot;</span><span class="p">:</span>
+            <span class="n">_read_charge</span> <span class="o">=</span> <span class="n">_voronoi_hirshfeld_charges</span>
+            <span class="n">charge_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hirshfeld Atomic Populations&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;Hirshfeld Net Atomic Populations&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">namel</span> <span class="o">==</span> <span class="s2">&quot;mulliken&quot;</span><span class="p">:</span>
+            <span class="n">_read_charge</span> <span class="o">=</span> <span class="n">_mulliken_charges</span>
+            <span class="n">charge_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mulliken: Atomic and Orbital Populations&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.read_charge name argument should be one of </span><span class="si">{</span><span class="n">known_charges</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">?&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Ensure the key_scf matches exactly (prepend a space)</span>
+        <span class="n">key_scf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">key_scf</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">:&quot;</span>
+
+        <span class="c1"># Reading charges may be quite time consuming for large MD simulations.</span>
+
+        <span class="c1"># to see if we finished a MD read, we check for these keys</span>
+        <span class="n">search_keys</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="c1"># two keys can signal ending SCF</span>
+            <span class="s2">&quot;SCF Convergence&quot;</span><span class="p">,</span> <span class="s2">&quot;SCF_NOT_CONV&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;siesta: Final energy&quot;</span><span class="p">,</span>
+            <span class="n">key_scf</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">charge_keys</span>
+        <span class="p">]</span>
+        <span class="c1"># adjust the below while loop to take into account any additional</span>
+        <span class="c1"># segments of search_keys</span>
+        <span class="n">IDX_SCF_END</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">IDX_FINAL</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">IDX_SCF</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># the rest are charge keys</span>
+        <span class="n">IDX_CHARGE</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">search_keys</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">charge_keys</span><span class="p">),</span>
+                                <span class="nb">len</span><span class="p">(</span><span class="n">search_keys</span><span class="p">)))</span>
+
+        <span class="c1"># state to figure out where we are</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">PropertyDict</span><span class="p">()</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">INITIAL</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">MD</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">SCF</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">CHARGE</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">FINAL</span> <span class="o">=</span> <span class="mi">4</span>
+
+        <span class="c1"># a list of scf_charge</span>
+        <span class="n">md_charge</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">md_scf_charge</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scf_charge</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">final_charge</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># signal that any first reads are INITIAL charges</span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">INITIAL</span>
+        <span class="n">charge</span> <span class="o">=</span> <span class="n">_empty_charge</span><span class="p">()</span>
+        <span class="n">FOUND_SCF</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">FOUND_MD</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">FOUND_FINAL</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># TODO whalrus</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_to</span><span class="p">(</span><span class="n">search_keys</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ret_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reread</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">ret</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">IDX_SCF_END</span><span class="p">:</span>
+                <span class="c1"># we finished all SCF iterations</span>
+                <span class="n">current_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">MD</span>
+                <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scf_charge</span><span class="p">)</span>
+                <span class="n">scf_charge</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">elif</span> <span class="n">ret</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">IDX_SCF</span><span class="p">:</span>
+                <span class="n">current_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">SCF</span>
+                <span class="c1"># collect scf-charges (possibly none)</span>
+                <span class="n">scf_charge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">ret</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">IDX_FINAL</span><span class="p">:</span>
+                <span class="n">current_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">FINAL</span>
+                <span class="c1"># don&#39;t do anything, this is the final charge construct</span>
+                <span class="c1"># regardless of where it comes from.</span>
+
+            <span class="k">elif</span> <span class="n">ret</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="ow">in</span> <span class="n">IDX_CHARGE</span><span class="p">:</span>
+                <span class="n">FOUND_CHARGE</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># also read charge</span>
+                <span class="n">charge</span> <span class="o">=</span> <span class="n">_read_charge</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">INITIAL</span> <span class="o">==</span> <span class="n">current_state</span> <span class="ow">or</span> <span class="n">state</span><span class="o">.</span><span class="n">CHARGE</span> <span class="o">==</span> <span class="n">current_state</span><span class="p">:</span>
+                    <span class="c1"># this signals scf charges</span>
+                    <span class="n">FOUND_SCF</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># There *could* be 2 steps if we are mixing H,</span>
+                    <span class="c1"># this is because it first does</span>
+                    <span class="c1"># compute H -&gt; compute DM -&gt; compute H</span>
+                    <span class="c1"># in the first iteration, subsequently we only do</span>
+                    <span class="c1"># compute compute DM -&gt; compute H</span>
+                    <span class="c1"># once we hit ret[2] in IDX_SCF we will append</span>
+                    <span class="n">scf_charge</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">elif</span> <span class="n">state</span><span class="o">.</span><span class="n">MD</span> <span class="o">==</span> <span class="n">current_state</span><span class="p">:</span>
+                    <span class="n">FOUND_MD</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># we just finished an SCF cycle.</span>
+                    <span class="c1"># So any output between SCF ending and</span>
+                    <span class="c1"># a new one beginning *must* be that geometries</span>
+                    <span class="c1"># charge</span>
+
+                    <span class="c1"># Here `charge` may be NONE signalling</span>
+                    <span class="c1"># we don&#39;t have charge in MD steps.</span>
+                    <span class="n">md_charge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+
+                    <span class="c1"># reset charge</span>
+                    <span class="n">charge</span> <span class="o">=</span> <span class="n">_empty_charge</span><span class="p">()</span>
+
+                <span class="k">elif</span> <span class="n">state</span><span class="o">.</span><span class="n">SCF</span> <span class="o">==</span> <span class="n">current_state</span><span class="p">:</span>
+                    <span class="n">FOUND_SCF</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="k">elif</span> <span class="n">state</span><span class="o">.</span><span class="n">FINAL</span> <span class="o">==</span> <span class="n">current_state</span><span class="p">:</span>
+                    <span class="n">FOUND_FINAL</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="c1"># a special state writing out the charges after everything</span>
+                    <span class="n">final_charge</span> <span class="o">=</span> <span class="n">charge</span>
+                    <span class="n">charge</span> <span class="o">=</span> <span class="n">_empty_charge</span><span class="p">()</span>
+                    <span class="n">scf_charge</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="c1"># we should be done and no other charge reads should be found!</span>
+                    <span class="c1"># should we just break?</span>
+
+                <span class="n">current_state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">CHARGE</span>
+
+            <span class="c1"># step to next entry</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_to</span><span class="p">(</span><span class="n">search_keys</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ret_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reread</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">((</span><span class="n">FOUND_SCF</span><span class="p">,</span> <span class="n">FOUND_MD</span><span class="p">,</span> <span class="n">FOUND_FINAL</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> does not contain any charges (</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if the scf-charges are not stored, it means that the MD step finalization</span>
+        <span class="c1"># has not been read. So correct</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scf_charge</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;this test shouldn&#39;t reach here&quot;</span>
+            <span class="c1"># we must not have read through the entire MD step</span>
+            <span class="c1"># so this has to be a running simulation</span>
+            <span class="k">if</span> <span class="n">charge</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">scf_charge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">charge</span><span class="p">)</span>
+                <span class="n">charge</span> <span class="o">=</span> <span class="n">_empty_charge</span><span class="p">()</span>
+            <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scf_charge</span><span class="p">)</span>
+
+        <span class="c1"># otherwise there is some *parsing* error, so for now we use assert</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">scf_charge</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+            <span class="c1"># convert data to proper data structures</span>
+            <span class="c1"># regardless of user requests. This is an overhead... But probably not that big of a problem.</span>
+            <span class="k">if</span> <span class="n">FOUND_SCF</span><span class="p">:</span>
+                <span class="n">md_scf_charge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">iscf</span><span class="p">,</span>
+                                                     <span class="n">keys</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">iscf</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;iscf&quot;</span><span class="p">))</span>
+                                           <span class="k">for</span> <span class="n">iscf</span> <span class="ow">in</span> <span class="n">md_scf_charge</span><span class="p">],</span>
+                                          <span class="n">keys</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">md_scf_charge</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;imd&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">FOUND_MD</span><span class="p">:</span>
+                <span class="n">md_charge</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">md_charge</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">RangeIndex</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">md_charge</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;imd&quot;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">FOUND_SCF</span><span class="p">:</span>
+                <span class="n">nan_array</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">emptyf</span><span class="p">(</span><span class="n">md_scf_charge</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">nan_array</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+                <span class="k">def</span> <span class="nf">get_md_scf_charge</span><span class="p">(</span><span class="n">scf_charge</span><span class="p">,</span> <span class="n">iscf</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">scf_charge</span><span class="p">[</span><span class="n">iscf</span><span class="p">]</span>
+                    <span class="k">except</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">nan_array</span>
+            <span class="k">if</span> <span class="n">FOUND_MD</span><span class="p">:</span>
+                <span class="n">md_charge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">md_charge</span><span class="p">)</span>
+
+        <span class="c1"># option parsing is a bit *difficult* with flag enums</span>
+        <span class="c1"># So first figure out what is there, and handle this based</span>
+        <span class="c1"># on arguments</span>
+        <span class="k">def</span> <span class="nf">_p</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">found</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot; Helper routine to do the following:</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            is_opt : bool</span>
+<span class="sd">                whether the flag is an `Opt`</span>
+<span class="sd">            flag :</span>
+<span class="sd">                corrected flag</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">Opt</span><span class="p">):</span>
+                <span class="c1"># correct flag depending on what `found` is</span>
+                <span class="c1"># If the values have been found we</span>
+                <span class="c1"># change flag to None only if flag == NONE</span>
+                <span class="c1"># If the case has not been found, we</span>
+                <span class="c1"># change flag to None if ANY or NONE is in flags</span>
+
+                <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+                    <span class="c1"># flag is only NONE, then pass none</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">NONE</span> <span class="o">^</span> <span class="n">flag</span><span class="p">):</span>
+                        <span class="n">flag</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># not found</span>
+                    <span class="c1"># we convert flag to none</span>
+                    <span class="c1"># if ANY or NONE in flag</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">NONE</span> <span class="o">|</span> <span class="n">Opt</span><span class="o">.</span><span class="n">ANY</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">flag</span><span class="p">:</span>
+                        <span class="n">flag</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">Opt</span><span class="p">),</span> <span class="n">flag</span>
+
+        <span class="n">opt_imd</span><span class="p">,</span> <span class="n">imd</span> <span class="o">=</span> <span class="n">_p</span><span class="p">(</span><span class="n">imd</span><span class="p">,</span> <span class="n">FOUND_MD</span><span class="p">)</span>
+        <span class="n">opt_iscf</span><span class="p">,</span> <span class="n">iscf</span> <span class="o">=</span> <span class="n">_p</span><span class="p">(</span><span class="n">iscf</span><span class="p">,</span> <span class="n">FOUND_SCF</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">FOUND_SCF</span> <span class="ow">or</span> <span class="n">FOUND_MD</span><span class="p">):</span>
+            <span class="c1"># none of these are found</span>
+            <span class="c1"># we request that user does not request any input</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">opt_iscf</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">iscf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">or</span> \
+               <span class="p">(</span><span class="n">opt_imd</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">imd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> does not contain MD/SCF charges&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">FOUND_SCF</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">opt_iscf</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">iscf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> does not contain SCF charges&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">FOUND_MD</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">opt_imd</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">imd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> does not contain MD charges&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if either are options they may hold</span>
+        <span class="k">if</span> <span class="n">opt_imd</span> <span class="ow">and</span> <span class="n">opt_iscf</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">FOUND_SCF</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">md_scf_charge</span>
+            <span class="k">elif</span> <span class="n">FOUND_MD</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">md_charge</span>
+            <span class="k">elif</span> <span class="n">FOUND_FINAL</span><span class="p">:</span>
+                <span class="c1"># I think this will never be reached</span>
+                <span class="c1"># If neither are found they will be converted to</span>
+                <span class="c1"># None</span>
+                <span class="k">return</span> <span class="n">final_charge</span>
+
+            <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> unknown argument for &#39;imd&#39; and &#39;iscf&#39;&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">opt_imd</span><span class="p">:</span>
+            <span class="c1"># flag requested imd</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">imd</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">ANY</span> <span class="o">|</span> <span class="n">Opt</span><span class="o">.</span><span class="n">ALL</span><span class="p">)):</span>
+                <span class="c1"># wrong flag</span>
+                <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> unknown argument for &#39;imd&#39;&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">FOUND_SCF</span> <span class="ow">and</span> <span class="n">iscf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># this should be handled, i.e. the scf should be taken out</span>
+                <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="n">iscf</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">get_md_scf_charge</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">iscf</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">md_scf_charge</span><span class="p">))</span>
+
+            <span class="k">elif</span> <span class="n">FOUND_MD</span> <span class="ow">and</span> <span class="n">iscf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">md_charge</span>
+            <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> unknown argument for &#39;imd&#39; and &#39;iscf&#39;, could not find SCF charges&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">opt_iscf</span><span class="p">:</span>
+            <span class="c1"># flag requested imd</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">iscf</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">ANY</span> <span class="o">|</span> <span class="n">Opt</span><span class="o">.</span><span class="n">ALL</span><span class="p">)):</span>
+                <span class="c1"># wrong flag</span>
+                <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> unknown argument for &#39;iscf&#39;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">imd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1"># correct imd</span>
+                <span class="n">imd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+                <span class="n">md_scf_charge</span> <span class="o">=</span> <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">md_scf_charge</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">imd</span><span class="p">]</span>
+                <span class="k">return</span> <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">group</span><span class="p">)</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">md_scf_charge</span><span class="p">[</span><span class="n">imd</span><span class="p">])</span>
+
+        <span class="k">elif</span> <span class="n">imd</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">iscf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">FOUND_FINAL</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">final_charge</span>
+            <span class="k">raise</span> <span class="n">SileError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="si">}</span><span class="s2"> does not contain final charges&quot;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">imd</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># iscf is not None, so pass through as though explicitly passed</span>
+            <span class="n">imd</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="n">iscf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># we return the last MD step and the requested scf iteration</span>
+            <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">md_charge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="n">imd</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">md_charge</span><span class="p">[</span><span class="n">imd</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">as_dataframe</span><span class="p">:</span>
+            <span class="c1"># first select imd</span>
+            <span class="n">md_scf_charge</span> <span class="o">=</span> <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">md_scf_charge</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="n">imd</span><span class="p">]</span>
+            <span class="n">md_scf_charge</span> <span class="o">=</span> <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">get_group</span><span class="p">(</span><span class="n">group</span><span class="p">)</span><span class="o">.</span><span class="n">droplevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">md_scf_charge</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="n">iscf</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">md_scf_charge</span><span class="p">[</span><span class="n">imd</span><span class="p">][</span><span class="n">iscf</span><span class="p">]</span></div>
 
 
 <span class="n">add_sile</span><span class="p">(</span><span class="s1">&#39;out&#39;</span><span class="p">,</span> <span class="n">outSileSiesta</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">gzip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

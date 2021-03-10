@@ -288,37 +288,40 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_basis_block" title="sisl.io.siesta.outSileSiesta.read_basis_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_basis_block</span></code></a>()</p></td>
 <td><p>Reads the PAO.Basis block that Siesta writes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_data" title="sisl.io.siesta.outSileSiesta.read_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_data</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_charge" title="sisl.io.siesta.outSileSiesta.read_charge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_charge</span></code></a>(name[, iscf, imd, key_scf, …])</p></td>
+<td><p>Read charges calculated in SCF loop or MD loop (or both)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_data" title="sisl.io.siesta.outSileSiesta.read_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_data</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Read specific content in the Siesta out file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_energy" title="sisl.io.siesta.outSileSiesta.read_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_energy</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_energy" title="sisl.io.siesta.outSileSiesta.read_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_energy</span></code></a>()</p></td>
 <td><p>Reads the final energy distribution</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_force" title="sisl.io.siesta.outSileSiesta.read_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_force</span></code></a>([last, all, total, max])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_force" title="sisl.io.siesta.outSileSiesta.read_force"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_force</span></code></a>([last, all, total, max])</p></td>
 <td><p>Reads the forces from the Siesta output file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_geometry" title="sisl.io.siesta.outSileSiesta.read_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_geometry</span></code></a>([last, all])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_geometry" title="sisl.io.siesta.outSileSiesta.read_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_geometry</span></code></a>([last, all])</p></td>
 <td><p>Reads the geometry from the Siesta output file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_moment" title="sisl.io.siesta.outSileSiesta.read_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_moment</span></code></a>([orbitals, quantity, last, all])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_moment" title="sisl.io.siesta.outSileSiesta.read_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_moment</span></code></a>([orbitals, quantity, last, all])</p></td>
 <td><p>Reads the moments from the Siesta output file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_scf" title="sisl.io.siesta.outSileSiesta.read_scf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_scf</span></code></a>([key, iscf, imd, as_dataframe])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_scf" title="sisl.io.siesta.outSileSiesta.read_scf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_scf</span></code></a>([key, iscf, imd, as_dataframe])</p></td>
 <td><p>Parse SCF information and return a table of SCF information depending on what is requested</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_species" title="sisl.io.siesta.outSileSiesta.read_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_species</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_species" title="sisl.io.siesta.outSileSiesta.read_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_species</span></code></a>()</p></td>
 <td><p>Reads the species from the top of the output file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_stress" title="sisl.io.siesta.outSileSiesta.read_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_stress</span></code></a>([key, last, all])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_stress" title="sisl.io.siesta.outSileSiesta.read_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_stress</span></code></a>([key, last, all])</p></td>
 <td><p>Reads the stresses from the Siesta output file</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.write" title="sisl.io.siesta.outSileSiesta.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.write" title="sisl.io.siesta.outSileSiesta.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Generic write method which should be overloaded in child-classes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.base_file" title="sisl.io.siesta.outSileSiesta.base_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_file</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.base_file" title="sisl.io.siesta.outSileSiesta.base_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_file</span></code></a></p></td>
 <td><p>File of the current <em class="xref py py-obj">Sile</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.file" title="sisl.io.siesta.outSileSiesta.file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.file" title="sisl.io.siesta.outSileSiesta.file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file</span></code></a></p></td>
 <td><p>File of the current <em class="xref py py-obj">Sile</em></p></td>
 </tr>
 </tbody>
@@ -375,6 +378,145 @@ and call it with the remaining <code class="docutils literal notranslate"><span 
 <dt id="sisl.io.siesta.outSileSiesta.read_basis_block">
 <code class="sig-name descname">read_basis_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/out.html#outSileSiesta.read_basis_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.outSileSiesta.read_basis_block" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reads the PAO.Basis block that Siesta writes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.io.siesta.outSileSiesta.read_charge">
+<code class="sig-name descname">read_charge</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">iscf=&lt;Opt.ANY: 2&gt;</em>, <em class="sig-param">imd=&lt;Opt.ANY: 2&gt;</em>, <em class="sig-param">key_scf='scf'</em>, <em class="sig-param">as_dataframe=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/out.html#outSileSiesta.read_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.outSileSiesta.read_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read charges calculated in SCF loop or MD loop (or both)</p>
+<p>Siesta enables many different modes of writing out charges.</p>
+<p>NOTE: currently Mulliken charges are not implemented.</p>
+<p>The below table shows a list of different cases that
+may be encountered, the letters are referred to in the
+return section to indicate what is returned.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 9%" />
+<col style="width: 9%" />
+<col style="width: 15%" />
+<col style="width: 13%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Case</p></td>
+<td><p><em>A</em></p></td>
+<td><p><em>B</em></p></td>
+<td><p><em>C</em></p></td>
+<td><p><em>D</em></p></td>
+<td><p><em>E</em></p></td>
+</tr>
+<tr class="row-even"><td><p>Charge</p></td>
+<td><p>MD</p></td>
+<td><p>SCF</p></td>
+<td><p>MD+SCF</p></td>
+<td><p>Final</p></td>
+<td><p>Orbital resolved</p></td>
+</tr>
+<tr class="row-odd"><td><p>Voronoi</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><p>Hirshfeld</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Mulliken</p></td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+<td><ul class="simple">
+<li></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Errors will be raised if one requests information not present. I.e.
+passing an integer or <em class="xref py py-obj">Opt.ALL</em> for <em class="xref py py-obj">iscf</em> will raise an error if
+the SCF charges are not present. For <em class="xref py py-obj">Opt.ANY</em> it will return
+the most information, effectively SCF will be returned if present.</p>
+<p>Currently Mulliken is not implemented, any help in reading this would be
+very welcome.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>{&quot;voronoi&quot;</em><em>, </em><em>&quot;hirshfeld&quot;}</em>) – the name of the charges that you want to read</p></li>
+<li><p><strong>iscf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>Opt</em><em>, </em><em>optional</em>) – index (0-based) of the scf iteration you want the charges for.
+If the enum specifier <em class="xref py py-obj">Opt.ANY</em> or <em class="xref py py-obj">Opt.ALL</em> are used, then
+the returned quantities depend on what is present.
+If <code class="docutils literal notranslate"><span class="pre">None/Opt.NONE</span></code> it will not return any SCF charges.
+If both <em class="xref py py-obj">imd</em> and <em class="xref py py-obj">iscf</em> are <code class="docutils literal notranslate"><span class="pre">None</span></code> then only the final charges will be returned.</p></li>
+<li><p><strong>imd</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>Opt</em><em>, </em><em>optional</em>) – index (0-based) of the md step you want the charges for.
+If the enum specifier <em class="xref py py-obj">Opt.ANY</em> or <em class="xref py py-obj">Opt.ALL</em> are used, then
+the returned quantities depend on what is present.
+If <code class="docutils literal notranslate"><span class="pre">None/Opt.NONE</span></code> it will not return any MD charges.
+If both <em class="xref py py-obj">imd</em> and <em class="xref py py-obj">iscf</em> are <code class="docutils literal notranslate"><span class="pre">None</span></code> then only the final charges will be returned.</p></li>
+<li><p><strong>key_scf</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – the key lookup for the scf iterations (a “:” will automatically be appended)</p></li>
+<li><p><strong>as_dataframe</strong> (<em>boolean</em><em>, </em><em>optional</em>) – whether charges should be returned as a pandas dataframe.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>numpy.ndarray</em> – if a specific MD+SCF index is requested (or special cases where output is
+not complete)</p></li>
+<li><p><em>list of numpy.ndarray</em> – if one both <em class="xref py py-obj">iscf</em> or <em class="xref py py-obj">imd</em> is different from <code class="docutils literal notranslate"><span class="pre">None/Opt.NONE</span></code>.</p></li>
+<li><p><em>pandas.DataFrame</em> – if <em class="xref py py-obj">as_dataframe</em> is requested. The dataframe will have multi-indices if multiple
+SCF or MD steps are requested.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -553,7 +695,7 @@ for None <em>all</em> SCF cycles are returned. When <em class="xref py py-obj">i
 will be truncated to the nearest SCF step.</p></li>
 <li><p><strong>imd</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a><em>, </em><em>optional</em>) – whether only a particular MD step is queried, if None, all MD steps are
 parsed and returned. A negative number wraps for the last MD steps.</p></li>
-<li><p><strong>as_dataframe</strong> (<em>boolean</em><em>, </em><em>optional</em>) – whether the information should be returned as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. The advantage of this
+<li><p><strong>as_dataframe</strong> (<em>boolean</em><em>, </em><em>optional</em>) – whether the information should be returned as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a>. The advantage of this
 format is that everything is indexed and therefore you know what each value means.You can also
 perform operations very easily on a dataframe.</p></li>
 </ul>

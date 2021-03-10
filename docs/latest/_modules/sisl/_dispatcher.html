@@ -260,7 +260,7 @@
         <span class="k">return</span> <span class="n">attr</span>
 
 
-<span class="k">class</span> <span class="nc">AbstractDispatcher</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">AbstractDispatcher</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A container for dispatchers</span>
 
 <span class="sd">    This is an abstract class holding the dispatch classes (`AbstractDispatch`)</span>
@@ -287,7 +287,7 @@
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">toline</span><span class="p">(</span><span class="n">kv</span><span class="p">):</span>
             <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">kv</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="nb">object</span><span class="p">()))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">(</span><span class="s2">&quot;&lt;self&gt;&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> &quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">:</span>
                 <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;*</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -309,6 +309,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return instances belonging to this object &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;renew&quot;</span><span class="p">,</span> <span class="s2">&quot;register&quot;</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">dispatch</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Register a dispatch class to this container</span>
 
@@ -324,7 +328,7 @@
 <span class="sd">            if true and `key` already exists in the list of dispatchs, then</span>
 <span class="sd">            it will be overwritten, otherwise a `LookupError` is raised.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">overwrite</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> already has </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> registered (and overwrite is false)&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispatch</span>
         <span class="k">if</span> <span class="n">default</span><span class="p">:</span>
@@ -571,7 +575,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">dispatchs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">obj_getattr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">instance_dispatcher</span><span class="o">=</span><span class="n">ObjectDispatcher</span><span class="p">,</span>
-                 <span class="n">type_dispatcher</span><span class="o">=</span><span class="n">TypeDispatcher</span><span class="p">,</span>
+                 <span class="n">type_dispatcher</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="c1"># obj_getattr is necessary for the ObjectDispatcher to create the correct</span>
         <span class="c1"># MethodDispatcher</span>
@@ -597,11 +601,14 @@
     <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Class dispatcher retrieval</span>
 
-<span class="sd">        When directly retrieved from the class we return it-self to</span>
-<span class="sd">        allow interaction with the dispatcher.</span>
+<span class="sd">        The returned class depends on the setup of the `ClassDispatcher`.</span>
 
-<span class="sd">        When retrieved from an object it returns an `ObjectDispatcher`.</span>
-<span class="sd">        When retrieved from a class it returns an `TypeDispatcher`.</span>
+<span class="sd">        If called on an instance, it will return a class ``self._get.instance``</span>
+<span class="sd">        class object.</span>
+
+<span class="sd">        If called on a class (type), it will return a class ``self._get.type``.</span>
+
+<span class="sd">        If the returned class is None, it will return ``self``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">inst</span> <span class="o">=</span> <span class="n">owner</span>
@@ -612,6 +619,8 @@
                 <span class="n">inst</span> <span class="o">=</span> <span class="n">owner</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">inst</span> <span class="o">=</span> <span class="n">instance</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span>
                    <span class="n">cls_attr_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_attr_name</span><span class="p">,</span>
                    <span class="n">obj_getattr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj_getattr</span><span class="p">,</span>
