@@ -388,7 +388,7 @@ MINOR = 11
 MICRO = 0
 ISRELEASED = False
 VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
-GIT_REVISION = "ad878e687045793c53d0c628c5345832beb60695"
+GIT_REVISION = "$Format:%h$"
 REVISION_YEAR = 2021
 
 
@@ -427,13 +427,13 @@ setuptools_kwargs = {
     "python_requires": ">= " + min_version["python"],
     "install_requires": [
         "setuptools",
-        "Cython",
         "numpy >= " + min_version["numpy"],
         "scipy",
         "netCDF4",
         "pyparsing >= " + min_version["pyparsing"],
     ],
     "setup_requires": [
+        "Cython",
         "numpy >= " + min_version["numpy"],
     ],
     "extras_require": {

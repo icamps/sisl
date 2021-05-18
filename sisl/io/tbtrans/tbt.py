@@ -3,10 +3,11 @@ try:
     from StringIO import StringIO
 except Exception:
     from io import StringIO
+import itertools
 
 import numpy as np
 from numpy import in1d, sqrt
-import itertools
+from numpy import repeat, unique
 
 # The sparse matrix for the orbital/bond currents
 from scipy.sparse import csr_matrix
@@ -332,21 +333,21 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            :math:`N` equals the number of orbitals in the total device region.
         ``'atom'``
            :math:`N` equals the total number of orbitals in the selected
-           atoms. If `orbital` is an argument a conversion of `orbital` to the equivalent
+           atoms. If `orbitals` is an argument a conversion of `orbitals` to the equivalent
            unique atoms is performed, and subsequently the total number of orbitals on the
            atoms is used. This makes it possible to compare the fraction of orbital DOS easier.
         ``'orbital'``
-           :math:`N` is the sum of selected orbitals, if `atom` is specified, this
+           :math:`N` is the sum of selected orbitals, if `atoms` is specified, this
            is equivalent to the 'atom' option.
 
         Parameters
         ----------
         atoms : array_like of int or bool, optional
            only return for a given set of atoms (default to all).
-           *NOT* allowed with `orbital` keyword
+           *NOT* allowed with `orbitals` keyword
         orbitals : array_like of int or bool, optional
            only return for a given set of orbitals (default to all)
-           *NOT* allowed with `atom` keyword
+           *NOT* allowed with `atoms` keyword
         norm : {'none', 'atom', 'orbital', 'all'}
            how the normalization of the summed DOS is performed (see `norm` routine)
         """
@@ -370,7 +371,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
                 NORM = float(len(self.o2p(orbitals)))
             elif norm == 'atom':
                 geom = self.geometry
-                a = np.unique(geom.o2a(orbitals))
+                a = unique(geom.o2a(orbitals))
                 # Now sum the orbitals per atom
                 NORM = float(_a.sumi(geom.firsto[a+1] - geom.firsto[a]))
             return NORM
@@ -395,10 +396,10 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            data to process
         atoms : array_like of int, optional
            only return for a given set of atoms (default to all).
-           *NOT* allowed with `orbital` keyword
+           *NOT* allowed with `orbitals` keyword
         orbitals : array_like of int, optional
            only return for a given set of orbitals (default to all)
-           *NOT* allowed with `atom` keyword
+           *NOT* allowed with `atoms` keyword
         sum : bool, optional
            whether the returned quantities are summed or returned *as is*, i.e. resolved per atom/orbital.
         norm : {'none', 'atom', 'orbital', 'all'}
@@ -408,7 +409,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         -------
         numpy.ndarray
             in order of the geometry orbitals (i.e. pivoted back to the device region).
-            If `atom` or `orbital` is specified they are returned in that order.
+            If `atoms` or `orbitals` is specified they are returned in that order.
         """
         # Force False equivalent as None.
         if isinstance(atoms, bool):
@@ -520,11 +521,11 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            is returned
         atoms : array_like of int or bool, optional
            only return for a given set of atoms (default to all).
-           *NOT* allowed with `orbital` keyword. If `True` it will use all atoms in the device.
+           *NOT* allowed with `orbitals` keyword. If `True` it will use all atoms in the device.
            False is equivalent to None.
         orbitals : array_like of int or bool, optional
            only return for a given set of orbitals (default to all)
-           *NOT* allowed with `atom` keyword. If `True` it will use all orbitals in the device.
+           *NOT* allowed with `atoms` keyword. If `True` it will use all orbitals in the device.
            False is equivalent to None.
         sum : bool, optional
            whether the returned quantities are summed or returned *as is*, i.e. resolved per atom/orbital.
@@ -560,11 +561,11 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            is returned
         atoms : array_like of int or bool, optional
            only return for a given set of atoms (default to all).
-           *NOT* allowed with `orbital` keyword. If `True` it will use all atoms in the device.
+           *NOT* allowed with `orbitals` keyword. If `True` it will use all atoms in the device.
            False is equivalent to None.
         orbitals : array_like of int or bool, optional
            only return for a given set of orbitals (default to all)
-           *NOT* allowed with `atom` keyword. If `True` it will use all orbitals in the device.
+           *NOT* allowed with `atoms` keyword. If `True` it will use all orbitals in the device.
            False is equivalent to None.
         sum : bool, optional
            whether the returned quantities are summed or returned *as is*, i.e. resolved per atom/orbital.
@@ -972,7 +973,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         fano[T <= 0.] = 0.
         return fano
 
-    def _sparse_data(self, data, elec, E, kavg=True, isc=None):
+    def _sparse_data(self, data, elec, E, kavg=True, isc=None, orbitals=None):
         """ Internal routine for retrieving sparse data (orbital current, COOP) """
         # Get the geometry for obtaining the sparsity pattern.
         if elec is not None:
@@ -981,10 +982,43 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         geom = self.geometry
 
         # These are the row-pointers...
-        rptr = _ncol_to_indptr(self._value('n_col'))
+        ncol = self._value('n_col')
 
         # Get column indices
         col = self._value('list_col') - 1
+
+        # retrieve data
+        D = self._value_E(data, elec, kavg, E)
+
+        # get subset orbitals
+        if not orbitals is None:
+            orbitals = geom._sanitize_orbs(orbitals)
+
+            # select values for all supercells
+            all_col = np.add.outer(np.arange(geom.n_s), orbitals).ravel()
+
+            # get both row and column indices
+            row_nonzero = (ncol > 0).nonzero()[0]
+            # Now we have [0 0 0 0 1 1 1 1 2 2 ... no-1 no-1]
+            row = repeat(row_nonzero, ncol[row_nonzero])
+
+            # now figure out all places where we
+            # have the corresponding values
+            all_col = np.logical_and(
+                in1d(row, all_col),
+                in1d(col, all_col))
+
+            # reduce space
+            col = col[all_col]
+            D = D[..., all_col]
+
+            # now calculate new subset rows
+            row, nrow = unique(row[all_col], return_counts=True)
+            ncol = _a.zerosi(geom.no)
+            ncol[row] = nrow
+            del row, nrow
+
+        rptr = _ncol_to_indptr(ncol)
 
         # Default matrix size
         mat_size = [geom.no, geom.no_s]
@@ -995,10 +1029,10 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         if isc is None:
             isc = [None, None, None]
 
-        if isc[0] is None and isc[1] is None and isc[2] is None:
-            all_col = None
+        # reset for next phase
+        all_col = None
 
-        else:
+        if not (isc[0] is None and isc[1] is None and isc[2] is None):
             # The user has requested specific supercells
             # Here we create a list of supercell interactions.
 
@@ -1026,31 +1060,29 @@ class tbtncSileTBtrans(_devncSileTBtrans):
             for i, (ix, iy, iz) in enumerate(itertools.product(x, y, z)):
                 all_col[i] = geom.sc_index([ix, iy, iz])
 
-            # If the user requests a single supercell index, we will
-            # return a square matrix
-            if len(all_col) == 1:
-                mat_size[1] = mat_size[0]
-
             # Transfer all_col to the range
             all_col = array_arange(all_col * geom.no,
                                    n=_a.fulli(len(all_col), geom.no))
 
+            # get both row and column indices
+            row_nonzero = (ncol > 0).nonzero()[0]
+            # Now we have [0 0 0 0 1 1 1 1 2 2 ... no-1 no-1]
+            row = repeat(row_nonzero, ncol[row_nonzero])
+
             # Create a logical array for sub-indexing
-            all_col = in1d(col, _a.arrayi(all_col))
+            all_col = in1d(col, all_col)
+            row = row[all_col]
             col = col[all_col]
 
-            # recreate row-pointer
-            cnz = np.count_nonzero
-            def func(ptr1, ptr2):
-                return cnz(all_col[ptr1:ptr2])
-            tmp = _a.fromiteri(map(func, rptr[:geom.no], rptr[1:]))
-            rptr = _ncol_to_indptr(tmp)
-            del tmp
+            # now calculate new subset rows
+            row, nrow = unique(row, return_counts=True)
+            ncol = _a.zerosi(geom.no)
+            ncol[row] = nrow
 
-        if all_col is None:
-            D = self._value_E(data, elec, kavg, E)
-        else:
-            D = self._value_E(data, elec, kavg, E)[..., all_col]
+            rptr = _ncol_to_indptr(ncol)
+            del ncol, row, nrow
+
+            D = D[..., all_col]
 
         return csr_matrix((D, col, rptr), shape=mat_size)
 
@@ -1127,7 +1159,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         # I.e. sometimes we want to remove negative values, etc.
         return Dab
 
-    def orbital_current(self, elec, E, kavg=True, isc=None, only='all'):
+    def orbital_current(self, elec, E, kavg=True, isc=None, only='all', orbitals=None):
         r""" Orbital current originating from `elec` as a sparse matrix
 
         This will return a sparse matrix, see ``scipy.sparse.csr_matrix`` for details.
@@ -1165,11 +1197,19 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            which orbital currents to return, all, positive or negative values only.
            Default to ``'all'`` because it can then be used in the subsequent default
            arguments for `bond_current_from_orbital` and `atom_current_from_orbital`.
+        orbitals : array-like or dict, optional
+           only retain orbital currents for a subset of orbitals.
 
         Examples
         --------
         >>> Jij = tbt.orbital_current(0, -1.0) # orbital current @ E = -1 eV originating from electrode ``0``
         >>> Jij[10, 11] # orbital current from the 11th to the 12th orbital
+
+        >>> Jij = tbt.orbital_current(0, -1.0,
+        ...     orbitals={tbt.geometry.atoms[0]: [0, 1]})
+
+        only retain currents from 1st and 2nd orbitals on first atom type (all atoms of
+        that type in the entire structure.
 
         See Also
         --------
@@ -1179,7 +1219,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         atom_current : the atomic current for each atom (scalar representation of bond-currents)
         vector_current : an atomic field current for each atom (Cartesian representation of bond-currents)
         """
-        J = self._sparse_data('J', elec, E, kavg, isc)
+        J = self._sparse_data('J', elec, E, kavg, isc, orbitals)
 
         if only == '+':
             J.data[J.data < 0] = 0
@@ -1252,7 +1292,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
 
         return Jab
 
-    def bond_current(self, elec, E, kavg=True, isc=None, only='+', uc=False):
+    def bond_current(self, elec, E, kavg=True, isc=None, only='+', orbitals=None, uc=False):
         """ Bond-current between atoms (sum of orbital currents)
 
         Short hand function for calling `orbital_current` and `bond_current_from_orbital`.
@@ -1276,6 +1316,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            If "+" is supplied only the positive orbital currents are used,
            for "-", only the negative orbital currents are used,
            else return the sum of both. Please see discussion in `orbital_current`.
+        orbitals : array-like or dict, optional
+           only retain orbital currents for a subset of orbitals before calculating bond-current
+           Passed directly to `orbital_current`.
         uc : bool, optional
            whether the returned bond-currents are only in the unit-cell.
            If `True` this will return a sparse matrix of ``shape = (self.na, self.na)``,
@@ -1297,7 +1340,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         atom_current : the atomic current for each atom (scalar representation of bond-currents)
         vector_current : an atomic field current for each atom (Cartesian representation of bond-currents)
         """
-        Jij = self.orbital_current(elec, E, kavg, isc, only=only)
+        Jij = self.orbital_current(elec, E, kavg, isc, only=only, orbitals=orbitals)
 
         return self.bond_current_from_orbital(Jij, uc=uc, only=only)
 
@@ -1363,7 +1406,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
 
         return Ja
 
-    def atom_current(self, elec, E, kavg=True, activity=True):
+    def atom_current(self, elec, E, kavg=True, activity=True, orbitals=None):
         """ Atomic current of atoms
 
         Short hand function for calling `orbital_current` and `atom_current_from_orbital`.
@@ -1379,6 +1422,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            is returned
         activity: bool, optional
            whether the activity current is returned, see `atom_current_from_orbital` for details.
+        orbitals : array-like or dict, optional
+           only retain orbital currents for a subset of orbitals before calculating bond-current
+           Passed directly to `orbital_current`.
 
         See Also
         --------
@@ -1387,7 +1433,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         bond_current : the bond current (orbital current summed over orbitals)
         vector_current : an atomic field current for each atom (Cartesian representation of bond-currents)
         """
-        Jorb = self.orbital_current(elec, E, kavg)
+        Jorb = self.orbital_current(elec, E, kavg, orbitals=orbitals)
 
         return self.atom_current_from_orbital(Jorb, activity=activity)
 
@@ -1450,7 +1496,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
 
         return Ja
 
-    def vector_current(self, elec, E, kavg=True, only='+'):
+    def vector_current(self, elec, E, kavg=True, only='+', orbitals=None):
         """ Vector for each atom describing the *mean* path for the current travelling through the atom
 
         See `vector_current_from_bond` for details.
@@ -1472,6 +1518,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            average incoming and outgoing direction can be obtained with ``'all'``.
            In the last case the vector currents are divided by 2 to ensure the length
            of the vector is compatibile with the other options given a pristine system.
+        orbitals : array-like or dict, optional
+           only retain orbital currents for a subset of orbitals before calculating bond-current
+           Passed directly to `orbital_current`.
 
         Returns
         -------
@@ -1487,7 +1536,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         """
         # Imperative that we use the entire supercell structure to
         # retain vectors crossing the boundaries
-        Jab = self.bond_current(elec, E, kavg, only=only)
+        Jab = self.bond_current(elec, E, kavg, only=only, orbitals=orbitals)
 
         if only == 'all':
             # When we divide by two one can *always* compare the bulk
@@ -1498,7 +1547,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
 
         return self.vector_current_from_bond(Jab)
 
-    def density_matrix(self, E, kavg=True, isc=None, geometry=None):
+    def density_matrix(self, E, kavg=True, isc=None, orbitals=None, geometry=None):
         r""" Density matrix from the Green function at energy `E` (1/eV)
 
         The density matrix can be used to calculate the LDOS in real-space.
@@ -1526,6 +1575,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned density matrix from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all density matrix elements for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain density matrix elements for a subset of orbitals, all
+           other are set to 0.
         geometry: Geometry, optional
            geometry that will be associated with the density matrix. By default the
            geometry contained in this file will be used. However, then the
@@ -1542,9 +1594,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         DensityMatrix
             object containing the Geometry and the density matrix elements
         """
-        return self.Adensity_matrix(None, E, kavg, isc, geometry=geometry)
+        return self.Adensity_matrix(None, E, kavg, isc, orbitals=orbitals, geometry=geometry)
 
-    def Adensity_matrix(self, elec, E, kavg=True, isc=None, geometry=None):
+    def Adensity_matrix(self, elec, E, kavg=True, isc=None, orbitals=None, geometry=None):
         r""" Spectral function density matrix at energy `E` (1/eV)
 
         The density matrix can be used to calculate the LDOS in real-space.
@@ -1574,6 +1626,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned density matrix from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all density matrix elements for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain density matrix elements for a subset of orbitals, all
+           other are set to 0.
         geometry: Geometry, optional
            geometry that will be associated with the density matrix. By default the
            geometry contained in this file will be used. However, then the
@@ -1590,7 +1645,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         DensityMatrix
             object containing the Geometry and the density matrix elements
         """
-        dm = self._sparse_data('DM', elec, E, kavg, isc) * eV2Ry
+        dm = self._sparse_data('DM', elec, E, kavg, isc, orbitals) * eV2Ry
         # Now create the density matrix object
         geom = self.geometry
         if geometry is None:
@@ -1601,7 +1656,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
             DM = DensityMatrix.fromsp(geometry, dm)
         return DM
 
-    def orbital_COOP(self, E, kavg=True, isc=None):
+    def orbital_COOP(self, E, kavg=True, isc=None, orbitals=None):
         r""" Orbital COOP analysis of the Green function
 
         This will return a sparse matrix, see ``scipy.sparse.csr_matrix`` for details.
@@ -1642,6 +1697,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COOP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COOP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COOP matrix elements for a subset of orbitals, all
+           other are set to 0.
 
         Examples
         --------
@@ -1663,9 +1721,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         orbital_ACOHP : orbital resolved COHP analysis of the spectral function
         atom_ACOHP : atomic COHP analysis of the spectral function
         """
-        return self.orbital_ACOOP(None, E, kavg, isc)
+        return self.orbital_ACOOP(None, E, kavg, isc, orbitals)
 
-    def orbital_ACOOP(self, elec, E, kavg=True, isc=None):
+    def orbital_ACOOP(self, elec, E, kavg=True, isc=None, orbitals=None):
         r""" Orbital COOP analysis of the spectral function
 
         This will return a sparse matrix, see `~scipy.sparse.csr_matrix` for details.
@@ -1707,6 +1765,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COOP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COOP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COOP matrix elements for a subset of orbitals, all
+           other are set to 0.
 
         Examples
         --------
@@ -1728,7 +1789,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         orbital_ACOHP : orbital resolved COHP analysis of the spectral function
         atom_ACOHP : atomic COHP analysis of the spectral function
         """
-        COOP = self._sparse_data('COOP', elec, E, kavg, isc) * eV2Ry
+        COOP = self._sparse_data('COOP', elec, E, kavg, isc, orbitals) * eV2Ry
         return COOP
 
     def atom_COOP_from_orbital(self, COOP, uc=False):
@@ -1759,7 +1820,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         COOP.sum_duplicates()
         return COOP
 
-    def atom_COOP(self, E, kavg=True, isc=None, uc=False):
+    def atom_COOP(self, E, kavg=True, isc=None, orbitals=None, uc=False):
         r""" Atomic COOP curve of the Green function
 
         Parameters
@@ -1775,6 +1836,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COOP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COOP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COOP matrix elements for a subset of orbitals, all
+           other are set to 0.
         uc : bool, optional
            whether the returned COOP are only in the unit-cell.
            If ``True`` this will return a sparse matrix of ``shape = (self.na, self.na)``,
@@ -1788,9 +1852,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         atom_ACOOP : atomic COOP analysis of the spectral function
         atom_COHP : atomic COHP analysis of the Green function
         """
-        return self.atom_ACOOP(None, E, kavg, isc, uc)
+        return self.atom_ACOOP(None, E, kavg, isc, orbitals, uc)
 
-    def atom_ACOOP(self, elec, E, kavg=True, isc=None, uc=False):
+    def atom_ACOOP(self, elec, E, kavg=True, isc=None, orbitals=None, uc=False):
         r""" Atomic COOP curve of the spectral function
 
         Parameters
@@ -1808,6 +1872,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COOP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COOP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COOP matrix elements for a subset of orbitals, all
+           other are set to 0.
         uc : bool, optional
            whether the returned COOP are only in the unit-cell.
            If ``True`` this will return a sparse matrix of ``shape = (self.na, self.na)``,
@@ -1821,10 +1888,10 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         atom_COOP : atomic COOP analysis of the Green function
         atom_ACOHP : atomic COHP analysis of the spectral function
         """
-        COOP = self.orbital_ACOOP(elec, E, kavg, isc)
+        COOP = self.orbital_ACOOP(elec, E, kavg, isc, orbitals)
         return self.atom_COOP_from_orbital(COOP, uc)
 
-    def orbital_COHP(self, E, kavg=True, isc=None):
+    def orbital_COHP(self, E, kavg=True, isc=None, orbitals=None):
         r""" Orbital resolved COHP analysis of the Green function
 
         This will return a sparse matrix, see ``scipy.sparse.csr_matrix`` for details.
@@ -1850,6 +1917,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COHP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COHP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COHP matrix elements for a subset of orbitals, all
+           other are set to 0.
 
         Examples
         --------
@@ -1868,9 +1938,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         orbital_ACOOP : orbital resolved COOP analysis of the spectral function
         atom_ACOOP : atomic COOP analysis of the spectral function
         """
-        return self.orbital_ACOHP(None, E, kavg, isc)
+        return self.orbital_ACOHP(None, E, kavg, isc, orbitals)
 
-    def orbital_ACOHP(self, elec, E, kavg=True, isc=None):
+    def orbital_ACOHP(self, elec, E, kavg=True, isc=None, orbitals=None):
         r""" Orbital resolved COHP analysis of the spectral function
 
         This will return a sparse matrix, see ``scipy.sparse.csr_matrix`` for details.
@@ -1898,6 +1968,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COHP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COHP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COHP matrix elements for a subset of orbitals, all
+           other are set to 0.
 
         See Also
         --------
@@ -1911,7 +1984,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         orbital_ACOOP : orbital resolved COOP analysis of the spectral function
         atom_ACOOP : atomic COOP analysis of the spectral function
         """
-        COHP = self._sparse_data('COHP', elec, E, kavg, isc)
+        COHP = self._sparse_data('COHP', elec, E, kavg, isc, orbitals)
         return COHP
 
     def atom_COHP_from_orbital(self, COHP, uc=False):
@@ -1940,7 +2013,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         """
         return self.atom_COOP_from_orbital(COHP, uc)
 
-    def atom_COHP(self, E, kavg=True, isc=None, uc=False):
+    def atom_COHP(self, E, kavg=True, isc=None, orbitals=None, uc=False):
         r""" Atomic COHP curve of the Green function
 
         Parameters
@@ -1956,6 +2029,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COHP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COHP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COHP matrix elements for a subset of orbitals, all
+           other are set to 0.
         uc : bool, optional
            whether the returned COHP are only in the unit-cell.
            If ``True`` this will return a sparse matrix of ``shape = (self.na, self.na)``,
@@ -1969,9 +2045,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         atom_ACOHP : atomic COHP analysis of the spectral function
         atom_COOP : atomic COOP analysis of the Green function
         """
-        return self.atom_ACOHP(None, E, kavg, isc, uc)
+        return self.atom_ACOHP(None, E, kavg, isc, orbitals, uc)
 
-    def atom_ACOHP(self, elec, E, kavg=True, isc=None, uc=False):
+    def atom_ACOHP(self, elec, E, kavg=True, isc=None, orbitals=None, uc=False):
         r""" Atomic COHP curve of the spectral function
 
         Parameters
@@ -1989,6 +2065,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
            the returned COHP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COHP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COHP matrix elements for a subset of orbitals, all
+           other are set to 0.
         uc : bool, optional
            whether the returned COHP are only in the unit-cell.
            If ``True`` this will return a sparse matrix of ``shape = (self.na, self.na)``,
@@ -2002,7 +2081,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         atom_COHP : atomic COHP analysis of the Green function
         atom_ACOOP : atomic COOP analysis of the spectral function
         """
-        COHP = self.orbital_ACOHP(elec, E, kavg, isc)
+        COHP = self.orbital_ACOHP(elec, E, kavg, isc, orbitals)
         return self.atom_COHP_from_orbital(COHP, uc)
 
     def read_data(self, *args, **kwargs):
@@ -2079,9 +2158,9 @@ class tbtncSileTBtrans(_devncSileTBtrans):
             # However, we still do not know whether TRS is
             # applied.
             kpt = self.k
-            nA = len(np.unique(kpt[:, 0]))
-            nB = len(np.unique(kpt[:, 1]))
-            nC = len(np.unique(kpt[:, 2]))
+            nA = len(unique(kpt[:, 0]))
+            nB = len(unique(kpt[:, 1]))
+            nC = len(unique(kpt[:, 2]))
             prnt(("  - number of kpoints: {} <- "
                    "[ A = {} , B = {} , C = {} ] (time-reversal unknown)").format(self.nk, nA, nB, nC))
         prnt("  - energy range:")
@@ -2094,7 +2173,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
         else:
             prnt(f"     {Em:.5f} -- {EM:.5f} eV  [{dEm:.3f} -- {dEM:.3f} meV]")
         prnt("  - imaginary part (eta): {:.4f} meV".format(self.eta() * 1e3))
-        prnt("  - atoms with DOS (fortran indices):")
+        prnt("  - atoms with DOS (1-based):")
         prnt("     " + list2str(self.a_dev + 1))
         prnt("  - number of BTD blocks: {}".format(self.n_btd()))
         truefalse('DOS' in self.variables, "DOS Green function", ['TBT.DOS.Gf'])
@@ -2219,7 +2298,7 @@ class tbtncSileTBtrans(_devncSileTBtrans):
                     else:
                         E.append(range(ns._tbt.Eindex(begin), ns._tbt.Eindex(end)+1))
                 # Issuing unique also sorts the entries
-                ns._Erng = np.unique(_a.arrayi(E).flatten())
+                ns._Erng = unique(_a.arrayi(E).flatten())
         p.add_argument('--energy', '-E', action=ERange,
                        help="""Denote the sub-section of energies that are extracted: "-1:0,1:2" [eV]
 

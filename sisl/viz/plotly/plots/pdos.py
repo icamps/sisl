@@ -6,7 +6,7 @@ from ..plotutils import find_files, random_color
 from ..input_fields import (
     TextInput, SileInput, SwitchInput, ColorPicker, DropdownInput, CreatableDropdown,
     IntegerInput, FloatInput, RangeInput, RangeSlider, OrbitalQueries,
-    ProgramaticInput, Array1DInput, ListInput
+    ProgramaticInput, Array1DInput, ListInput, GeometryInput
 )
 from ..input_fields.range import ErangeInput
 
@@ -23,6 +23,9 @@ class PdosPlot(Plot):
     tbt_nc: tbtncSileTBtrans, optional
         This parameter explicitly sets a .TBT.nc file. Otherwise, the PDOS
         file is attempted to read from the fdf file
+    geometry: Geometry or sile (or path to file) that contains a geometry, optional
+        If this is passed, the geometry that has been read is ignored and
+        this one is used instead.
     Erange: array-like of shape (2,), optional
         Energy range where PDOS is displayed.
     nE: int, optional
@@ -89,6 +92,12 @@ class PdosPlot(Plot):
                 "placeholder": "Write the path to your TBT.nc file here...",
             },
             help = """This parameter explicitly sets a .TBT.nc file. Otherwise, the PDOS file is attempted to read from the fdf file """
+        ),
+
+        GeometryInput(
+            key = "geometry", name = "Geometry to force on the plot",
+            group="dataread",
+            help = """If this is passed, the geometry that has been read is ignored and this one is used instead."""
         ),
 
         ErangeInput(
@@ -287,7 +296,15 @@ class PdosPlot(Plot):
         self.PDOS = tbt_sile.DOS(sum=False).data.T
         self.E = tbt_sile.E
 
-        self.geometry = tbt_sile.read_geometry().sub(tbt_sile.a_dev)
+        read_geometry_kwargs = {}
+        # Try to get the basis information from the root_fdf, if possible
+        try:
+            read_geometry_kwargs["atom"] = self.get_sile("root_fdf").read_geometry(output=True).atoms
+        except (FileNotFoundError, TypeError):
+            pass
+
+        # Read the geometry from the TBT.nc file and get only the device part
+        self.geometry = tbt_sile.read_geometry(**read_geometry_kwargs).sub(tbt_sile.a_dev)
 
     @entry_point('hamiltonian')
     def _read_from_H(self, kgrid, kgrid_displ, Erange, nE, E0):
@@ -320,7 +337,7 @@ class PdosPlot(Plot):
             PDOS.append(self.mp.apply.average.PDOS(self.E, spin=spin, eta=True))
         self.PDOS = np.array(PDOS)
 
-    def _after_read(self):
+    def _after_read(self, geometry):
         """
         Creates the PDOS dataarray and updates the "requests" input field.
         """
@@ -340,6 +357,12 @@ class PdosPlot(Plot):
         # there is no spin resolution
         if self.PDOS.ndim == 2:
             self.PDOS = np.expand_dims(self.PDOS, axis=0)
+
+        # Set the geometry.
+        if geometry is not None:
+            if geometry.no != self.PDOS.shape[1]:
+                raise ValueError(f"The geometry provided contains {geometry.no} orbitals, while we have PDOS information of {self.PDOS.shape[1]}.")
+            self.geometry = geometry
 
         self.get_param('requests').update_options(self.geometry, self.spin)
 

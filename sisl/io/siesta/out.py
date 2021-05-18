@@ -535,6 +535,10 @@ class outSileSiesta(SileSiesta):
              external field energy
         ``xc``
              exchange-correlation energy
+        ``exchange``
+             exchange energy
+        ``correlation``
+             correlation energy
         ``bulkV``
              bulk-bias correction energy
         ``total``
@@ -583,6 +587,8 @@ class outSileSiesta(SileSiesta):
             "Eso": "spin_orbit",
             "Ext. field": "extE",
             "Exch.-corr.": "xc",
+            "Exch.": "exchange",
+            "Corr.": "correlation",
             "Ekinion": "ion.kinetic",
             "Ion-electron": "ion.electron",
             "Ion-ion": "ion.ion",
@@ -974,6 +980,10 @@ class outSileSiesta(SileSiesta):
             # Define the function that parses the charges
             def _parse_charge(line):
                 atom_idx, *vals, symbol = line.split()
+                # assert that this is a proper line
+                # this should catch cases where the following line of charge output
+                # is still parseable
+                atom_idx = int(atom_idx)
                 return list(map(float, vals))
 
             # first line is the header

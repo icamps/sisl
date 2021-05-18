@@ -148,7 +148,9 @@ class Geometry(SuperCellChild):
     # new Geometries
     #  Geometry.new("run.fdf") will invoke Geometry.read("run.fdf")
     new = ClassDispatcher("new",
+                          # both the instance and the type will use the type dispatcher
                           instance_dispatcher=TypeDispatcher,
+                          type_dispatcher=TypeDispatcher,
                           obj_getattr=lambda obj, key:
                           (_ for _ in ()).throw(
                               AttributeError((f"{obj}.new does not implement '{key}' "
@@ -326,7 +328,7 @@ class Geometry(SuperCellChild):
 
         - boolean array -> nonzero()[0]
         - name -> self._names[name]
-        - `Atom` -> (self.atoms.index(atom) == self.atoms.specie).nonzero()[0]
+        - `Atom` -> self.atoms.index(atom)
         - range/list/ndarray -> ndarray
         """
         if atoms is None:
@@ -345,7 +347,7 @@ class Geometry(SuperCellChild):
 
     @_sanitize_atoms.register(Atom)
     def _(self, atoms):
-        return (self.atoms.specie == self.atoms.index(atoms)).nonzero()[0]
+        return self.atoms.index(atoms)
 
     @_sanitize_atoms.register(AtomCategory)
     @_sanitize_atoms.register(GenericCategory)
@@ -365,21 +367,32 @@ class Geometry(SuperCellChild):
         # First do categorization
         return self._sanitize_atoms(AtomCategory.kw(**atoms))
 
-    def _sanitize_orbs(self, orbital):
+    @singledispatchmethod
+    def _sanitize_orbs(self, orbitals):
         """ Converts an `orbital` to index under given inputs
 
         `orbital` may be one of the following:
 
         - boolean array -> nonzero()[0]
+        - dict -> {atom: sub_orbital}
         """
-        if isinstance(orbital, ndarray) and orbital.dtype == bool_:
-            return np.flatnonzero(orbital)
-        # We shouldn't .ravel() since the calling routine may expect
-        # a 0D vector.
-        orbital = _a.asarrayi(orbital)
-        if orbital.ndim > 1:
-            raise ValueError('Indexing geometries with a multi-dimensional array is not supported, ensure 0D or 1D arrays.')
-        return orbital
+        if orbitals is None:
+            return _a.arangei(self.no)
+        return np.asarray(orbitals)
+
+    @_sanitize_orbs.register(ndarray)
+    def _(self, orbitals):
+        if orbitals.dtype == bool_:
+            return np.flatnonzero(orbitals)
+        return np.asarray(orbitals)
+
+    @_sanitize_orbs.register(dict)
+    def _(self, orbitals):
+        """ A dict has atoms as keys """
+        def conv(atom, orbs):
+            atom = self._sanitize_atoms(atom)
+            return np.add.outer(self.firsto[atom], orbs).ravel()
+        return np.concatenate(tuple(conv(atom, orbs) for atom, orbs in orbitals.items()))
 
     def as_primary(self, na_primary, ret_super=False):
         """ Try and reduce the geometry to the primary unit-cell comprising `na_primary` atoms
@@ -1722,7 +1735,7 @@ class Geometry(SuperCellChild):
         new = self.sub(_a.arangei(off, off + n), cell=sc)
         if not np.allclose(new.tile(seps, axis).xyz, self.xyz, rtol=rtol, atol=atol):
             st = 'The cut structure cannot be re-created by tiling'
-            st += '\nThe difference between the coordinates can be altered using rtol, atol'
+            st += '\nThe tolerance between the coordinates can be altered using rtol, atol'
             warn(st)
         return new
 
@@ -4535,6 +4548,42 @@ except:
     pass
 
 
+class GeometryNewpymatgenDispatcher(GeometryNewDispatcher):
+    def dispatch(self, struct, **kwargs):
+        """ Convert a ``pymatgen`` structure/molecule object into a `Geometry` """
+        from pymatgen.core import Structure
+
+        Z = []
+        xyz = []
+        for site in struct.sites:
+            Z.append(site.species)
+            xyz.append(site.coords)
+        xyz = np.array(xyz)
+
+        if isinstance(struct, Structure):
+            # we also have the lattice
+            cell = struct.lattice.matrix
+            nsc = [3, 3, 3] # really, this is unknown
+        else:
+            cell = xyz.max() - xyz.min(0) + 15.
+            nsc = [1, 1, 1]
+        sc = SuperCell(cell, nsc=nsc)
+        return self._obj(xyz, atoms=Z, sc=sc, **kwargs)
+Geometry.new.register("pymatgen", GeometryNewpymatgenDispatcher)
+
+# currently we can't ensure the pymatgen classes
+# to get it by type(). That requires pymatgen to be importable.
+try:
+    from pymatgen.core import Molecule as pymatgen_Molecule
+    from pymatgen.core import Structure as pymatgen_Structure
+    Geometry.new.register(pymatgen_Molecule, GeometryNewpymatgenDispatcher)
+    Geometry.new.register(pymatgen_Structure, GeometryNewpymatgenDispatcher)
+    # ensure we don't pollute name-space
+    del pymatgen_Molecule, pymatgen_Structure
+except:
+    pass
+
+
 # Bypass regular Geometry to be returned as is
 class GeometryNewGeometryDispatcher(GeometryNewDispatcher):
     def dispatch(self, geom):
@@ -4573,6 +4622,31 @@ class GeometryToAseDispatcher(GeometryToDispatcher):
 Geometry.to.register("ase", GeometryToAseDispatcher)
 
 
+class GeometryTopymatgenDispatcher(GeometryToDispatcher):
+    def dispatch(self, *args, **kwargs):
+        from pymatgen.core import Lattice, Structure, Molecule
+        from sisl.atom import PeriodicTable
+
+        # ensure we have an object
+        geom = self._obj
+        self._ensure_object(geom)
+        if len(args) > 0:
+            raise ValueError(f"{geom}.to.pymatgen only accepts keyword arguments")
+
+        lattice = Lattice(geom.cell)
+        # get atomic letters and coordinates
+        PT = PeriodicTable()
+        xyz = geom.xyz
+        species = [PT.Z_label(Z) for Z in geom.atoms.Z]
+
+        if all(self.nsc == 1):
+            # we define a molecule
+            return Molecule(species, xyz, **kwargs)
+        return Structure(lattice, species, xyz, coords_are_cartesian=True, **kwargs)
+
+Geometry.to.register("pymatgen", GeometryTopymatgenDispatcher)
+
+
 class GeometryToSileDispatcher(GeometryToDispatcher):
     def dispatch(self, *args, **kwargs):
         geom = self._obj
@@ -4602,7 +4676,7 @@ class GeometryToDataframeDispatcher(GeometryToDispatcher):
         # - valence q
         # - norbs
         data = {}
-        x, y, z = geom.xyz.T.tolist()
+        x, y, z = geom.xyz.T
         data["x"] = x
         data["y"] = y
         data["z"] = z
@@ -4615,7 +4689,7 @@ class GeometryToDataframeDispatcher(GeometryToDispatcher):
         data["norbitals"] = atoms.orbitals
 
         return pd.DataFrame(data)
-Geometry.to.register("df", GeometryToDataframeDispatcher)
+Geometry.to.register("dataframe", GeometryToDataframeDispatcher)
 
 
 @set_module("sisl")

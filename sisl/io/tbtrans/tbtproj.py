@@ -39,6 +39,8 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
             elec_mol_proj = elec_mol_proj.split('.')
         if len(elec_mol_proj) == 1:
             return elec_mol_proj
+        elif len(elec_mol_proj) != 3:
+            raise ValueError(f"Projection specification does not contain 3 fields: <electrode>.<molecule>.<projection> is required.")
         return [elec_mol_proj[i] for i in [1, 2, 0]]
 
     @property
@@ -103,7 +105,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
            *NOT* allowed with `orbital` keyword
         orbitals : array_like of int or bool, optional
            only return for a given set of orbitals (default to all)
-           *NOT* allowed with `atom` keyword
+           *NOT* allowed with `atoms` keyword
         sum : bool, optional
            whether the returned quantities are summed or returned *as is*, i.e. resolved per atom/orbital.
         norm : {'none', 'atom', 'orbital', 'all'}
@@ -156,7 +158,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
             elec_mol_proj_to = '.'.join(elec_mol_proj_to)
         return self._value_avg(elec_mol_proj_to + '.T.Eig', mol_proj_elec, kavg=kavg)
 
-    def Adensity_matrix(self, elec_mol_proj, E, kavg=True, isc=None, geometry=None):
+    def Adensity_matrix(self, elec_mol_proj, E, kavg=True, isc=None, orbitals=None, geometry=None):
         r""" Projected spectral function density matrix at energy `E` (1/eV)
 
         The projected density matrix can be used to calculate the LDOS in real-space.
@@ -186,6 +188,9 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
            the returned density matrix from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all density matrix elements for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain density matrix elements for a subset of orbitals, all
+           other are set to 0.
         geometry: Geometry, optional
            geometry that will be associated with the density matrix. By default the
            geometry contained in this file will be used. However, then the
@@ -198,7 +203,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
         DensityMatrix: the object containing the Geometry and the density matrix elements
         """
         mol_proj_elec = self._mol_proj_elec(elec_mol_proj)
-        dm = self._sparse_data('DM', mol_proj_elec, E, kavg, isc) * eV2Ry
+        dm = self._sparse_data('DM', mol_proj_elec, E, kavg, isc, orbitals) * eV2Ry
         # Now create the density matrix object
         geom = self.read_geometry()
         if geometry is None:
@@ -209,7 +214,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
             DM = DensityMatrix.fromsp(geometry, dm)
         return DM
 
-    def orbital_ACOOP(self, elec_mol_proj, E, kavg=True, isc=None):
+    def orbital_ACOOP(self, elec_mol_proj, E, kavg=True, isc=None, orbitals=None):
         r""" Orbital COOP analysis of the projected spectral function
 
         This will return a sparse matrix, see `~scipy.sparse.csr_matrix` for details.
@@ -251,6 +256,9 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
            the returned COOP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COOP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COOP matrix elements for a subset of orbitals, all
+           other are set to 0.
 
         Examples
         --------
@@ -269,10 +277,10 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
         atom_ACOHP : atomic COHP analysis of the projected spectral function
         """
         mol_proj_elec = self._mol_proj_elec(elec_mol_proj)
-        COOP = self._sparse_data('COOP', mol_proj_elec, E, kavg, isc) * eV2Ry
+        COOP = self._sparse_data('COOP', mol_proj_elec, E, kavg, isc, orbitals) * eV2Ry
         return COOP
 
-    def orbital_ACOHP(self, elec_mol_proj, E, kavg=True, isc=None):
+    def orbital_ACOHP(self, elec_mol_proj, E, kavg=True, isc=None, orbitals=None):
         r""" Orbital COHP analysis of the projected spectral function
 
         This will return a sparse matrix, see ``scipy.sparse.csr_matrix`` for details.
@@ -300,6 +308,9 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
            the returned COHP from unit-cell (``[None, None, None]``) to
            the given supercell, the default is all COHP for the supercell.
            To only get unit cell orbital currents, pass ``[0, 0, 0]``.
+        orbitals : array-like or dict, optional
+           only retain COHP matrix elements for a subset of orbitals, all
+           other are set to 0.
 
         See Also
         --------
@@ -310,7 +321,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
         atom_ACOOP : atomic COOP analysis of the projected spectral function
         """
         mol_proj_elec = self._mol_proj_elec(elec_mol_proj)
-        COHP = self._sparse_data('COHP', mol_proj_elec, E, kavg, isc)
+        COHP = self._sparse_data('COHP', mol_proj_elec, E, kavg, isc, orbitals)
         return COHP
 
     @default_ArgumentParser(description="Extract data from a TBT.Proj.nc file")
@@ -458,7 +469,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
         else:
             prnt(f"     {Em:.5f} -- {EM:.5f} eV  [{dEm:.3f} -- {dEM:.3f} meV]")
         prnt("  - imaginary part (eta): {:.4f} meV".format(self.eta() * 1e3))
-        prnt("  - atoms with DOS (fortran indices):")
+        prnt("  - atoms with DOS (1-based):")
         prnt("     " + list2str(self.a_dev + 1))
         prnt("  - number of BTD blocks: {}".format(self.n_btd()))
         if molecule is None:
@@ -484,7 +495,7 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
                 prnt(" " * ns + "-> {elec}".format(elec=elec_mol_proj[0]))
             elif len(elec_mol_proj) == 3:
                 elec2, mol2, proj2 = elec_mol_proj
-                prnt(" " * ns + f"-> {elec2}|{mol2}|{proj2}")
+                prnt(" " * ns + f"-> {elec2}.{mol2}.{proj2}")
 
         def _print_to_full(s, vars):
             if len(vars) == 0:
@@ -494,29 +505,47 @@ class tbtprojncSileTBtrans(tbtncSileTBtrans):
             for var in vars:
                 _print_to(ns, var)
 
+        eig_kwargs = {'precision': 4, 'threshold': 1e6, 'suffix': '', 'prefix': ''}
+
         # Print out information for each electrode
         for mol in mols:
             opt = {'mol1': mol}
             gmol = self.groups[mol]
             prnt()
             prnt(f"Molecule: {mol}")
-            prnt("  - molecule atoms (fortran indices):")
+            prnt("  - molecule atoms (1-based):")
             prnt("     " + list2str(gmol.variables['atom'][:]))
+
+            # molecule states and eigenvalues stored
+            lvls = gmol.variables['lvl'][:]
+            lvls = np.where(lvls < 0, lvls + 1, lvls) + gmol.HOMO_index
+            eigs = gmol.variables['eig'][:] * Ry2eV
+            prnt(f"  - state indices (1-based) (total={lvls.size}):")
+            prnt("     " + list2str(lvls))
+            prnt("  - state eigenvalues (eV):")
+            prnt("     " + np.array2string(eigs[lvls-1], **eig_kwargs)[1:-1])
 
             projs = self.projections(mol)
             prnt("  - number of projections: {}".format(len(projs)))
             for proj in projs:
                 opt['proj1'] = proj
                 gproj = gmol.groups[proj]
-                prnt("    > Projection: {mol1}|{proj1}".format(**opt))
-                prnt("      - number of states: {}".format(len(gproj.dimensions['nlvl'])))
+                prnt("    > Projection: {mol1}.{proj1}".format(**opt))
+                # Also pretty print the eigenvalues associated with these
+                lvls = gproj.variables['lvl'][:]
+                lvls = np.where(lvls < 0, lvls + 1, lvls) + gmol.HOMO_index
+                prnt(f"      - state indices (1-based) (total={lvls.size}):")
+                prnt("         " + list2str(lvls))
+                prnt("      - state eigenvalues:")
+                prnt("         " + np.array2string(eigs[lvls-1], **eig_kwargs)[1:-1])
+
                 # Figure out the electrode projections
                 elecs = gproj.groups.keys()
                 for elec in elecs:
                     opt['elec1'] = elec
                     gelec = gproj.groups[elec]
                     vars = list(gelec.variables.keys()) # ensure a copy
-                    prnt("      > Electrode: {elec1}|{mol1}|{proj1}".format(**opt))
+                    prnt("      > Electrode: {elec1}.{mol1}.{proj1}".format(**opt))
 
                     # Loop and figure out what is in it.
                     if 'ADOS' in vars:

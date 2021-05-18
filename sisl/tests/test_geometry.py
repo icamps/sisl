@@ -1,13 +1,16 @@
 import pytest
-
+import os.path as osp
 import itertools
 import math as m
+
 import numpy as np
 
 import sisl.geom as sisl_geom
 from sisl import SislWarning, SislError
 from sisl import Cube, Sphere
 from sisl import Geometry, Atom, SuperCell
+
+_dir = osp.join('sisl')
 
 
 @pytest.fixture
@@ -1294,10 +1297,18 @@ class TestGeometry:
         from_ase = gr.new(to_ase)
         assert gr.equal(from_ase, R=False)
 
+    def test_geometry_pymatgen_to(self):
+        pytest.importorskip("pymatgen", reason="pymatgen not available")
+        gr = sisl_geom.graphene()
+        to_pymatgen = gr.to.pymatgen()
+        from_pymatgen = gr.new(to_pymatgen)
+        assert gr.equal(from_pymatgen, R=False)
+        # TODO add test for Molecule as well (cell will then be different)
+
     def test_geometry_pandas_to(self):
         pytest.importorskip("pandas", reason="pandas not available")
         gr = sisl_geom.graphene()
-        df = gr.to.df()
+        df = gr.to.dataframe()
         assert np.allclose(df["x"], gr.xyz[:, 0])
         assert np.allclose(df["y"], gr.xyz[:, 1])
         assert np.allclose(df["z"], gr.xyz[:, 2])
@@ -1475,3 +1486,33 @@ def test_geometry_sanitize_atom():
                        bi._sanitize_atoms(list_01))
     assert np.allclose(bi._sanitize_atoms(ndarray_01),
                        bi._sanitize_atoms(list_01))
+
+
+def test_geometry_sanitize_orbs():
+    bot = Atom(6, [1, 2, 3])
+    top = [Atom(5, [1, 2]), Atom(7, [1, 2])]
+
+    bi = sisl_geom.bilayer(bottom_atoms=bot, top_atoms=top).tile(2, 0).repeat(2, 1)
+
+    C_idx = (bi.atoms.Z == 6).nonzero()[0]
+    assert np.allclose(bi._sanitize_orbs({bot: [0]}), bi.firsto[C_idx])
+    assert np.allclose(bi._sanitize_orbs({bot: 1}), bi.firsto[C_idx] + 1)
+    assert np.allclose(bi._sanitize_orbs({bot: [1, 2]}), np.add.outer(bi.firsto[C_idx], [1, 2]).ravel())
+
+
+def test_geometry_new_xyz(sisl_tmp):
+    # test that Geometry.new works
+    out = sisl_tmp('out.xyz', _dir)
+    C = Atom[6]
+    gr = sisl_geom.graphene(atoms=C)
+    # writing doesn't save orbital information, so we force
+    # an empty atom
+    gr.write(out)
+
+    gr2 = Geometry.new(out)
+    assert np.allclose(gr.xyz, gr2.xyz)
+    assert gr == gr2
+
+    gr2 = gr.new(out)
+    assert np.allclose(gr.xyz, gr2.xyz)
+    assert gr == gr2
