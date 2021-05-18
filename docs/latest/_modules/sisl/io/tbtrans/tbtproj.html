@@ -229,6 +229,8 @@
             <span class="n">elec_mol_proj</span> <span class="o">=</span> <span class="n">elec_mol_proj</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elec_mol_proj</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">elec_mol_proj</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">elec_mol_proj</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Projection specification does not contain 3 fields: &lt;electrode&gt;.&lt;molecule&gt;.&lt;projection&gt; is required.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">elec_mol_proj</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
 
     <span class="nd">@property</span>
@@ -293,7 +295,7 @@
 <span class="sd">           *NOT* allowed with `orbital` keyword</span>
 <span class="sd">        orbitals : array_like of int or bool, optional</span>
 <span class="sd">           only return for a given set of orbitals (default to all)</span>
-<span class="sd">           *NOT* allowed with `atom` keyword</span>
+<span class="sd">           *NOT* allowed with `atoms` keyword</span>
 <span class="sd">        sum : bool, optional</span>
 <span class="sd">           whether the returned quantities are summed or returned *as is*, i.e. resolved per atom/orbital.</span>
 <span class="sd">        norm : {&#39;none&#39;, &#39;atom&#39;, &#39;orbital&#39;, &#39;all&#39;}</span>
@@ -346,7 +348,7 @@
             <span class="n">elec_mol_proj_to</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">elec_mol_proj_to</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value_avg</span><span class="p">(</span><span class="n">elec_mol_proj_to</span> <span class="o">+</span> <span class="s1">&#39;.T.Eig&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="n">kavg</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="tbtprojncSileTBtrans.Adensity_matrix"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.tbtrans.tbtprojncSileTBtrans.html#sisl.io.tbtrans.tbtprojncSileTBtrans.Adensity_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">Adensity_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elec_mol_proj</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="tbtprojncSileTBtrans.Adensity_matrix"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.tbtrans.tbtprojncSileTBtrans.html#sisl.io.tbtrans.tbtprojncSileTBtrans.Adensity_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">Adensity_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elec_mol_proj</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Projected spectral function density matrix at energy `E` (1/eV)</span>
 
 <span class="sd">        The projected density matrix can be used to calculate the LDOS in real-space.</span>
@@ -376,6 +378,9 @@
 <span class="sd">           the returned density matrix from unit-cell (``[None, None, None]``) to</span>
 <span class="sd">           the given supercell, the default is all density matrix elements for the supercell.</span>
 <span class="sd">           To only get unit cell orbital currents, pass ``[0, 0, 0]``.</span>
+<span class="sd">        orbitals : array-like or dict, optional</span>
+<span class="sd">           only retain density matrix elements for a subset of orbitals, all</span>
+<span class="sd">           other are set to 0.</span>
 <span class="sd">        geometry: Geometry, optional</span>
 <span class="sd">           geometry that will be associated with the density matrix. By default the</span>
 <span class="sd">           geometry contained in this file will be used. However, then the</span>
@@ -388,7 +393,7 @@
 <span class="sd">        DensityMatrix: the object containing the Geometry and the density matrix elements</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol_proj_elec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mol_proj_elec</span><span class="p">(</span><span class="n">elec_mol_proj</span><span class="p">)</span>
-        <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sparse_data</span><span class="p">(</span><span class="s1">&#39;DM&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="p">,</span> <span class="n">isc</span><span class="p">)</span> <span class="o">*</span> <span class="n">eV2Ry</span>
+        <span class="n">dm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sparse_data</span><span class="p">(</span><span class="s1">&#39;DM&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="p">,</span> <span class="n">isc</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span> <span class="o">*</span> <span class="n">eV2Ry</span>
         <span class="c1"># Now create the density matrix object</span>
         <span class="n">geom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_geometry</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">geometry</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -399,7 +404,7 @@
             <span class="n">DM</span> <span class="o">=</span> <span class="n">DensityMatrix</span><span class="o">.</span><span class="n">fromsp</span><span class="p">(</span><span class="n">geometry</span><span class="p">,</span> <span class="n">dm</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">DM</span></div>
 
-<div class="viewcode-block" id="tbtprojncSileTBtrans.orbital_ACOOP"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.tbtrans.tbtprojncSileTBtrans.html#sisl.io.tbtrans.tbtprojncSileTBtrans.orbital_ACOOP">[docs]</a>    <span class="k">def</span> <span class="nf">orbital_ACOOP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elec_mol_proj</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="tbtprojncSileTBtrans.orbital_ACOOP"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.tbtrans.tbtprojncSileTBtrans.html#sisl.io.tbtrans.tbtprojncSileTBtrans.orbital_ACOOP">[docs]</a>    <span class="k">def</span> <span class="nf">orbital_ACOOP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elec_mol_proj</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Orbital COOP analysis of the projected spectral function</span>
 
 <span class="sd">        This will return a sparse matrix, see `~scipy.sparse.csr_matrix` for details.</span>
@@ -441,6 +446,9 @@
 <span class="sd">           the returned COOP from unit-cell (``[None, None, None]``) to</span>
 <span class="sd">           the given supercell, the default is all COOP for the supercell.</span>
 <span class="sd">           To only get unit cell orbital currents, pass ``[0, 0, 0]``.</span>
+<span class="sd">        orbitals : array-like or dict, optional</span>
+<span class="sd">           only retain COOP matrix elements for a subset of orbitals, all</span>
+<span class="sd">           other are set to 0.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
@@ -459,10 +467,10 @@
 <span class="sd">        atom_ACOHP : atomic COHP analysis of the projected spectral function</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol_proj_elec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mol_proj_elec</span><span class="p">(</span><span class="n">elec_mol_proj</span><span class="p">)</span>
-        <span class="n">COOP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sparse_data</span><span class="p">(</span><span class="s1">&#39;COOP&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="p">,</span> <span class="n">isc</span><span class="p">)</span> <span class="o">*</span> <span class="n">eV2Ry</span>
+        <span class="n">COOP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sparse_data</span><span class="p">(</span><span class="s1">&#39;COOP&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="p">,</span> <span class="n">isc</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span> <span class="o">*</span> <span class="n">eV2Ry</span>
         <span class="k">return</span> <span class="n">COOP</span></div>
 
-<div class="viewcode-block" id="tbtprojncSileTBtrans.orbital_ACOHP"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.tbtrans.tbtprojncSileTBtrans.html#sisl.io.tbtrans.tbtprojncSileTBtrans.orbital_ACOHP">[docs]</a>    <span class="k">def</span> <span class="nf">orbital_ACOHP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elec_mol_proj</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="tbtprojncSileTBtrans.orbital_ACOHP"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.tbtrans.tbtprojncSileTBtrans.html#sisl.io.tbtrans.tbtprojncSileTBtrans.orbital_ACOHP">[docs]</a>    <span class="k">def</span> <span class="nf">orbital_ACOHP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elec_mol_proj</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">isc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Orbital COHP analysis of the projected spectral function</span>
 
 <span class="sd">        This will return a sparse matrix, see ``scipy.sparse.csr_matrix`` for details.</span>
@@ -490,6 +498,9 @@
 <span class="sd">           the returned COHP from unit-cell (``[None, None, None]``) to</span>
 <span class="sd">           the given supercell, the default is all COHP for the supercell.</span>
 <span class="sd">           To only get unit cell orbital currents, pass ``[0, 0, 0]``.</span>
+<span class="sd">        orbitals : array-like or dict, optional</span>
+<span class="sd">           only retain COHP matrix elements for a subset of orbitals, all</span>
+<span class="sd">           other are set to 0.</span>
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
@@ -500,7 +511,7 @@
 <span class="sd">        atom_ACOOP : atomic COOP analysis of the projected spectral function</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mol_proj_elec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mol_proj_elec</span><span class="p">(</span><span class="n">elec_mol_proj</span><span class="p">)</span>
-        <span class="n">COHP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sparse_data</span><span class="p">(</span><span class="s1">&#39;COHP&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="p">,</span> <span class="n">isc</span><span class="p">)</span>
+        <span class="n">COHP</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sparse_data</span><span class="p">(</span><span class="s1">&#39;COHP&#39;</span><span class="p">,</span> <span class="n">mol_proj_elec</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">kavg</span><span class="p">,</span> <span class="n">isc</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">COHP</span></div>
 
     <span class="nd">@default_ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Extract data from a TBT.Proj.nc file&quot;</span><span class="p">)</span>
@@ -648,7 +659,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">prnt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     </span><span class="si">{</span><span class="n">Em</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">EM</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> eV  [</span><span class="si">{</span><span class="n">dEm</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">dEM</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> meV]&quot;</span><span class="p">)</span>
         <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - imaginary part (eta): </span><span class="si">{:.4f}</span><span class="s2"> meV&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eta</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1e3</span><span class="p">))</span>
-        <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - atoms with DOS (fortran indices):&quot;</span><span class="p">)</span>
+        <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - atoms with DOS (1-based):&quot;</span><span class="p">)</span>
         <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;     &quot;</span> <span class="o">+</span> <span class="n">list2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a_dev</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
         <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - number of BTD blocks: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_btd</span><span class="p">()))</span>
         <span class="k">if</span> <span class="n">molecule</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -674,7 +685,7 @@
                 <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">ns</span> <span class="o">+</span> <span class="s2">&quot;-&gt; </span><span class="si">{elec}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">elec</span><span class="o">=</span><span class="n">elec_mol_proj</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">elec_mol_proj</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="n">elec2</span><span class="p">,</span> <span class="n">mol2</span><span class="p">,</span> <span class="n">proj2</span> <span class="o">=</span> <span class="n">elec_mol_proj</span>
-                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">ns</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;-&gt; </span><span class="si">{</span><span class="n">elec2</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">mol2</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">proj2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">*</span> <span class="n">ns</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;-&gt; </span><span class="si">{</span><span class="n">elec2</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">mol2</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">proj2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_print_to_full</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">vars</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -684,29 +695,47 @@
             <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>
                 <span class="n">_print_to</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
 
+        <span class="n">eig_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;precision&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;threshold&#39;</span><span class="p">:</span> <span class="mf">1e6</span><span class="p">,</span> <span class="s1">&#39;suffix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;prefix&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
+
         <span class="c1"># Print out information for each electrode</span>
         <span class="k">for</span> <span class="n">mol</span> <span class="ow">in</span> <span class="n">mols</span><span class="p">:</span>
             <span class="n">opt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mol1&#39;</span><span class="p">:</span> <span class="n">mol</span><span class="p">}</span>
             <span class="n">gmol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">mol</span><span class="p">]</span>
             <span class="n">prnt</span><span class="p">()</span>
             <span class="n">prnt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Molecule: </span><span class="si">{</span><span class="n">mol</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - molecule atoms (fortran indices):&quot;</span><span class="p">)</span>
+            <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - molecule atoms (1-based):&quot;</span><span class="p">)</span>
             <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;     &quot;</span> <span class="o">+</span> <span class="n">list2str</span><span class="p">(</span><span class="n">gmol</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;atom&#39;</span><span class="p">][:]))</span>
+
+            <span class="c1"># molecule states and eigenvalues stored</span>
+            <span class="n">lvls</span> <span class="o">=</span> <span class="n">gmol</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lvl&#39;</span><span class="p">][:]</span>
+            <span class="n">lvls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lvls</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lvls</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lvls</span><span class="p">)</span> <span class="o">+</span> <span class="n">gmol</span><span class="o">.</span><span class="n">HOMO_index</span>
+            <span class="n">eigs</span> <span class="o">=</span> <span class="n">gmol</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;eig&#39;</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">Ry2eV</span>
+            <span class="n">prnt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  - state indices (1-based) (total=</span><span class="si">{</span><span class="n">lvls</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+            <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;     &quot;</span> <span class="o">+</span> <span class="n">list2str</span><span class="p">(</span><span class="n">lvls</span><span class="p">))</span>
+            <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - state eigenvalues (eV):&quot;</span><span class="p">)</span>
+            <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;     &quot;</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span><span class="n">eigs</span><span class="p">[</span><span class="n">lvls</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">eig_kwargs</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
             <span class="n">projs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projections</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span>
             <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;  - number of projections: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">projs</span><span class="p">)))</span>
             <span class="k">for</span> <span class="n">proj</span> <span class="ow">in</span> <span class="n">projs</span><span class="p">:</span>
                 <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;proj1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj</span>
                 <span class="n">gproj</span> <span class="o">=</span> <span class="n">gmol</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">proj</span><span class="p">]</span>
-                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;    &gt; Projection: </span><span class="si">{mol1}</span><span class="s2">|</span><span class="si">{proj1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">))</span>
-                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;      - number of states: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gproj</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="s1">&#39;nlvl&#39;</span><span class="p">])))</span>
+                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;    &gt; Projection: </span><span class="si">{mol1}</span><span class="s2">.</span><span class="si">{proj1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">))</span>
+                <span class="c1"># Also pretty print the eigenvalues associated with these</span>
+                <span class="n">lvls</span> <span class="o">=</span> <span class="n">gproj</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lvl&#39;</span><span class="p">][:]</span>
+                <span class="n">lvls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lvls</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">lvls</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">lvls</span><span class="p">)</span> <span class="o">+</span> <span class="n">gmol</span><span class="o">.</span><span class="n">HOMO_index</span>
+                <span class="n">prnt</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;      - state indices (1-based) (total=</span><span class="si">{</span><span class="n">lvls</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">):&quot;</span><span class="p">)</span>
+                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;         &quot;</span> <span class="o">+</span> <span class="n">list2str</span><span class="p">(</span><span class="n">lvls</span><span class="p">))</span>
+                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;      - state eigenvalues:&quot;</span><span class="p">)</span>
+                <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;         &quot;</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array2string</span><span class="p">(</span><span class="n">eigs</span><span class="p">[</span><span class="n">lvls</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">eig_kwargs</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
                 <span class="c1"># Figure out the electrode projections</span>
                 <span class="n">elecs</span> <span class="o">=</span> <span class="n">gproj</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">elec</span> <span class="ow">in</span> <span class="n">elecs</span><span class="p">:</span>
                     <span class="n">opt</span><span class="p">[</span><span class="s1">&#39;elec1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">elec</span>
                     <span class="n">gelec</span> <span class="o">=</span> <span class="n">gproj</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">elec</span><span class="p">]</span>
                     <span class="nb">vars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">gelec</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="c1"># ensure a copy</span>
-                    <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;      &gt; Electrode: </span><span class="si">{elec1}</span><span class="s2">|</span><span class="si">{mol1}</span><span class="s2">|</span><span class="si">{proj1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">))</span>
+                    <span class="n">prnt</span><span class="p">(</span><span class="s2">&quot;      &gt; Electrode: </span><span class="si">{elec1}</span><span class="s2">.</span><span class="si">{mol1}</span><span class="s2">.</span><span class="si">{proj1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">opt</span><span class="p">))</span>
 
                     <span class="c1"># Loop and figure out what is in it.</span>
                     <span class="k">if</span> <span class="s1">&#39;ADOS&#39;</span> <span class="ow">in</span> <span class="nb">vars</span><span class="p">:</span>

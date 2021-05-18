@@ -1201,6 +1201,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tag</span> <span class="o">=</span> <span class="n">tag</span></div>
 
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">((</span><span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tag</span><span class="p">),</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mass</span><span class="p">),</span>
+                     <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Z</span><span class="p">),</span> <span class="o">*</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">orb</span><span class="p">)</span> <span class="k">for</span> <span class="n">orb</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_orbitals</span><span class="p">)))</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Atomic number &quot;&quot;&quot;</span>
@@ -1691,6 +1695,10 @@
         <span class="k">return</span> <span class="n">atoms</span></div>
 
 <div class="viewcode-block" id="Atoms.index"><a class="viewcode-back" href="../../api/generated/sisl.Atoms.html#sisl.Atoms.index">[docs]</a>    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return the indices of the atom object &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_specie</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom</span><span class="p">))</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Atoms.specie_index"><a class="viewcode-back" href="../../api/generated/sisl.Atoms.html#sisl.Atoms.specie_index">[docs]</a>    <span class="k">def</span> <span class="nf">specie_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return the species index of the atom object &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom</span><span class="p">,</span> <span class="n">Atom</span><span class="p">):</span>
             <span class="n">atom</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span>
@@ -1829,8 +1837,8 @@
 
 <div class="viewcode-block" id="Atoms.swap_atom"><a class="viewcode-back" href="../../api/generated/sisl.Atoms.html#sisl.Atoms.swap_atom">[docs]</a>    <span class="k">def</span> <span class="nf">swap_atom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Swap specie index positions &quot;&quot;&quot;</span>
-        <span class="n">speciea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">specieb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="n">speciea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="n">specieb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 
         <span class="n">idx_a</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_specie</span> <span class="o">==</span> <span class="n">speciea</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">idx_b</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_specie</span> <span class="o">==</span> <span class="n">specieb</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
@@ -1862,7 +1870,7 @@
         <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">_specie</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">atom</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">s</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="n">s</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">atom</span><span class="p">)</span>
                 <span class="n">atoms</span><span class="o">.</span><span class="n">_atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
@@ -1907,7 +1915,7 @@
                 <span class="n">s</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">atom</span><span class="p">)</span>
                 <span class="n">atoms</span><span class="o">.</span><span class="n">_atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">s</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">atoms</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
             <span class="n">spec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">spec</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
         <span class="n">atoms</span><span class="o">.</span><span class="n">_specie</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">_specie</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
         <span class="n">atoms</span><span class="o">.</span><span class="n">_update_orbitals</span><span class="p">()</span>
@@ -2002,7 +2010,7 @@
         <span class="k">for</span> <span class="n">atom</span><span class="p">,</span> <span class="n">s_i</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">atom</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_specie</span><span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="n">s_i</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_specie</span><span class="p">[</span><span class="n">key</span><span class="p">[</span><span class="n">s_i</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_orbitals</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Atoms.replace"><a class="viewcode-back" href="../../api/generated/sisl.Atoms.html#sisl.Atoms.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">atom</span><span class="p">):</span>
@@ -2031,7 +2039,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_atom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
 
         <span class="c1"># Get specie index of the atom</span>
-        <span class="n">specie</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
+        <span class="n">specie</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom</span><span class="p">)</span>
 
         <span class="c1"># Loop unique species and check that we have the correct number of orbitals</span>
         <span class="k">for</span> <span class="n">ius</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_specie</span><span class="p">[</span><span class="n">index</span><span class="p">]):</span>
@@ -2074,9 +2082,9 @@
                              <span class="s1">&#39;be of the class Atom&#39;</span><span class="p">)</span>
 
         <span class="c1"># Get index of `atom_from`</span>
-        <span class="n">idx_from</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom_from</span><span class="p">)</span>
+        <span class="n">idx_from</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom_from</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">idx_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">atom_to</span><span class="p">)</span>
+            <span class="n">idx_to</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">atom_to</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">idx_from</span> <span class="o">==</span> <span class="n">idx_to</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 

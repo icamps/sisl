@@ -135,6 +135,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../physics.html#low-level-objects">Low level objects</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../mixing.html">Mixing self-consistent quantities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../unit_constant.html">Units and constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/index.html">Input/Output</a></li>
@@ -318,7 +319,7 @@ This is a keyword-only argument.</p></li>
 <td><p>Expand the density matrix to the charge density on a grid</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.edges" title="sisl.physics.DensityMatrix.edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges</span></code></a>([atoms, exclude, orbitals])</p></td>
-<td><p>Retrieve edges (connections) of a given <em class="xref py py-obj">atom</em> or list of <em class="xref py py-obj">atom</em>’s</p></td>
+<td><p>Retrieve edges (connections) for all <em class="xref py py-obj">atoms</em></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.eig" title="sisl.physics.DensityMatrix.eig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eig</span></code></a>([k, gauge, eigvals_only])</p></td>
 <td><p>Returns the eigenvalues of the physical quantity (using the non-Hermitian solver)</p></td>
@@ -363,10 +364,10 @@ This is a keyword-only argument.</p></li>
 <td><p>Reads density matrix from <em class="xref py py-obj">Sile</em> using <em class="xref py py-obj">read_density_matrix</em>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.remove" title="sisl.physics.DensityMatrix.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(atoms)</p></td>
-<td><p>Remove a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atom</em></p></td>
+<td><p>Remove a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atoms</em></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.remove_orbital" title="sisl.physics.DensityMatrix.remove_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_orbital</span></code></a>(atoms, orbitals)</p></td>
-<td><p>Remove a subset of orbitals on <em class="xref py py-obj">atom</em> according to <em class="xref py py-obj">orbital</em></p></td>
+<td><p>Remove a subset of orbitals on <em class="xref py py-obj">atoms</em> according to <em class="xref py py-obj">orbitals</em></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.repeat" title="sisl.physics.DensityMatrix.repeat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repeat</span></code></a>(reps, axis)</p></td>
 <td><p>Create a repeated sparse orbital object, equivalent to <em class="xref py py-obj">Geometry.repeat</em></p></td>
@@ -393,10 +394,10 @@ This is a keyword-only argument.</p></li>
 <td><p>Compare two sparse objects and check whether they have the same entries.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.sub" title="sisl.physics.DensityMatrix.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(atoms)</p></td>
-<td><p>Create a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atom</em></p></td>
+<td><p>Create a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atoms</em></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.sub_orbital" title="sisl.physics.DensityMatrix.sub_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_orbital</span></code></a>(atoms, orbitals)</p></td>
-<td><p>Retain only a subset of the orbitals on <em class="xref py py-obj">atom</em> according to <em class="xref py py-obj">orbital</em></p></td>
+<td><p>Retain only a subset of the orbitals on <em class="xref py py-obj">atoms</em> according to <em class="xref py py-obj">orbitals</em></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.swap" title="sisl.physics.DensityMatrix.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(a, b)</p></td>
 <td><p>Swaps atoms in the sparse geometry to obtain a new order of atoms</p></td>
@@ -408,7 +409,7 @@ This is a keyword-only argument.</p></li>
 <td><p>Convert the sparse object (without data) to a new sparse object with equivalent but reduced sparse pattern</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.tocsr" title="sisl.physics.DensityMatrix.tocsr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tocsr</span></code></a>([dim, isc])</p></td>
-<td><p>Return a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for the specified dimension</p></td>
+<td><p>Return a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for the specified dimension</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.DensityMatrix.transpose" title="sisl.physics.DensityMatrix.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>([hermitian, spin, sort])</p></td>
 <td><p>A transpose copy of this object, possibly apply the Hermitian conjugate as well</p></td>
@@ -1103,7 +1104,7 @@ the tolerance, they will be treated as strictly zeros.</p></li>
 <dl class="py method">
 <dt id="sisl.physics.DensityMatrix.edges">
 <code class="sig-name descname">edges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atoms</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.edges" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve edges (connections) of a given <em class="xref py py-obj">atom</em> or list of <em class="xref py py-obj">atom</em>’s</p>
+<dd><p>Retrieve edges (connections) for all <em class="xref py py-obj">atoms</em></p>
 <p>The returned edges are unique and sorted (see <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.unique.html#numpy.unique" title="(in NumPy v1.20)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.unique</span></code></a>) and are returned
 in supercell indices (i.e. <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">edge</span> <span class="pre">&lt;</span> <span class="pre">self.geometry.no_s</span></code>).</p>
 <dl class="field-list simple">
@@ -1209,7 +1210,7 @@ internal data-representation.</p>
 <dt id="sisl.physics.DensityMatrix.fromsp">
 <em class="property">classmethod </em><code class="sig-name descname">fromsp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">geometry</span></em>, <em class="sig-param"><span class="n">P</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.fromsp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a sparse model from a preset <em class="xref py py-obj">Geometry</em> and a list of sparse matrices</p>
-<p>The passed sparse matrices are in one of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html#module-scipy.sparse" title="(in SciPy v1.6.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.sparse</span></code></a> formats.</p>
+<p>The passed sparse matrices are in one of <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/sparse.html#module-scipy.sparse" title="(in SciPy v1.6.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.sparse</span></code></a> formats.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -1257,9 +1258,9 @@ of the class.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atoms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em>) – only loop on the non-zero elements coinciding with the orbitals
-on these atoms (not compatible with the <code class="docutils literal notranslate"><span class="pre">orbital</span></code> keyword)</p></li>
+on these atoms (not compatible with the <em class="xref py py-obj">orbitals</em> keyword)</p></li>
 <li><p><strong>orbitals</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em>) – only loop on the non-zero elements coinciding with the orbital
-(not compatible with the <code class="docutils literal notranslate"><span class="pre">atom</span></code> keyword)</p></li>
+(not compatible with the <em class="xref py py-obj">atoms</em> keyword)</p></li>
 </ul>
 </dd>
 </dl>
@@ -1444,7 +1445,7 @@ if it is a string it will create a new sile using <em class="xref py py-obj">get
 <dl class="py method">
 <dt id="sisl.physics.DensityMatrix.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atoms</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.remove" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atom</em></p>
+<dd><p>Remove a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atoms</em></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Atom.html#sisl.Atom" title="sisl.Atom"><em>Atom</em></a>) – indices of removed atoms or Atom for direct removal of all atoms</p>
@@ -1466,21 +1467,23 @@ if it is a string it will create a new sile using <em class="xref py py-obj">get
 <dl class="py method">
 <dt id="sisl.physics.DensityMatrix.remove_orbital">
 <code class="sig-name descname">remove_orbital</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atoms</span></em>, <em class="sig-param"><span class="n">orbitals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.remove_orbital" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a subset of orbitals on <em class="xref py py-obj">atom</em> according to <em class="xref py py-obj">orbital</em></p>
+<dd><p>Remove a subset of orbitals on <em class="xref py py-obj">atoms</em> according to <em class="xref py py-obj">orbitals</em></p>
+<p>For more detailed examples, please see the equivalent (but opposite) method
+<a class="reference internal" href="#sisl.physics.DensityMatrix.sub_orbital" title="sisl.physics.DensityMatrix.sub_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_orbital</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Atom.html#sisl.Atom" title="sisl.Atom"><em>Atom</em></a>) – indices of atoms or <em class="xref py py-obj">Atom</em> that will be reduced in size according to <em class="xref py py-obj">orbital</em></p></li>
-<li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Orbital.html#sisl.Orbital" title="sisl.Orbital"><em>Orbital</em></a>) – indices of the orbitals on <em class="xref py py-obj">atom</em> that are removed from the sparse matrix.</p></li>
+<li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Atom.html#sisl.Atom" title="sisl.Atom"><em>Atom</em></a>) – indices of atoms or <em class="xref py py-obj">Atom</em> that will be reduced in size according to <em class="xref py py-obj">orbitals</em></p></li>
+<li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Orbital.html#sisl.Orbital" title="sisl.Orbital"><em>Orbital</em></a>) – indices of the orbitals on <em class="xref py py-obj">atoms</em> that are removed from the sparse matrix.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SparseOrbital</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># remove the second orbital on the 2nd atom</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># all other orbitals are retained</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">remove_orbital</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#sisl.physics.DensityMatrix.sub_orbital" title="sisl.physics.DensityMatrix.sub_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub_orbital</span></code></a></dt><dd><p>retaining a set of orbitals (see here for examples)</p>
+</dd>
+</dl>
 </div>
 </dd></dl>
 
@@ -1659,7 +1662,7 @@ the angles does not reflect a pure flip of spin in the <span class="math notrans
 <dl class="py method">
 <dt id="sisl.physics.DensityMatrix.sub">
 <code class="sig-name descname">sub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atoms</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.sub" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atom</em></p>
+<dd><p>Create a subset of this sparse matrix by only retaining the atoms corresponding to <em class="xref py py-obj">atoms</em></p>
 <p>Negative indices are wrapped and thus works, supercell atoms are also wrapped to the unit-cell.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1689,25 +1692,60 @@ the angles does not reflect a pure flip of spin in the <span class="math notrans
 <dl class="py method">
 <dt id="sisl.physics.DensityMatrix.sub_orbital">
 <code class="sig-name descname">sub_orbital</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atoms</span></em>, <em class="sig-param"><span class="n">orbitals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.sub_orbital" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retain only a subset of the orbitals on <em class="xref py py-obj">atom</em> according to <em class="xref py py-obj">orbital</em></p>
+<dd><p>Retain only a subset of the orbitals on <em class="xref py py-obj">atoms</em> according to <em class="xref py py-obj">orbitals</em></p>
 <p>This allows one to retain only a given subset of the sparse matrix elements.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Atom.html#sisl.Atom" title="sisl.Atom"><em>Atom</em></a>) – indices of atoms or <em class="xref py py-obj">Atom</em> that will be reduced in size according to <em class="xref py py-obj">orbital</em></p></li>
-<li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Orbital.html#sisl.Orbital" title="sisl.Orbital"><em>Orbital</em></a>) – indices of the orbitals on <em class="xref py py-obj">atom</em> that are retained in the sparse matrix, the list of
+<li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Atom.html#sisl.Atom" title="sisl.Atom"><em>Atom</em></a>) – indices of atoms or <em class="xref py py-obj">Atom</em> that will be reduced in size according to <em class="xref py py-obj">orbitals</em></p></li>
+<li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference internal" href="sisl.Orbital.html#sisl.Orbital" title="sisl.Orbital"><em>Orbital</em></a>) – indices of the orbitals on <em class="xref py py-obj">atoms</em> that are retained in the sparse matrix, the list of
 orbitals will be sorted. One cannot re-arrange matrix elements currently.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>Future implementations may allow one to re-arange orbitals using this method.</p>
+<p>When using this method the internal species list will be populated by another specie
+that is named after the orbitals removed. This is to distinguish different atoms.</p>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SparseOrbital</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># only retain the second orbital on the 2nd atom</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="c1"># all other orbitals are retained</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># a Carbon atom with 2 orbitals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C</span> <span class="o">=</span> <span class="n">sisl</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># an oxygen atom with 3 orbitals</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">O</span> <span class="o">=</span> <span class="n">sisl</span><span class="o">.</span><span class="n">Atom</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">2.4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">geometry</span> <span class="o">=</span> <span class="n">sisl</span><span class="o">.</span><span class="n">Geometry</span><span class="p">([[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">]],</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="n">C</span><span class="p">,</span> <span class="n">O</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">obj</span> <span class="o">=</span> <span class="n">SparseOrbital</span><span class="p">(</span><span class="n">geometry</span><span class="p">)</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># fill in obj data...</span>
 </pre></div>
+</div>
+<p>Now <code class="docutils literal notranslate"><span class="pre">obj</span></code> is a sparse geometry with 2 different species and 6 atoms (3 of each).
+They are ordered <code class="docutils literal notranslate"><span class="pre">[C,</span> <span class="pre">O,</span> <span class="pre">C,</span> <span class="pre">O,</span> <span class="pre">C,</span> <span class="pre">O]</span></code>. In the following we
+will note species that are different from the original by a <code class="docutils literal notranslate"><span class="pre">'</span></code> in the list.</p>
+<p>Retain 2nd orbital on the 2nd atom: <code class="docutils literal notranslate"><span class="pre">[C,</span> <span class="pre">O',</span> <span class="pre">C,</span> <span class="pre">O,</span> <span class="pre">C,</span> <span class="pre">O]</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retain 2nd orbital on 1st and 2nd atom: <code class="docutils literal notranslate"><span class="pre">[C',</span> <span class="pre">O',</span> <span class="pre">C,</span> <span class="pre">O,</span> <span class="pre">C,</span> <span class="pre">O]</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retain 2nd orbital on the 1st atom and 3rd orbital on 4th atom: <code class="docutils literal notranslate"><span class="pre">[C',</span> <span class="pre">O,</span> <span class="pre">C,</span> <span class="pre">O',</span> <span class="pre">C,</span> <span class="pre">O]</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retain 2nd orbital on all atoms equivalent to the first atom: <code class="docutils literal notranslate"><span class="pre">[C',</span> <span class="pre">O,</span> <span class="pre">C',</span> <span class="pre">O,</span> <span class="pre">C',</span> <span class="pre">O]</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retain 1st orbital on 1st atom, and 2nd orbital on 3rd and 5th atom: <code class="docutils literal notranslate"><span class="pre">[C',</span> <span class="pre">O,</span> <span class="pre">C'',</span> <span class="pre">O,</span> <span class="pre">C'',</span> <span class="pre">O]</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#sisl.physics.DensityMatrix.remove_orbital" title="sisl.physics.DensityMatrix.remove_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_orbital</span></code></a></dt><dd><p>removing a set of orbitals (opposite of this)</p>
+</dd>
+</dl>
 </div>
 </dd></dl>
 
@@ -1771,7 +1809,7 @@ to the new supercell by repeating them in blocks like the coordinates.</p>
 <dl class="py method">
 <dt id="sisl.physics.DensityMatrix.tocsr">
 <code class="sig-name descname">tocsr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dim</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.DensityMatrix.tocsr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for the specified dimension</p>
+<dd><p>Return a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for the specified dimension</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">

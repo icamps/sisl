@@ -242,12 +242,32 @@
 
 <div class="viewcode-block" id="outSileVASP.read_energy"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.vasp.outSileVASP.html#sisl.io.vasp.outSileVASP.read_energy">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">read_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Reads the energy specification from the  and energy(sigma-&gt;0) in units of eV</span>
+        <span class="sd">&quot;&quot;&quot; Reads the energy specification from OUTCAR and returns energy dictionary in units of eV</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The name convention in the dictionary is as follows:</span>
+<span class="sd">            OUTCAR string           Key</span>
+
+<span class="sd">            alpha Z        PSCENC = Z</span>
+<span class="sd">            Ewald energy   TEWEN  = Ewald</span>
+<span class="sd">            -Hartree energ DENC   = hartree</span>
+<span class="sd">            -exchange      EXHF   = xcHF</span>
+<span class="sd">            -V(xc)+E(xc)   XCENC  = xc</span>
+<span class="sd">            PAW double counting   = paw1 paw2</span>
+<span class="sd">            entropy T*S    EENTRO = entropy</span>
+<span class="sd">            eigenvalues    EBANDS = band</span>
+<span class="sd">            atomic energy  EATOM  = ion</span>
+<span class="sd">            Solvation  Ediel_sol  = solvation</span>
+
+<span class="sd">            free energy    TOTEN  = free</span>
+<span class="sd">            energy without entropy= total</span>
+<span class="sd">            energy(sigma-&gt;0)      = sigma0</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        all: bool, optional</span>
-<span class="sd">            return a list of energies from each step</span>
+<span class="sd">            return a list of energy dictionaries from each step</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

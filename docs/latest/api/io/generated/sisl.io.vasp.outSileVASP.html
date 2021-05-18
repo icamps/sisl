@@ -121,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../basic.html">Basic classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../default_geom.html">Common geometries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../physics.html">Physical objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mixing.html">Mixing self-consistent quantities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../unit_constant.html">Units and constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities.html">Utilities</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Input/Output</a><ul class="current">
@@ -280,7 +281,7 @@
 <td><p>Generic read method which should be overloaded in child-classes</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.vasp.outSileVASP.read_energy" title="sisl.io.vasp.outSileVASP.read_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_energy</span></code></a>([all])</p></td>
-<td><p>Reads the energy specification from the  and energy(sigma-&gt;0) in units of eV</p></td>
+<td><p>Reads the energy specification from OUTCAR and returns energy dictionary in units of eV</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.vasp.outSileVASP.write" title="sisl.io.vasp.outSileVASP.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Generic write method which should be overloaded in child-classes</p></td>
@@ -386,10 +387,28 @@ and call it with the remaining <code class="docutils literal notranslate"><span 
 <dl class="py method">
 <dt id="sisl.io.vasp.outSileVASP.read_energy">
 <code class="sig-name descname">read_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">all</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/vasp/out.html#outSileVASP.read_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.vasp.outSileVASP.read_energy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads the energy specification from the  and energy(sigma-&gt;0) in units of eV</p>
+<dd><p>Reads the energy specification from OUTCAR and returns energy dictionary in units of eV</p>
+<p class="rubric">Notes</p>
+<dl>
+<dt>The name convention in the dictionary is as follows:</dt><dd><p>OUTCAR string           Key</p>
+<p>alpha Z        PSCENC = Z
+Ewald energy   TEWEN  = Ewald
+-Hartree energ DENC   = hartree
+-exchange      EXHF   = xcHF
+-V(xc)+E(xc)   XCENC  = xc
+PAW double counting   = paw1 paw2
+entropy T*S    EENTRO = entropy
+eigenvalues    EBANDS = band
+atomic energy  EATOM  = ion
+Solvation  Ediel_sol  = solvation</p>
+<p>free energy    TOTEN  = free
+energy without entropy= total
+energy(sigma-&gt;0)      = sigma0</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>all</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – return a list of energies from each step</p>
+<dd class="field-odd"><p><strong>all</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – return a list of energy dictionaries from each step</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>PropertyDict</strong></p>

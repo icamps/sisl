@@ -581,18 +581,12 @@ connect the GUI to this address or send it to someone for sharing.
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-098a35bbfb5e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># Then add a new tab ( run help(session) to see all the available methods )</span>
-<span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg"> </span>session<span class="ansi-blue-fg">.</span>add_tab<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Tab added from jupyter&#34;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;add_tab&#39;
+&lt;sisl.viz.plotly.sessions.blank.BlankSession at 0x14b04a8fd640&gt;
 </pre></div></div>
 </div>
 <p>Do you see the magic?</p>
@@ -615,11 +609,25 @@ connect the GUI to this address or send it to someone for sharing.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-6-407dfcaf2973&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>session<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;emit&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 <p>Or use the magic of autosync:</p>
@@ -638,11 +646,32 @@ connect the GUI to this address or send it to someone for sharing.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-7-3fdc48805fd8&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>session<span class="ansi-blue-fg">.</span>autosync<span class="ansi-blue-fg">.</span>add_tab<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;This is syncing!&#34;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;autosync&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">with_changes_emitted</span><span class="ansi-blue-fg">(emit, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>             <span class="ansi-green-fg">if</span> emit<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_obj<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>             <span class="ansi-green-fg">return</span> ret
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 <p>That’s cool, but do I have to write autosync each time?.</p>
@@ -669,15 +698,35 @@ connect the GUI to this address or send it to someone for sharing.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-8-abd4387ef676&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span> <span class="ansi-red-fg"># session. We could keep the other one, but we just don&#39;t care</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> <span class="ansi-red-fg"># so we will overwrite it</span>
-<span class="ansi-green-fg">----&gt; 4</span><span class="ansi-red-fg"> </span>session <span class="ansi-blue-fg">=</span> session<span class="ansi-blue-fg">.</span>autosync
 <span class="ansi-green-intense-fg ansi-bold">      5</span>
 <span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-red-fg"># Just delete our useless tabs</span>
+<span class="ansi-green-fg">----&gt; 7</span><span class="ansi-red-fg"> </span>session<span class="ansi-blue-fg">.</span>remove_tab<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;This is syncing!&#39;</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span> session<span class="ansi-blue-fg">.</span>remove_tab<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;Tab added from jupyter&#39;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;autosync&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">with_changes_emitted</span><span class="ansi-blue-fg">(emit, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>             <span class="ansi-green-fg">if</span> emit<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_obj<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>             <span class="ansi-green-fg">return</span> ret
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 <p>We can now start to add plots.</p>
@@ -701,13 +750,34 @@ connect the GUI to this address or send it to someone for sharing.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-9-2af3fc35dcad&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> plot <span class="ansi-blue-fg">=</span> Plot<span class="ansi-blue-fg">(</span>siesta_files <span class="ansi-blue-fg">/</span> <span class="ansi-blue-fg">&#34;SrTiO3.PDOS&#34;</span><span class="ansi-blue-fg">)</span>
 <span class="ansi-green-intense-fg ansi-bold">      5</span>
 <span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg"> </span>session<span class="ansi-blue-fg">.</span>add_plot<span class="ansi-blue-fg">(</span>plot<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;First tab&#34;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;add_plot&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">with_changes_emitted</span><span class="ansi-blue-fg">(emit, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>             <span class="ansi-green-fg">if</span> emit<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_obj<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>             <span class="ansi-green-fg">return</span> ret
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 <p>Can you see it?</p>
@@ -779,13 +849,34 @@ connect the GUI to this address or send it to someone for sharing.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-11-7b6e2dc7fa60&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span>
 <span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-green-fg">for</span> pt <span class="ansi-green-fg">in</span> <span class="ansi-blue-fg">(</span>rho<span class="ansi-blue-fg">,</span> bands<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
 <span class="ansi-green-fg">----&gt; 5</span><span class="ansi-red-fg">     </span>session<span class="ansi-blue-fg">.</span>add_plot<span class="ansi-blue-fg">(</span>pt<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">&#34;First tab&#34;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;add_plot&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">with_changes_emitted</span><span class="ansi-blue-fg">(emit, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>             <span class="ansi-green-fg">if</span> emit<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_obj<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>             <span class="ansi-green-fg">return</span> ret
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 </div>
@@ -807,11 +898,32 @@ connect the GUI to this address or send it to someone for sharing.
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-12-d20a8bbe9584&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>session<span class="ansi-blue-fg">.</span>tab<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;First tab&#34;</span><span class="ansi-blue-fg">)</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;tab&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">with_changes_emitted</span><span class="ansi-blue-fg">(emit, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>             <span class="ansi-green-fg">if</span> emit<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_obj<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>             <span class="ansi-green-fg">return</span> ret
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 <p>This <code class="docutils literal notranslate"><span class="pre">layouts</span></code> attribute is a dictionary stating how plots should be displayed in different screen sizes (e.g. <code class="docutils literal notranslate"><span class="pre">lg</span></code> is the largest and <code class="docutils literal notranslate"><span class="pre">xxs</span></code> is the smallest). You can change this very easily using the GUI by resizing and dragging your plots, but if you need the same layout every time it is definitely not ideal.</p>
@@ -874,7 +986,7 @@ apply. It is available under <code class="docutils literal notranslate"><span cl
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 <span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
+<span class="ansi-red-fg">ImportError</span>                               Traceback (most recent call last)
 <span class="ansi-green-fg">&lt;ipython-input-13-49b7064a35d7&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
 <span class="ansi-green-intense-fg ansi-bold">      2</span> tab_name <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;Layout attempt&#34;</span>
 <span class="ansi-green-intense-fg ansi-bold">      3</span>
@@ -882,7 +994,28 @@ apply. It is available under <code class="docutils literal notranslate"><span cl
 <span class="ansi-green-intense-fg ansi-bold">      5</span>
 <span class="ansi-green-intense-fg ansi-bold">      6</span> <span class="ansi-red-fg"># Get all the plots</span>
 
-<span class="ansi-red-fg">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;add_tab&#39;
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">with_changes_emitted</span><span class="ansi-blue-fg">(emit, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     87</span>
+<span class="ansi-green-intense-fg ansi-bold">     88</span>             <span class="ansi-green-fg">if</span> emit<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 89</span><span class="ansi-red-fg">                 </span>self<span class="ansi-blue-fg">.</span>_obj<span class="ansi-blue-fg">.</span>emit<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     90</span>
+<span class="ansi-green-intense-fg ansi-bold">     91</span>             <span class="ansi-green-fg">return</span> ret
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/sync.py</span> in <span class="ansi-cyan-fg">emit</span><span class="ansi-blue-fg">(self, socketio)</span>
+<span class="ansi-green-intense-fg ansi-bold">    160</span>             socketio <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>socketio
+<span class="ansi-green-intense-fg ansi-bold">    161</span>
+<span class="ansi-green-fg">--&gt; 162</span><span class="ansi-red-fg">         </span>emit_object<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> socketio<span class="ansi-blue-fg">=</span>socketio<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    163</span>
+<span class="ansi-green-intense-fg ansi-bold">    164</span>         <span class="ansi-green-fg">return</span> self
+
+<span class="ansi-green-fg">~/.local/python-3.8.5-gnu-9.3.0/lib/python3.8/site-packages/sisl_gui/server/emiters.py</span> in <span class="ansi-cyan-fg">emit_object</span><span class="ansi-blue-fg">(obj, *args, **kwargs)</span>
+<span class="ansi-green-intense-fg ansi-bold">     78</span>             passed directly to the corresponding emiter<span class="ansi-blue-fg">.</span>
+<span class="ansi-green-intense-fg ansi-bold">     79</span>     &#34;&#34;&#34;
+<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">from</span> sisl<span class="ansi-blue-fg">.</span>viz <span class="ansi-green-fg">import</span> Plot<span class="ansi-blue-fg">,</span> Session
+<span class="ansi-green-intense-fg ansi-bold">     81</span>
+<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">if</span> isinstance<span class="ansi-blue-fg">(</span>obj<span class="ansi-blue-fg">,</span> Plot<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-red-fg">ImportError</span>: cannot import name &#39;Plot&#39; from &#39;sisl.viz&#39; (/opt/gnu/9.3.0/python/packages/3.8.5/sisl-dev/0/lib/python3.8/site-packages/sisl-0.11.0.dev0-py3.8-linux-x86_64.egg/sisl/viz/__init__.py)
 </pre></div></div>
 </div>
 <p>You can check the “Layout attempt” tab to see that we really achieved what we wanted.</p>
@@ -958,7 +1091,7 @@ apply. It is available under <code class="docutils literal notranslate"><span cl
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;__main__.VeryCoolSession at 0x146b22bca310&gt;
+&lt;__main__.VeryCoolSession at 0x14b048a5c730&gt;
 </pre></div></div>
 </div>
 <p>Now, let’s see if this works:</p>

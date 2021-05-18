@@ -121,6 +121,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../basic.html">Basic classes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../default_geom.html">Common geometries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../physics.html">Physical objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../mixing.html">Mixing self-consistent quantities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../unit_constant.html">Units and constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities.html">Utilities</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">Input/Output</a><ul class="current">
@@ -265,7 +266,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.ADOS" title="sisl.io.tbtrans.phtavncSilePHtrans.ADOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ADOS</span></code></a>([elec, E, kavg, atoms, orbitals, sum, norm])</p></td>
 <td><p>Spectral density of states (DOS) (1/eV).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix" title="sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adensity_matrix</span></code></a>(elec, E[, kavg, isc, geometry])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix" title="sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adensity_matrix</span></code></a>(elec, E[, kavg, isc, …])</p></td>
 <td><p>Spectral function density matrix at energy <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.E" title="sisl.io.tbtrans.phtavncSilePHtrans.E"><code class="xref py py-obj docutils literal notranslate"><span class="pre">E</span></code></a> (1/eV)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.BDOS" title="sisl.io.tbtrans.phtavncSilePHtrans.BDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BDOS</span></code></a>([elec, E, kavg, sum, norm])</p></td>
@@ -286,25 +287,25 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.a_elec" title="sisl.io.tbtrans.phtavncSilePHtrans.a_elec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">a_elec</span></code></a>(elec)</p></td>
 <td><p>Electrode atomic indices for the full geometry (sorted)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_ACOHP</span></code></a>(elec, E[, kavg, isc, uc])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_ACOHP</span></code></a>(elec, E[, kavg, isc, orbitals, uc])</p></td>
 <td><p>Atomic COHP curve of the spectral function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_ACOOP</span></code></a>(elec, E[, kavg, isc, uc])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_ACOOP</span></code></a>(elec, E[, kavg, isc, orbitals, uc])</p></td>
 <td><p>Atomic COOP curve of the spectral function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_COHP</span></code></a>(E[, kavg, isc, uc])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_COHP</span></code></a>(E[, kavg, isc, orbitals, uc])</p></td>
 <td><p>Atomic COHP curve of the Green function</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_COHP_from_orbital</span></code></a>(COHP[, uc])</p></td>
 <td><p>Calculate the atomic COHP curve from the orbital COHP</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_COOP</span></code></a>(E[, kavg, isc, uc])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_COOP</span></code></a>(E[, kavg, isc, orbitals, uc])</p></td>
 <td><p>Atomic COOP curve of the Green function</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_COOP_from_orbital</span></code></a>(COOP[, uc])</p></td>
 <td><p>Calculate the atomic COOP curve from the orbital COOP</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_current</span></code></a>(elec, E[, kavg, activity])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_current</span></code></a>(elec, E[, kavg, activity, orbitals])</p></td>
 <td><p>Atomic current of atoms</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_current_from_orbital</span></code></a>(Jij[, activity])</p></td>
@@ -313,7 +314,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bloch" title="sisl.io.tbtrans.phtavncSilePHtrans.bloch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bloch</span></code></a>(elec)</p></td>
 <td><p>Bloch-expansion coefficients for an electrode</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current</span></code></a>(elec, E[, kavg, isc, only, uc])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current</span></code></a>(elec, E[, kavg, isc, only, …])</p></td>
 <td><p>Bond-current between atoms (sum of orbital currents)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current_from_orbital</span></code></a>(Jij[, only, uc])</p></td>
@@ -325,7 +326,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.close" title="sisl.io.tbtrans.phtavncSilePHtrans.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.density_matrix" title="sisl.io.tbtrans.phtavncSilePHtrans.density_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">density_matrix</span></code></a>(E[, kavg, isc, geometry])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.density_matrix" title="sisl.io.tbtrans.phtavncSilePHtrans.density_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">density_matrix</span></code></a>(E[, kavg, isc, orbitals, …])</p></td>
 <td><p>Density matrix from the Green function at energy <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.E" title="sisl.io.tbtrans.phtavncSilePHtrans.E"><code class="xref py py-obj docutils literal notranslate"><span class="pre">E</span></code></a> (1/eV)</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.dir_file" title="sisl.io.tbtrans.phtavncSilePHtrans.dir_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dir_file</span></code></a>([filename, filename_base])</p></td>
@@ -361,19 +362,19 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.o2p" title="sisl.io.tbtrans.phtavncSilePHtrans.o2p"><code class="xref py py-obj docutils literal notranslate"><span class="pre">o2p</span></code></a>(orbitals[, elec])</p></td>
 <td><p>Return the pivoting indices (0-based) for the orbitals, possibly on an electrode</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOHP</span></code></a>(elec, E[, kavg, isc])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOHP</span></code></a>(elec, E[, kavg, isc, orbitals])</p></td>
 <td><p>Orbital resolved COHP analysis of the spectral function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOOP</span></code></a>(elec, E[, kavg, isc])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOOP</span></code></a>(elec, E[, kavg, isc, orbitals])</p></td>
 <td><p>Orbital COOP analysis of the spectral function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COHP</span></code></a>(E[, kavg, isc])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COHP</span></code></a>(E[, kavg, isc, orbitals])</p></td>
 <td><p>Orbital resolved COHP analysis of the Green function</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COOP</span></code></a>(E[, kavg, isc])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COOP</span></code></a>(E[, kavg, isc, orbitals])</p></td>
 <td><p>Orbital COOP analysis of the Green function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a>(elec, E[, kavg, isc, only])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a>(elec, E[, kavg, isc, only, …])</p></td>
 <td><p>Orbital current originating from <em class="xref py py-obj">elec</em> as a sparse matrix</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.phonon_temperature" title="sisl.io.tbtrans.phtavncSilePHtrans.phonon_temperature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phonon_temperature</span></code></a>(elec)</p></td>
@@ -409,7 +410,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.transmission_eig" title="sisl.io.tbtrans.phtavncSilePHtrans.transmission_eig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transmission_eig</span></code></a>([elec_from, elec_to, kavg])</p></td>
 <td><p>Transmission eigenvalues from <em class="xref py py-obj">elec_from</em> to <em class="xref py py-obj">elec_to</em>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.vector_current" title="sisl.io.tbtrans.phtavncSilePHtrans.vector_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_current</span></code></a>(elec, E[, kavg, only])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.vector_current" title="sisl.io.tbtrans.phtavncSilePHtrans.vector_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_current</span></code></a>(elec, E[, kavg, only, orbitals])</p></td>
 <td><p>Vector for each atom describing the <em>mean</em> path for the current travelling through the atom</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.vector_current_from_bond" title="sisl.io.tbtrans.phtavncSilePHtrans.vector_current_from_bond"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_current_from_bond</span></code></a>(Jab)</p></td>
@@ -554,10 +555,10 @@ arguments.</p>
 <li><p><strong>kavg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – whether the returned DOS is k-averaged, or an explicit (unweighed) k-point
 is returned</p></li>
 <li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – only return for a given set of atoms (default to all).
-<em>NOT</em> allowed with <em class="xref py py-obj">orbital</em> keyword. If <em class="xref py py-obj">True</em> it will use all atoms in the device.
+<em>NOT</em> allowed with <em class="xref py py-obj">orbitals</em> keyword. If <em class="xref py py-obj">True</em> it will use all atoms in the device.
 False is equivalent to None.</p></li>
 <li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – only return for a given set of orbitals (default to all)
-<em>NOT</em> allowed with <em class="xref py py-obj">atom</em> keyword. If <em class="xref py py-obj">True</em> it will use all orbitals in the device.
+<em>NOT</em> allowed with <em class="xref py py-obj">atoms</em> keyword. If <em class="xref py py-obj">True</em> it will use all orbitals in the device.
 False is equivalent to None.</p></li>
 <li><p><strong>sum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned quantities are summed or returned <em>as is</em>, i.e. resolved per atom/orbital.</p></li>
 <li><p><strong>norm</strong> (<em>{'none'</em><em>, </em><em>'atom'</em><em>, </em><em>'orbital'</em><em>, </em><em>'all'}</em>) – how the normalization of the summed DOS is performed (see <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.norm" title="sisl.io.tbtrans.phtavncSilePHtrans.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a> routine).</p></li>
@@ -577,7 +578,7 @@ False is equivalent to None.</p></li>
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix">
-<code class="sig-name descname">Adensity_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">geometry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">Adensity_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">geometry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.Adensity_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spectral function density matrix at energy <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.E" title="sisl.io.tbtrans.phtavncSilePHtrans.E"><code class="xref py py-obj docutils literal notranslate"><span class="pre">E</span></code></a> (1/eV)</p>
 <p>The density matrix can be used to calculate the LDOS in real-space.</p>
 <p>The <span class="math notranslate nohighlight">\(\mathrm{LDOS}(E, \mathbf r)\)</span> may be calculated using the <a class="reference internal" href="../../generated/sisl.physics.DensityMatrix.html#sisl.physics.DensityMatrix.density" title="sisl.physics.DensityMatrix.density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">density</span></code></a>
@@ -599,6 +600,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned density matrix from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all density matrix elements for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain density matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 <li><p><strong>geometry</strong> (<a class="reference internal" href="../../generated/sisl.Geometry.html#sisl.Geometry" title="sisl.Geometry"><em>Geometry</em></a><em>, </em><em>optional</em>) – geometry that will be associated with the density matrix. By default the
 geometry contained in this file will be used. However, then the
 atomic species are probably incorrect, nor will the orbitals contain
@@ -671,10 +674,10 @@ arguments.</p>
 <li><p><strong>kavg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – whether the returned DOS is k-averaged, or an explicit (unweighed) k-point
 is returned</p></li>
 <li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – only return for a given set of atoms (default to all).
-<em>NOT</em> allowed with <em class="xref py py-obj">orbital</em> keyword. If <em class="xref py py-obj">True</em> it will use all atoms in the device.
+<em>NOT</em> allowed with <em class="xref py py-obj">orbitals</em> keyword. If <em class="xref py py-obj">True</em> it will use all atoms in the device.
 False is equivalent to None.</p></li>
 <li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – only return for a given set of orbitals (default to all)
-<em>NOT</em> allowed with <em class="xref py py-obj">atom</em> keyword. If <em class="xref py py-obj">True</em> it will use all orbitals in the device.
+<em>NOT</em> allowed with <em class="xref py py-obj">atoms</em> keyword. If <em class="xref py py-obj">True</em> it will use all orbitals in the device.
 False is equivalent to None.</p></li>
 <li><p><strong>sum</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned quantities are summed or returned <em>as is</em>, i.e. resolved per atom/orbital.</p></li>
 <li><p><strong>norm</strong> (<em>{'none'</em><em>, </em><em>'atom'</em><em>, </em><em>'orbital'</em><em>, </em><em>'all'}</em>) – how the normalization of the summed DOS is performed (see <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.norm" title="sisl.io.tbtrans.phtavncSilePHtrans.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a> routine)</p></li>
@@ -777,7 +780,7 @@ or the down-folding region (electrode + downfolding region, not in device)</p></
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP">
-<code class="sig-name descname">atom_ACOHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">atom_ACOHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOHP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Atomic COHP curve of the spectral function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -791,6 +794,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COHP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COHP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COHP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned COHP are only in the unit-cell.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -815,7 +820,7 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP">
-<code class="sig-name descname">atom_ACOOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">atom_ACOOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_ACOOP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Atomic COOP curve of the spectral function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -829,6 +834,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COOP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COOP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COOP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned COOP are only in the unit-cell.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -853,7 +860,7 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP">
-<code class="sig-name descname">atom_COHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">atom_COHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COHP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Atomic COHP curve of the Green function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -866,6 +873,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COHP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COHP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COHP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned COHP are only in the unit-cell.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -898,7 +907,7 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>COHP</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital COHP as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COHP</span></code></a> or <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOHP</span></code></a></p></li>
+<li><p><strong>COHP</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital COHP as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COHP</span></code></a> or <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOHP</span></code></a></p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned COHP are only in the unit-cell.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -921,7 +930,7 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP">
-<code class="sig-name descname">atom_COOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">atom_COOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_COOP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Atomic COOP curve of the Green function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -934,6 +943,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COOP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COOP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COOP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned COOP are only in the unit-cell.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -966,7 +977,7 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>COOP</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital COOP as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COOP</span></code></a> or <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOOP</span></code></a></p></li>
+<li><p><strong>COOP</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital COOP as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_COOP</span></code></a> or <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_ACOOP</span></code></a></p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned COOP are only in the unit-cell.
 If <code class="docutils literal notranslate"><span class="pre">True</span></code> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -989,7 +1000,7 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.atom_current">
-<code class="sig-name descname">atom_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">activity</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">atom_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">activity</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current" title="Permalink to this definition">¶</a></dt>
 <dd><p>Atomic current of atoms</p>
 <p>Short hand function for calling <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a> and <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_current_from_orbital</span></code></a>.</p>
 <dl class="field-list simple">
@@ -1000,6 +1011,8 @@ One may figure out the connections via <code class="xref py py-obj docutils lite
 <li><p><strong>kavg</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – whether the returned atomic current is k-averaged, or an explicit (unweighed) k-point
 is returned</p></li>
 <li><p><strong>activity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the activity current is returned, see <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_current_from_orbital</span></code></a> for details.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain orbital currents for a subset of orbitals before calculating bond-current
+Passed directly to <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1043,7 +1056,7 @@ it will have a larger activity current.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Jij</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital currents as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a></p></li>
+<li><p><strong>Jij</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital currents as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a></p></li>
 <li><p><strong>activity</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">True</span></code> to return the activity current, see explanation above</p></li>
 </ul>
 </dd>
@@ -1074,7 +1087,7 @@ it will have a larger activity current.</p>
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.bond_current">
-<code class="sig-name descname">bond_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only</span><span class="o">=</span><span class="default_value">'+'</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">bond_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only</span><span class="o">=</span><span class="default_value">'+'</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">uc</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bond-current between atoms (sum of orbital currents)</p>
 <p>Short hand function for calling <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a> and <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current_from_orbital</span></code></a>.</p>
 <dl class="field-list simple">
@@ -1092,6 +1105,8 @@ bond currents are returned.</p></li>
 <li><p><strong>only</strong> (<em>{'+'</em><em>, </em><em>'-'</em><em>, </em><em>'all'}</em>) – If “+” is supplied only the positive orbital currents are used,
 for “-“, only the negative orbital currents are used,
 else return the sum of both. Please see discussion in <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain orbital currents for a subset of orbitals before calculating bond-current
+Passed directly to <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a>.</p></li>
 <li><p><strong>uc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned bond-currents are only in the unit-cell.
 If <em class="xref py py-obj">True</em> this will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na)</span></code>,
 else, it will return a sparse matrix of <code class="docutils literal notranslate"><span class="pre">shape</span> <span class="pre">=</span> <span class="pre">(self.na,</span> <span class="pre">self.na</span> <span class="pre">*</span> <span class="pre">self.n_s)</span></code>.
@@ -1142,7 +1157,7 @@ all <span class="math notranslate nohighlight">\(J_{\nu\mu}\)</span> are summed 
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Jij</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital currents as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a></p></li>
+<li><p><strong>Jij</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><em>scipy.sparse.csr_matrix</em></a>) – the orbital currents as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a></p></li>
 <li><p><strong>only</strong> (<em>{'+'</em><em>, </em><em>'-'</em><em>, </em><em>'all'}</em>) – If “+” is supplied only the positive orbital currents are used,
 for “-“, only the negative orbital currents are used,
 else return both.</p></li>
@@ -1214,7 +1229,7 @@ BTD block sizes for the electrode</p>
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.density_matrix">
-<code class="sig-name descname">density_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">geometry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.density_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">density_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">geometry</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.density_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Density matrix from the Green function at energy <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.E" title="sisl.io.tbtrans.phtavncSilePHtrans.E"><code class="xref py py-obj docutils literal notranslate"><span class="pre">E</span></code></a> (1/eV)</p>
 <p>The density matrix can be used to calculate the LDOS in real-space.</p>
 <p>The <span class="math notranslate nohighlight">\(\mathrm{LDOS}(E, \mathbf r)\)</span> may be calculated using the <a class="reference internal" href="../../generated/sisl.physics.DensityMatrix.html#sisl.physics.DensityMatrix.density" title="sisl.physics.DensityMatrix.density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">density</span></code></a>
@@ -1235,6 +1250,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned density matrix from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all density matrix elements for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain density matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 <li><p><strong>geometry</strong> (<a class="reference internal" href="../../generated/sisl.Geometry.html#sisl.Geometry" title="sisl.Geometry"><em>Geometry</em></a><em>, </em><em>optional</em>) – geometry that will be associated with the density matrix. By default the
 geometry contained in this file will be used. However, then the
 atomic species are probably incorrect, nor will the orbitals contain
@@ -1530,11 +1547,11 @@ that is to be used (i.e. the divisor):</p>
 <dt><code class="docutils literal notranslate"><span class="pre">'all'</span></code></dt><dd><p><span class="math notranslate nohighlight">\(N\)</span> equals the number of orbitals in the total device region.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">'atom'</span></code></dt><dd><p><span class="math notranslate nohighlight">\(N\)</span> equals the total number of orbitals in the selected
-atoms. If <em class="xref py py-obj">orbital</em> is an argument a conversion of <em class="xref py py-obj">orbital</em> to the equivalent
+atoms. If <em class="xref py py-obj">orbitals</em> is an argument a conversion of <em class="xref py py-obj">orbitals</em> to the equivalent
 unique atoms is performed, and subsequently the total number of orbitals on the
 atoms is used. This makes it possible to compare the fraction of orbital DOS easier.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">'orbital'</span></code></dt><dd><p><span class="math notranslate nohighlight">\(N\)</span> is the sum of selected orbitals, if <em class="xref py py-obj">atom</em> is specified, this
+<dt><code class="docutils literal notranslate"><span class="pre">'orbital'</span></code></dt><dd><p><span class="math notranslate nohighlight">\(N\)</span> is the sum of selected orbitals, if <em class="xref py py-obj">atoms</em> is specified, this
 is equivalent to the ‘atom’ option.</p>
 </dd>
 </dl>
@@ -1542,9 +1559,9 @@ is equivalent to the ‘atom’ option.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atoms</strong> (<em>array_like of int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – only return for a given set of atoms (default to all).
-<em>NOT</em> allowed with <em class="xref py py-obj">orbital</em> keyword</p></li>
+<em>NOT</em> allowed with <em class="xref py py-obj">orbitals</em> keyword</p></li>
 <li><p><strong>orbitals</strong> (<em>array_like of int</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – only return for a given set of orbitals (default to all)
-<em>NOT</em> allowed with <em class="xref py py-obj">atom</em> keyword</p></li>
+<em>NOT</em> allowed with <em class="xref py py-obj">atoms</em> keyword</p></li>
 <li><p><strong>norm</strong> (<em>{'none'</em><em>, </em><em>'atom'</em><em>, </em><em>'orbital'</em><em>, </em><em>'all'}</em>) – how the normalization of the summed DOS is performed (see <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.norm" title="sisl.io.tbtrans.phtavncSilePHtrans.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a> routine)</p></li>
 </ul>
 </dd>
@@ -1582,7 +1599,7 @@ device pivoting indices).</p></li>
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP">
-<code class="sig-name descname">orbital_ACOHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">orbital_ACOHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOHP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orbital resolved COHP analysis of the spectral function</p>
 <p>This will return a sparse matrix, see <code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code> for details.
 Each matrix element of the sparse matrix corresponds to the COHP of the
@@ -1603,6 +1620,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COHP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COHP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COHP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1633,9 +1652,9 @@ To only get unit cell orbital currents, pass <code class="docutils literal notra
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP">
-<code class="sig-name descname">orbital_ACOOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">orbital_ACOOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_ACOOP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orbital COOP analysis of the spectral function</p>
-<p>This will return a sparse matrix, see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for details.
+<p>This will return a sparse matrix, see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for details.
 Each matrix element of the sparse matrix corresponds to the COOP of the
 underlying geometry.</p>
 <p>The COOP analysis can be written as:</p>
@@ -1663,6 +1682,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COOP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COOP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COOP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1701,7 +1722,7 @@ To only get unit cell orbital currents, pass <code class="docutils literal notra
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP">
-<code class="sig-name descname">orbital_COHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">orbital_COHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COHP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orbital resolved COHP analysis of the Green function</p>
 <p>This will return a sparse matrix, see <code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code> for details.
 Each matrix element of the sparse matrix corresponds to the COHP of the
@@ -1721,6 +1742,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COHP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COHP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COHP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1756,7 +1779,7 @@ To only get unit cell orbital currents, pass <code class="docutils literal notra
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP">
-<code class="sig-name descname">orbital_COOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">orbital_COOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_COOP" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orbital COOP analysis of the Green function</p>
 <p>This will return a sparse matrix, see <code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code> for details.
 Each matrix element of the sparse matrix corresponds to the COOP of the
@@ -1786,6 +1809,8 @@ is returned</p></li>
 <li><p><strong>isc</strong> (<em>array_like</em><em>, </em><em>optional</em>) – the returned COOP from unit-cell (<code class="docutils literal notranslate"><span class="pre">[None,</span> <span class="pre">None,</span> <span class="pre">None]</span></code>) to
 the given supercell, the default is all COOP for the supercell.
 To only get unit cell orbital currents, pass <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain COOP matrix elements for a subset of orbitals, all
+other are set to 0.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1824,7 +1849,7 @@ To only get unit cell orbital currents, pass <code class="docutils literal notra
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current">
-<code class="sig-name descname">orbital_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only</span><span class="o">=</span><span class="default_value">'all'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">orbital_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">isc</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">only</span><span class="o">=</span><span class="default_value">'all'</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="Permalink to this definition">¶</a></dt>
 <dd><p>Orbital current originating from <em class="xref py py-obj">elec</em> as a sparse matrix</p>
 <p>This will return a sparse matrix, see <code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code> for details.
 Each matrix element of the sparse matrix corresponds to the orbital indices of the
@@ -1853,6 +1878,7 @@ To only get unit cell orbital currents, pass <code class="docutils literal notra
 <li><p><strong>only</strong> (<em>{'all'</em><em>, </em><em>'+'</em><em>, </em><em>'-'}</em>) – which orbital currents to return, all, positive or negative values only.
 Default to <code class="docutils literal notranslate"><span class="pre">'all'</span></code> because it can then be used in the subsequent default
 arguments for <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current_from_orbital</span></code></a> and <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital" title="sisl.io.tbtrans.phtavncSilePHtrans.atom_current_from_orbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom_current_from_orbital</span></code></a>.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain orbital currents for a subset of orbitals.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1861,6 +1887,12 @@ arguments for <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePH
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Jij</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span> <span class="c1"># orbital current from the 11th to the 12th orbital</span>
 </pre></div>
 </div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Jij</span> <span class="o">=</span> <span class="n">tbt</span><span class="o">.</span><span class="n">orbital_current</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">orbitals</span><span class="o">=</span><span class="p">{</span><span class="n">tbt</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]})</span>
+</pre></div>
+</div>
+<p>only retain currents from 1st and 2nd orbitals on first atom type (all atoms of
+that type in the entire structure.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -2106,7 +2138,7 @@ is returned</p></li>
 
 <dl class="py method">
 <dt id="sisl.io.tbtrans.phtavncSilePHtrans.vector_current">
-<code class="sig-name descname">vector_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only</span><span class="o">=</span><span class="default_value">'+'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.vector_current" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">vector_current</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">elec</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">kavg</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">only</span><span class="o">=</span><span class="default_value">'+'</span></em>, <em class="sig-param"><span class="n">orbitals</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.io.tbtrans.phtavncSilePHtrans.vector_current" title="Permalink to this definition">¶</a></dt>
 <dd><p>Vector for each atom describing the <em>mean</em> path for the current travelling through the atom</p>
 <p>See <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.vector_current_from_bond" title="sisl.io.tbtrans.phtavncSilePHtrans.vector_current_from_bond"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vector_current_from_bond</span></code></a> for details.</p>
 <dl class="field-list simple">
@@ -2123,6 +2155,8 @@ The <em>incoming</em> vector currents may be retrieved by <code class="docutils 
 average incoming and outgoing direction can be obtained with <code class="docutils literal notranslate"><span class="pre">'all'</span></code>.
 In the last case the vector currents are divided by 2 to ensure the length
 of the vector is compatibile with the other options given a pristine system.</p></li>
+<li><p><strong>orbitals</strong> (<em>array-like</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – only retain orbital currents for a subset of orbitals before calculating bond-current
+Passed directly to <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.orbital_current" title="sisl.io.tbtrans.phtavncSilePHtrans.orbital_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbital_current</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -2158,7 +2192,7 @@ of the vector is compatibile with the other options given a pristine system.</p>
 <span class="math notranslate nohighlight">\(r_\alpha\)</span> are the atomic coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>Jab</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.1)"><em>scipy.sparse.csr_matrix</em></a>) – the bond currents as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current</span></code></a></p>
+<dd class="field-odd"><p><strong>Jab</strong> (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><em>scipy.sparse.csr_matrix</em></a>) – the bond currents as retrieved from <a class="reference internal" href="#sisl.io.tbtrans.phtavncSilePHtrans.bond_current" title="sisl.io.tbtrans.phtavncSilePHtrans.bond_current"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bond_current</span></code></a></p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>array of vectors per atom in the Geometry (only non-zero for device atoms)</p>

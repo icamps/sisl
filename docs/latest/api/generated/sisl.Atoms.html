@@ -137,6 +137,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../default_geom.html">Common geometries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../physics.html">Physical objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mixing.html">Mixing self-consistent quantities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../unit_constant.html">Units and constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../utilities.html">Utilities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../io/index.html">Input/Output</a></li>
@@ -284,7 +285,7 @@ be repeated to match <em class="xref py py-obj">na</em>.</p></li>
 <td><p>True if the contained atoms are the same in the two lists</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.index" title="sisl.Atoms.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(atom)</p></td>
-<td><p>Return the species index of the atom object</p></td>
+<td><p>Return the indices of the atom object</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.insert" title="sisl.Atoms.insert"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code></a>(index, other)</p></td>
 <td><p>Insert other atoms into the list of atoms at index</p></td>
@@ -325,46 +326,49 @@ be repeated to match <em class="xref py py-obj">na</em>.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.scale" title="sisl.Atoms.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(scale)</p></td>
 <td><p>Scale the atomic radii and return an equivalent atom.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.sub" title="sisl.Atoms.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(atoms)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.specie_index" title="sisl.Atoms.specie_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specie_index</span></code></a>(atom)</p></td>
+<td><p>Return the species index of the atom object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.sub" title="sisl.Atoms.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(atoms)</p></td>
 <td><p>Return a subset of the list</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.swap" title="sisl.Atoms.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(a, b)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.swap" title="sisl.Atoms.swap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap</span></code></a>(a, b)</p></td>
 <td><p>Swaps all atoms</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.swap_atom" title="sisl.Atoms.swap_atom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap_atom</span></code></a>(a, b)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.swap_atom" title="sisl.Atoms.swap_atom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap_atom</span></code></a>(a, b)</p></td>
 <td><p>Swap specie index positions</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.tile" title="sisl.Atoms.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.tile" title="sisl.Atoms.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps)</p></td>
 <td><p>Tile this atom object</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.Z" title="sisl.Atoms.Z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Z</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.Z" title="sisl.Atoms.Z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Z</span></code></a></p></td>
 <td><p>Array of atomic numbers</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.atom" title="sisl.Atoms.atom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.atom" title="sisl.Atoms.atom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">atom</span></code></a></p></td>
 <td><p>List of unique atoms in this group of atoms</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.firsto" title="sisl.Atoms.firsto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">firsto</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.firsto" title="sisl.Atoms.firsto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">firsto</span></code></a></p></td>
 <td><p>First orbital of the corresponding atom in the consecutive list of orbitals</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.lasto" title="sisl.Atoms.lasto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lasto</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.lasto" title="sisl.Atoms.lasto"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lasto</span></code></a></p></td>
 <td><p>Last orbital of the corresponding atom in the consecutive list of orbitals</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.mass" title="sisl.Atoms.mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.mass" title="sisl.Atoms.mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mass</span></code></a></p></td>
 <td><p>Array of masses of the contained objects</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.no" title="sisl.Atoms.no"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.no" title="sisl.Atoms.no"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no</span></code></a></p></td>
 <td><p>Total number of orbitals in this list of atoms</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.nspecie" title="sisl.Atoms.nspecie"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nspecie</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.nspecie" title="sisl.Atoms.nspecie"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nspecie</span></code></a></p></td>
 <td><p>Number of different species</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.orbitals" title="sisl.Atoms.orbitals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbitals</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.orbitals" title="sisl.Atoms.orbitals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orbitals</span></code></a></p></td>
 <td><p>Array of orbitals of the contained objects</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.q0" title="sisl.Atoms.q0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">q0</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.q0" title="sisl.Atoms.q0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">q0</span></code></a></p></td>
 <td><p>Initial charge per atom</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.Atoms.specie" title="sisl.Atoms.specie"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specie</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Atoms.specie" title="sisl.Atoms.specie"><code class="xref py py-obj docutils literal notranslate"><span class="pre">specie</span></code></a></p></td>
 <td><p>List of atomic species</p></td>
 </tr>
 </tbody>
@@ -509,7 +513,7 @@ are the same.</p>
 <dl class="py method">
 <dt id="sisl.Atoms.index">
 <code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atom</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/atom.html#Atoms.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.Atoms.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the species index of the atom object</p>
+<dd><p>Return the indices of the atom object</p>
 </dd></dl>
 
 <dl class="py method">
@@ -686,6 +690,12 @@ of atoms, nothing will happen.</p></li>
 <dt id="sisl.Atoms.specie">
 <em class="property">property </em><code class="sig-name descname">specie</code><a class="headerlink" href="#sisl.Atoms.specie" title="Permalink to this definition">¶</a></dt>
 <dd><p>List of atomic species</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.Atoms.specie_index">
+<code class="sig-name descname">specie_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atom</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/atom.html#Atoms.specie_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.Atoms.specie_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the species index of the atom object</p>
 </dd></dl>
 
 <dl class="py method">

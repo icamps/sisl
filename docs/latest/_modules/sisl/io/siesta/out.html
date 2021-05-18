@@ -725,6 +725,10 @@
 <span class="sd">             external field energy</span>
 <span class="sd">        ``xc``</span>
 <span class="sd">             exchange-correlation energy</span>
+<span class="sd">        ``exchange``</span>
+<span class="sd">             exchange energy</span>
+<span class="sd">        ``correlation``</span>
+<span class="sd">             correlation energy</span>
 <span class="sd">        ``bulkV``</span>
 <span class="sd">             bulk-bias correction energy</span>
 <span class="sd">        ``total``</span>
@@ -773,6 +777,8 @@
             <span class="s2">&quot;Eso&quot;</span><span class="p">:</span> <span class="s2">&quot;spin_orbit&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Ext. field&quot;</span><span class="p">:</span> <span class="s2">&quot;extE&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Exch.-corr.&quot;</span><span class="p">:</span> <span class="s2">&quot;xc&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Exch.&quot;</span><span class="p">:</span> <span class="s2">&quot;exchange&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Corr.&quot;</span><span class="p">:</span> <span class="s2">&quot;correlation&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Ekinion&quot;</span><span class="p">:</span> <span class="s2">&quot;ion.kinetic&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Ion-electron&quot;</span><span class="p">:</span> <span class="s2">&quot;ion.electron&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Ion-ion&quot;</span><span class="p">:</span> <span class="s2">&quot;ion.ion&quot;</span><span class="p">,</span>
@@ -1164,6 +1170,10 @@
             <span class="c1"># Define the function that parses the charges</span>
             <span class="k">def</span> <span class="nf">_parse_charge</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
                 <span class="n">atom_idx</span><span class="p">,</span> <span class="o">*</span><span class="n">vals</span><span class="p">,</span> <span class="n">symbol</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="c1"># assert that this is a proper line</span>
+                <span class="c1"># this should catch cases where the following line of charge output</span>
+                <span class="c1"># is still parseable</span>
+                <span class="n">atom_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">atom_idx</span><span class="p">)</span>
                 <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">vals</span><span class="p">))</span>
 
             <span class="c1"># first line is the header</span>

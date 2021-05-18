@@ -377,7 +377,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_csr</span><span class="o">.</span><span class="n">translate_columns</span><span class="p">(</span><span class="n">old</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Retrieve edges (connections) of a given `atom` or list of `atom`&#39;s</span>
+        <span class="sd">&quot;&quot;&quot; Retrieve edges (connections) for all `atoms`</span>
 
 <span class="sd">        The returned edges are unique and sorted (see `numpy.unique`) and are returned</span>
 <span class="sd">        in supercell indices (i.e. ``0 &lt;= edge &lt; self.geometry.na_s``).</span>
@@ -784,7 +784,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_csr</span><span class="o">.</span><span class="n">finalized</span>
 
     <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by removing the atoms corresponding to `atom`</span>
+        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by removing the atoms corresponding to `atoms`</span>
 
 <span class="sd">        Negative indices are wrapped and thus works.</span>
 
@@ -804,7 +804,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by retaining the atoms corresponding to `atom`</span>
+        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by retaining the atoms corresponding to `atoms`</span>
 
 <span class="sd">        Indices passed must be unique.</span>
 
@@ -1109,32 +1109,32 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">break</span>
 
+            <span class="c1"># TODO this is inconsistent if seg= is used as argument</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">geom</span><span class="o">.</span><span class="n">na</span><span class="p">,</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">na</span><span class="p">:(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">na</span><span class="p">]</span><span class="o">.</span><span class="n">indices</span><span class="p">[:]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">break</span>
 
-            <span class="n">c_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
-            <span class="c1"># Count the number of cells it interacts with</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_max</span> <span class="o">%</span> <span class="n">na</span><span class="p">)</span> <span class="o">//</span> <span class="n">geom</span><span class="o">.</span><span class="n">na</span>
+            <span class="c1"># figure out how many cells it is connecting to</span>
+            <span class="n">ncell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">sub</span> <span class="o">%</span> <span class="n">na</span><span class="p">)</span> <span class="o">//</span> <span class="n">geom</span><span class="o">.</span><span class="n">na</span>
             <span class="n">ic</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">na</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">ic</span> <span class="o">+</span> <span class="n">geom</span><span class="o">.</span><span class="n">na</span> <span class="o">*</span> <span class="n">j</span>
+            <span class="k">for</span> <span class="n">icell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncell</span><span class="p">):</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">ic</span> <span class="o">+</span> <span class="n">geom</span><span class="o">.</span><span class="n">na</span> <span class="o">*</span> <span class="n">icell</span>
                 <span class="c1"># We need to ensure that every &quot;in between&quot; index exists</span>
                 <span class="c1"># if it does not we discard those indices</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">idx</span> <span class="o">&lt;=</span> <span class="n">sub</span><span class="p">,</span>
                                       <span class="n">sub</span> <span class="o">&lt;</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">geom</span><span class="o">.</span><span class="n">na</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">ncell</span> <span class="o">=</span> <span class="n">icell</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="n">out</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
-            <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">isc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">seps</span> <span class="o">+</span> <span class="n">i</span>
+            <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">isc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">seps</span> <span class="o">+</span> <span class="n">ncell</span>
 
             <span class="k">if</span> <span class="n">out</span><span class="p">:</span>
                 <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Cut the connection at nsc=</span><span class="si">{}</span><span class="s1"> in direction </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">axis</span><span class="p">))</span>
 
         <span class="c1"># Update number of super-cells</span>
         <span class="n">nsc</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">nsc</span><span class="p">[:]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">geom</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">set_nsc</span><span class="p">(</span><span class="n">nsc</span><span class="p">)</span>
+        <span class="n">geom</span><span class="o">.</span><span class="n">set_nsc</span><span class="p">(</span><span class="n">nsc</span><span class="p">)</span>
 
         <span class="c1"># Now we have a correct geometry, and</span>
         <span class="c1"># we are now ready to create the sparsity pattern</span>
@@ -1164,14 +1164,15 @@
             <span class="n">a</span><span class="p">,</span> <span class="n">afp</span><span class="p">,</span> <span class="n">afm</span> <span class="o">=</span> <span class="n">_sca2sca</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">ia</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">seps</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">continue</span>
-            <span class="n">S</span><span class="p">[</span><span class="n">ja</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">afp</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">ja</span><span class="p">,</span> <span class="n">ia</span><span class="p">]</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">ja</span><span class="p">,</span> <span class="n">ia</span><span class="p">]</span>
+            <span class="n">S</span><span class="p">[</span><span class="n">ja</span><span class="p">,</span> <span class="n">a</span> <span class="o">+</span> <span class="n">afp</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
             <span class="c1"># TODO check that we indeed have Hermiticity for non-collinear and spin-orbit</span>
-            <span class="n">S</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">ja</span> <span class="o">+</span> <span class="n">afm</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">ja</span><span class="p">,</span> <span class="n">ia</span><span class="p">]</span>
+            <span class="n">S</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">ja</span> <span class="o">+</span> <span class="n">afm</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
 
         <span class="k">return</span> <span class="n">S</span></div>
 
 <div class="viewcode-block" id="SparseAtom.sub"><a class="viewcode-back" href="../../api/generated/sisl.SparseAtom.html#sisl.SparseAtom.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by only retaining the elements corresponding to the ``atom``</span>
+        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by only retaining the elements corresponding to the `atoms`</span>
 
 <span class="sd">        Indices passed *MUST* be unique.</span>
 
@@ -1482,7 +1483,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">no</span>
 
 <div class="viewcode-block" id="SparseOrbital.edges"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.edges">[docs]</a>    <span class="k">def</span> <span class="nf">edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Retrieve edges (connections) of a given `atom` or list of `atom`&#39;s</span>
+        <span class="sd">&quot;&quot;&quot; Retrieve edges (connections) for all `atoms`</span>
 
 <span class="sd">        The returned edges are unique and sorted (see `numpy.unique`) and are returned</span>
 <span class="sd">        in supercell indices (i.e. ``0 &lt;= edge &lt; self.geometry.no_s``).</span>
@@ -1541,10 +1542,10 @@
 <span class="sd">        ----------</span>
 <span class="sd">        atoms : int or array_like</span>
 <span class="sd">            only loop on the non-zero elements coinciding with the orbitals</span>
-<span class="sd">            on these atoms (not compatible with the ``orbital`` keyword)</span>
+<span class="sd">            on these atoms (not compatible with the `orbitals` keyword)</span>
 <span class="sd">        orbitals : int or array_like</span>
 <span class="sd">            only loop on the non-zero elements coinciding with the orbital</span>
-<span class="sd">            (not compatible with the ``atom`` keyword)</span>
+<span class="sd">            (not compatible with the `atoms` keyword)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">orbitals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">a2o</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
@@ -1621,32 +1622,32 @@
             <span class="k">except</span><span class="p">:</span>
                 <span class="k">break</span>
 
+            <span class="c1"># TODO this is inconsistent if seg= is used as argument</span>
             <span class="n">sub</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">geom</span><span class="o">.</span><span class="n">no</span><span class="p">,</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">no</span><span class="p">:(</span><span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">no</span><span class="p">]</span><span class="o">.</span><span class="n">indices</span><span class="p">[:]</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">break</span>
 
-            <span class="n">c_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
-            <span class="c1"># Count the number of cells it interacts with</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_max</span> <span class="o">%</span> <span class="n">no</span><span class="p">)</span> <span class="o">//</span> <span class="n">geom</span><span class="o">.</span><span class="n">no</span>
+            <span class="c1"># figure out how many cells it is connecting to</span>
+            <span class="n">ncell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">sub</span> <span class="o">%</span> <span class="n">no</span><span class="p">)</span> <span class="o">//</span> <span class="n">geom</span><span class="o">.</span><span class="n">no</span>
             <span class="n">ic</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">*</span> <span class="n">no</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-                <span class="n">idx</span> <span class="o">=</span> <span class="n">ic</span> <span class="o">+</span> <span class="n">geom</span><span class="o">.</span><span class="n">no</span> <span class="o">*</span> <span class="n">j</span>
+            <span class="k">for</span> <span class="n">icell</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ncell</span><span class="p">):</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">ic</span> <span class="o">+</span> <span class="n">geom</span><span class="o">.</span><span class="n">no</span> <span class="o">*</span> <span class="n">icell</span>
                 <span class="c1"># We need to ensure that every &quot;in between&quot; index exists</span>
                 <span class="c1"># if it does not we discard those indices</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">idx</span> <span class="o">&lt;=</span> <span class="n">sub</span><span class="p">,</span>
                                       <span class="n">sub</span> <span class="o">&lt;</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">geom</span><span class="o">.</span><span class="n">no</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">i</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">ncell</span> <span class="o">=</span> <span class="n">icell</span> <span class="o">-</span> <span class="mi">1</span>
                     <span class="n">out</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>
-            <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">isc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">seps</span> <span class="o">+</span> <span class="n">i</span>
+            <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">isc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">seps</span> <span class="o">+</span> <span class="n">ncell</span>
 
             <span class="k">if</span> <span class="n">out</span><span class="p">:</span>
                 <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Cut the connection at nsc=</span><span class="si">{}</span><span class="s1"> in direction </span><span class="si">{}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">axis</span><span class="p">))</span>
 
         <span class="c1"># Update number of super-cells</span>
         <span class="n">nsc</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">nsc</span><span class="p">[:]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">geom</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">set_nsc</span><span class="p">(</span><span class="n">nsc</span><span class="p">)</span>
+        <span class="n">geom</span><span class="o">.</span><span class="n">set_nsc</span><span class="p">(</span><span class="n">nsc</span><span class="p">)</span>
 
         <span class="c1"># Now we have a correct geometry, and</span>
         <span class="c1"># we are now ready to create the sparsity pattern</span>
@@ -1678,12 +1679,13 @@
                 <span class="k">continue</span>
             <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">jo</span><span class="p">,</span> <span class="n">io</span><span class="p">]</span>
             <span class="n">S</span><span class="p">[</span><span class="n">jo</span><span class="p">,</span> <span class="n">o</span> <span class="o">+</span> <span class="n">ofp</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="c1"># TODO check that we indeed have Hermiticity for non-collinear and spin-orbit</span>
             <span class="n">S</span><span class="p">[</span><span class="n">o</span><span class="p">,</span> <span class="n">jo</span> <span class="o">+</span> <span class="n">ofm</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span>
 
         <span class="k">return</span> <span class="n">S</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.remove"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a subset of this sparse matrix by only retaining the atoms corresponding to `atom`</span>
+        <span class="sd">&quot;&quot;&quot; Remove a subset of this sparse matrix by only retaining the atoms corresponding to `atoms`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1700,22 +1702,21 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.remove_orbital"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.remove_orbital">[docs]</a>    <span class="k">def</span> <span class="nf">remove_orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Remove a subset of orbitals on `atom` according to `orbital`</span>
+        <span class="sd">&quot;&quot;&quot; Remove a subset of orbitals on `atoms` according to `orbitals`</span>
+
+<span class="sd">        For more detailed examples, please see the equivalent (but opposite) method</span>
+<span class="sd">        `sub_orbital`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        atoms : array_like of int or Atom</span>
-<span class="sd">            indices of atoms or `Atom` that will be reduced in size according to `orbital`</span>
+<span class="sd">            indices of atoms or `Atom` that will be reduced in size according to `orbitals`</span>
 <span class="sd">        orbitals : array_like of int or Orbital</span>
-<span class="sd">            indices of the orbitals on `atom` that are removed from the sparse matrix.</span>
+<span class="sd">            indices of the orbitals on `atoms` that are removed from the sparse matrix.</span>
 
-<span class="sd">        Examples</span>
+<span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-
-<span class="sd">        &gt;&gt;&gt; obj = SparseOrbital(...)</span>
-<span class="sd">        &gt;&gt;&gt; # remove the second orbital on the 2nd atom</span>
-<span class="sd">        &gt;&gt;&gt; # all other orbitals are retained</span>
-<span class="sd">        &gt;&gt;&gt; obj.remove_orbital(1, 1)</span>
+<span class="sd">        sub_orbital : retaining a set of orbitals (see here for examples)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get specie index of the atom (convert to list of indices)</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
@@ -1747,7 +1748,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_orbital</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.sub"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by only retaining the atoms corresponding to `atom`</span>
+        <span class="sd">&quot;&quot;&quot; Create a subset of this sparse matrix by only retaining the atoms corresponding to `atoms`</span>
 
 <span class="sd">        Negative indices are wrapped and thus works, supercell atoms are also wrapped to the unit-cell.</span>
 
@@ -1787,29 +1788,63 @@
         <span class="k">return</span> <span class="n">S</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.sub_orbital"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.sub_orbital">[docs]</a>    <span class="k">def</span> <span class="nf">sub_orbital</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Retain only a subset of the orbitals on `atom` according to `orbital`</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Retain only a subset of the orbitals on `atoms` according to `orbitals`</span>
 
 <span class="sd">        This allows one to retain only a given subset of the sparse matrix elements.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        atoms : array_like of int or Atom</span>
-<span class="sd">            indices of atoms or `Atom` that will be reduced in size according to `orbital`</span>
+<span class="sd">            indices of atoms or `Atom` that will be reduced in size according to `orbitals`</span>
 <span class="sd">        orbitals : array_like of int or Orbital</span>
-<span class="sd">            indices of the orbitals on `atom` that are retained in the sparse matrix, the list of</span>
+<span class="sd">            indices of the orbitals on `atoms` that are retained in the sparse matrix, the list of</span>
 <span class="sd">            orbitals will be sorted. One cannot re-arrange matrix elements currently.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        Future implementations may allow one to re-arange orbitals using this method.</span>
 
+<span class="sd">        When using this method the internal species list will be populated by another specie</span>
+<span class="sd">        that is named after the orbitals removed. This is to distinguish different atoms.</span>
+
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 
-<span class="sd">        &gt;&gt;&gt; obj = SparseOrbital(...)</span>
-<span class="sd">        &gt;&gt;&gt; # only retain the second orbital on the 2nd atom</span>
-<span class="sd">        &gt;&gt;&gt; # all other orbitals are retained</span>
-<span class="sd">        &gt;&gt;&gt; obj.sub_orbital(1, 1)</span>
+<span class="sd">        &gt;&gt;&gt; # a Carbon atom with 2 orbitals</span>
+<span class="sd">        &gt;&gt;&gt; C = sisl.Atom(&#39;C&#39;, [1., 2.])</span>
+<span class="sd">        &gt;&gt;&gt; # an oxygen atom with 3 orbitals</span>
+<span class="sd">        &gt;&gt;&gt; O = sisl.Atom(&#39;O&#39;, [1., 2., 2.4])</span>
+<span class="sd">        &gt;&gt;&gt; geometry = sisl.Geometry([[0] * 3, [1] * 3]], 2, [C, O])</span>
+<span class="sd">        &gt;&gt;&gt; obj = SparseOrbital(geometry).tile(3, 0)</span>
+<span class="sd">        &gt;&gt;&gt; # fill in obj data...</span>
+
+<span class="sd">        Now ``obj`` is a sparse geometry with 2 different species and 6 atoms (3 of each).</span>
+<span class="sd">        They are ordered ``[C, O, C, O, C, O]``. In the following we</span>
+<span class="sd">        will note species that are different from the original by a ``&#39;`` in the list.</span>
+
+<span class="sd">        Retain 2nd orbital on the 2nd atom: ``[C, O&#39;, C, O, C, O]``</span>
+
+<span class="sd">        &gt;&gt;&gt; new_obj = obj.sub_orbital(1, 1)</span>
+
+<span class="sd">        Retain 2nd orbital on 1st and 2nd atom: ``[C&#39;, O&#39;, C, O, C, O]``</span>
+
+<span class="sd">        &gt;&gt;&gt; new_obj = obj.sub_orbital([0, 1], 1)</span>
+
+<span class="sd">        Retain 2nd orbital on the 1st atom and 3rd orbital on 4th atom: ``[C&#39;, O, C, O&#39;, C, O]``</span>
+
+<span class="sd">        &gt;&gt;&gt; new_obj = obj.sub_orbital(0, 1).sub_orbital(3, 2)</span>
+
+<span class="sd">        Retain 2nd orbital on all atoms equivalent to the first atom: ``[C&#39;, O, C&#39;, O, C&#39;, O]``</span>
+
+<span class="sd">        &gt;&gt;&gt; new_obj = obj.sub_orbital(obj.geometry.atoms[0], 1)</span>
+
+<span class="sd">        Retain 1st orbital on 1st atom, and 2nd orbital on 3rd and 5th atom: ``[C&#39;, O, C&#39;&#39;, O, C&#39;&#39;, O]``</span>
+
+<span class="sd">        &gt;&gt;&gt; new_obj = obj.sub_orbital(0, 0).sub_orbital([2, 4], 1)</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        remove_orbital : removing a set of orbitals (opposite of this)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 
@@ -1832,7 +1867,7 @@
 
         <span class="c1"># Get the atom object we wish to reduce</span>
         <span class="n">old_atom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-        <span class="n">old_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">old_atom</span><span class="p">)</span>
+        <span class="n">old_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">old_atom</span><span class="p">)</span>
         <span class="n">old_atom_count</span> <span class="o">=</span> <span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">specie</span> <span class="o">==</span> <span class="n">old_atom_specie</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
         <span class="c1"># Retrieve index of orbital</span>
@@ -1861,7 +1896,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># we have to add the new one (in case it does not exist)</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">new_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">new_atom</span><span class="p">)</span>
+                <span class="n">new_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">specie_index</span><span class="p">(</span><span class="n">new_atom</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="n">new_atom_specie</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">nspecie</span>
                 <span class="c1"># the above checks that it is indeed a new atom</span>
