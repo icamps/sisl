@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 from numbers import Integral
 import warnings
 import functools as ftool
@@ -1210,7 +1213,7 @@ class SparseAtom(_SparseGeometry):
         structure is completed.
         """
         R = self.Rij(dtype)
-        R._csr = (R._csr ** 2).sum(-1) ** 0.5
+        R._csr = np.sum(R._csr ** 2, axis=-1) ** 0.5
         return R
 
     def Rij(self, dtype=np.float64):
@@ -1954,7 +1957,7 @@ class SparseOrbital(_SparseGeometry):
         structure is completed.
         """
         R = self.Rij(what, dtype)
-        R._csr = (R._csr ** 2).sum(-1) ** 0.5
+        R._csr = np.sum(R._csr ** 2, axis=-1) ** 0.5
         return R
 
     def Rij(self, what='orbital', dtype=np.float64):
@@ -2141,14 +2144,14 @@ class SparseOrbital(_SparseGeometry):
 
         return full
 
-    def prepend(self, other, axis, eps=0.01):
+    def prepend(self, other, axis, eps=0.01, scale=1):
         r""" See `append` for details
 
         This is currently equivalent to:
 
-        >>> other.append(self, axis, eps)
+        >>> other.append(self, axis, eps, scale)
         """
-        return other.append(self, axis, eps)
+        return other.append(self, axis, eps, scale)
 
     def append(self, other, axis, eps=0.01, scale=1):
         r""" Append `other` along `axis` to construct a new connected sparse matrix
@@ -2187,7 +2190,7 @@ class SparseOrbital(_SparseGeometry):
 
         Notes
         -----
-        The current implentation does not preserve the hermiticity of the matrix.
+        The current implementation does not preserve the hermiticity of the matrix.
         If you want to preserve hermiticity of the matrix you have to do the
         following:
 

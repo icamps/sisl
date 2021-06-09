@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import pytest
 
 import math as m
@@ -266,7 +269,7 @@ def test_create_1d_bcasting_data_1d(setup):
         s2[np.arange(4).reshape(-1, 1), j] = i
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
 
 
 def test_create_1d_bcasting_data_2d(setup):
@@ -285,7 +288,7 @@ def test_create_1d_bcasting_data_2d(setup):
         s2[np.arange(4).reshape(-1, 1), j] = data
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
 
 
 def test_create_1d_diag(setup):
@@ -299,7 +302,7 @@ def test_create_1d_diag(setup):
     s2[d, d] = data
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
 
 
 def test_create_2d_diag_0d(setup):
@@ -315,9 +318,9 @@ def test_create_2d_diag_0d(setup):
     s3[d, d, 1] = data
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
     assert s1.spsame(s3)
-    assert (s1 - s3).sum() == 0
+    assert np.sum(s1 - s3) == 0
 
 
 def test_create_2d_diag_1d(setup):
@@ -333,9 +336,9 @@ def test_create_2d_diag_1d(setup):
     s3[d, d, 1] = data
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
     assert s1.spsame(s3)
-    assert (s1 - s3).sum() == 0
+    assert np.sum(s1 - s3) == 0
 
 
 def test_create_2d_diag_2d(setup):
@@ -351,9 +354,9 @@ def test_create_2d_diag_2d(setup):
     s3[d, d, 1] = data[:, 1]
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
     assert s1.spsame(s3)
-    assert (s1 - s3).sum() == 0
+    assert np.sum(s1 - s3) == 0
 
 
 def test_create_2d_data_2d(setup):
@@ -374,9 +377,9 @@ def test_create_2d_data_2d(setup):
     s3[I, I.T] = data[:, :, None]
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
     assert s1.spsame(s3)
-    assert (s1 - s3).sum() == 0
+    assert np.sum(s1 - s3) == 0
 
 
 def test_create_2d_data_3d(setup):
@@ -392,7 +395,18 @@ def test_create_2d_data_3d(setup):
     s2[I, I.T] = data
 
     assert s1.spsame(s2)
-    assert (s1 - s2).sum() == 0
+    assert np.sum(s1 - s2) == 0
+
+
+def test_copy_dims(setup):
+    s1 = setup.s2.copy(dims=0)
+    assert np.allclose(setup.s2._D[:, 0], s1._D[:, 0])
+    s1 = setup.s2.copy(dims=1)
+    assert np.allclose(setup.s2._D[:, 1], s1._D[:, 0])
+
+    s1 = setup.s2.copy(dims=[1, 0])
+    assert np.allclose(setup.s2._D[:, 1], s1._D[:, 0])
+    assert np.allclose(setup.s2._D[:, 0], s1._D[:, 1])
 
 
 def test_fail_data_3d_to_1d(setup):
@@ -1211,40 +1225,78 @@ def test_op_numpy_scalar():
     assert s.dtype == np.complex64
 
 
-def test_sum1():
-    S1 = SparseCSR((10, 10, 2), dtype=np.int32)
+def test_op_sparse_dim():
+    S = SparseCSR((10, 100, 2), dtype=np.float32)
+    assert S.shape == (10, 100, 2)
+    I = np.ones(1, dtype=np.complex64)[0]
+    # Create initial stuff
+    for i in range(10):
+        j = range(i*4, i*4+3)
+        S[0, j] = i
+    S.finalize()
+
+    # Try and add different values to the last 2 dimensions
+    s = S + [2, 2]
+    assert np.allclose(s._D, (S + 2)._D)
+    s = S + [1, 2]
+    assert np.allclose(s._D[:, 0], (S + 1)._D[:, 0])
+
+    # check both
+    ss = S + 1
+    assert np.any(np.isclose(s._D[:, 0], ss._D[:, 0]))
+    assert not np.any(np.isclose(s._D[:, 1], ss._D[:, 1]))
+
+    ss = S + 2
+    assert not np.any(np.isclose(s._D[:, 0], ss._D[:, 0]))
+    assert np.all(np.isclose(s._D[:, 1], ss._D[:, 1]))
+
+
+def test_sparse_transpose():
+    S = SparseCSR((10, 100, 2), dtype=np.float32)
+    assert S.shape == (10, 100, 2)
+    I = np.ones(1, dtype=np.complex64)[0]
+    # Create initial stuff
+    for i in range(10):
+        j = range(i*4, i*4+3)
+        S[0, j] = i
+    S.finalize()
+
+    s = S.transpose(False)
+    assert s.shape == (100, 10, 2)
+
+    s = s.transpose(False)
+    assert s.shape == (10, 100, 2)
+
+
+def test_op_reduce():
+    S1 = SparseCSR((10, 11, 2), dtype=np.int32)
     S1[0, 0] = [1, 2]
     S1[2, 0] = [1, 2]
     S1[2, 2] = [1, 2]
 
-    S2 = S1.sum(-1)
+    S2 = np.sum(S1, axis=-1)
     assert S1.spsame(S2)
     assert S2[0, 0] == 3
     assert S2[0, 1] == 0
     assert S2[2, 0] == 3
     assert S2[2, 2] == 3
 
-    assert S1.sum() == 1 * 3 + 2 * 3
+    assert np.sum(S1) == 1 * 3 + 2 * 3
 
-    S = S1.sum(0)
+    S = np.sum(S1, axis=0)
+    v = np.zeros([S1.shape[1], S1.shape[2]], np.int32)
+    v[0] = [2, 4]
+    v[2] = [1, 2]
+    assert np.allclose(S, v)
+
+    v = v.sum(1)
+    assert np.allclose(np.sum(S, 1), v)
+
+    S = np.sum(S1, axis=1)
     v = np.zeros([S1.shape[0], S1.shape[2]], np.int32)
     v[0] = [1, 2]
     v[2] = [2, 4]
     assert np.allclose(S, v)
-
-    v = np.zeros([S1.shape[0]], np.int32)
-    v[0] = 3
-    v[2] = 6
-    assert np.allclose(S.sum(1), v)
-
-
-@pytest.mark.xfail(reason="Not implemented for summing on columns TODO")
-def test_sum2():
-    S1 = SparseCSR((10, 10, 2), dtype=np.int32)
-    S1[0, 0] = [1, 2]
-    S1[2, 0] = [1, 2]
-    S1[2, 2] = [1, 2]
-    S1.sum(1)
 
 
 def test_unfinalized_math():
@@ -1314,6 +1366,65 @@ def test_fromsp_csr():
 
     assert np.abs(csr1 - csr_1).sum() == 0.
     assert np.abs(csr2 - csr_2).sum() == 0.
+
+
+def test_transform1():
+    csr1 = sc.sparse.random(10, 100, 0.01, random_state=24812)
+    csr2 = sc.sparse.random(10, 100, 0.02, random_state=24813)
+    csr = SparseCSR.fromsp(csr1, csr2)
+
+    # real 1x2 matrix, dtype=np.complex128
+    matrix = [[0.3, 0.7]]
+    tr = csr.transform(matrix=matrix, dtype=np.complex128)
+
+    assert tr.shape[:2] == csr.shape[:2]
+    assert tr.shape[2] == len(matrix)
+    assert np.abs(tr.tocsr(0) - 0.3 * csr1 - 0.7 * csr2).sum() == 0.
+
+
+def test_transform2():
+    csr1 = sc.sparse.random(10, 100, 0.01, random_state=24812)
+    csr2 = sc.sparse.random(10, 100, 0.02, random_state=24813)
+    csr = SparseCSR.fromsp(csr1, csr2)
+
+    # real 2x2 matrix, dtype=np.float64
+    matrix = [[0.3, 0], [0, 0.7]]
+    tr = csr.transform(matrix=matrix, dtype=np.float64)
+
+    assert tr.shape[:2] == csr.shape[:2]
+    assert tr.shape[2] == len(matrix)
+    assert np.abs(tr.tocsr(0) - 0.3 * csr1).sum() == 0.
+    assert np.abs(tr.tocsr(1) - 0.7 * csr2).sum() == 0.
+
+
+def test_transform3():
+    csr1 = sc.sparse.random(10, 100, 0.01, random_state=24812)
+    csr2 = sc.sparse.random(10, 100, 0.02, random_state=24813)
+    csr = SparseCSR.fromsp(csr1, csr2)
+
+    # real 3x2 matrix
+    matrix = [[0.3, 0], [0, 0.7], [0.1, 0.2]]
+    tr = csr.transform(matrix=matrix)
+
+    assert tr.shape[:2] == csr.shape[:2]
+    assert tr.shape[2] == len(matrix)
+    assert np.abs(tr.tocsr(0) - 0.3 * csr1).sum() == 0.
+    assert np.abs(tr.tocsr(1) - 0.7 * csr2).sum() == 0.
+    assert np.abs(tr.tocsr(2) - 0.1 * csr1 - 0.2 * csr2).sum() == 0.
+
+
+def test_transform4():
+    csr1 = sc.sparse.random(10, 100, 0.01, random_state=24812)
+    csr2 = sc.sparse.random(10, 100, 0.02, random_state=24813)
+    csr = SparseCSR.fromsp(csr1, csr2)
+
+    # complex 1x2 matrix
+    matrix = [[0.3j, 0.7j]]
+    tr = csr.transform(matrix=matrix)
+
+    assert tr.shape[:2] == csr.shape[:2]
+    assert tr.shape[2] == len(matrix)
+    assert np.abs(tr.tocsr(0) - 0.3j * csr1 - 0.7j * csr2).sum() == 0.
 
 
 @pytest.mark.slow

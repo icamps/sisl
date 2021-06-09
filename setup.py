@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 """
 sisl: Generic library for manipulating DFT output, geometries and tight-binding parameter sets
@@ -393,7 +396,7 @@ REVISION_YEAR = 2021
 
 
 DISTNAME = "sisl"
-LICENSE = "LGPLv3"
+LICENSE = "MPLv2"
 AUTHOR = "sisl developers"
 URL = "https://github.com/zerothi/sisl"
 DOWNLOAD_URL = "https://github.com/zerothi/sisl/releases"
@@ -406,7 +409,7 @@ CLASSIFIERS = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "License :: OSI Approved :: Mozilla Public License v2 (MPLv2)",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -414,6 +417,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Cython",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Physics",
@@ -459,6 +463,21 @@ def readme():
         return ""
     return open("README.md", "r").read()
 
+
+# We need to add sisl.* since that recursively adds modules
+packages = find_packages(include=["sisl", "sisl.*"])
+# Add toolboxes
+# This requires some name-mangling since we can't place them
+# in the correct place unless we use 'package_dir' and this trick.
+# 1. Here we list files as they should appear in packages for end-users
+# 2. In 'package_dir' we defer the package name to the local file path
+packages += map(lambda x: f"sisl_toolbox.{x}", find_packages("toolbox"))
+
+# Also ensure we have all "pxd" files
+package_data = {p: ["*.pxd"] for p in packages}
+# Add toolbox data
+package_data["sisl_toolbox.siesta.minimizer"] = ["basis.yaml", "pseudo.yaml"]
+
 metadata = dict(
     name=DISTNAME,
     author=AUTHOR,
@@ -471,17 +490,8 @@ metadata = dict(
     license=LICENSE,
     # Ensure the packages are being found in the correct locations
     package_dir={"sisl_toolbox": "toolbox"},
-    package_data={},
-    packages=
-    # We need to add sisl.* since that recursively adds modules
-    find_packages(include=["sisl", "sisl.*"])
-    +
-    # Add toolboxes
-    # This requires some name-mangling since we can't place them
-    # in the correct place unless we use 'package_dir' and this trick.
-    # 1. Here we list files as they should appear in packages for end-users
-    # 2. In 'package_dir' we defer the package name to the local file path
-    list(map(lambda x: f"sisl_toolbox.{x}", find_packages("toolbox"))),
+    package_data=package_data,
+    packages=packages,
     ext_modules=cythonizer(extensions, compiler_directives=directives),
     entry_points={
         "console_scripts":

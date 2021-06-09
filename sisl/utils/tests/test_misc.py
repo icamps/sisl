@@ -1,6 +1,10 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import pytest
 
 import math as m
+import numpy as np
 
 from sisl.utils.misc import *
 
@@ -34,6 +38,7 @@ def test_direction_str():
     assert direction(' 0') == 0
     assert direction(' 1  ') == 1
     assert direction('   2   ') == 2
+    assert np.allclose(direction('   2   ', abc=np.diag([1, 2, 3])), [0, 0, 3])
 
 
 def test_direction_int_raises():

@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 from numbers import Integral, Real
 from collections.abc import Iterable
 
@@ -986,7 +989,10 @@ class Atom(metaclass=AtomMeta):
 
         self._orbitals = None
         if isinstance(orbitals, (tuple, list, np.ndarray)):
-            if isinstance(orbitals[0], Orbital):
+            if len(orbitals) == 0:
+                # This may be the same as only regarding `R` argument
+                pass
+            elif isinstance(orbitals[0], Orbital):
                 # all is good
                 self._orbitals = orbitals
             elif isinstance(orbitals[0], Real):

@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import pytest
 import os.path as osp
 import itertools
@@ -600,6 +603,7 @@ class TestGeometry:
         g = setup.g.copy()
         assert g * 2 == g.tile(2, 0).tile(2, 1).tile(2, 2)
         assert g * [2, 1] == g.tile(2, 1)
+        assert [2, 1] * g == g.repeat(2, 1)
         assert g * (2, 2, 2) == g.tile(2, 0).tile(2, 1).tile(2, 2)
         assert g * [1, 2, 2] == g.tile(1, 0).tile(2, 1).tile(2, 2)
         assert g * [1, 3, 2] == g.tile(1, 0).tile(3, 1).tile(2, 2)
@@ -639,8 +643,11 @@ class TestGeometry:
     def test_angle(self, setup):
         # There are 2 orbitals per C atom
         g = Geometry([[0] * 3, [1, 0, 0]])
+        cell = g.cell.copy()
         g.angle([0])
         g.angle([0], ref=1)
+        g.angle([0], dir=1)
+        assert np.allclose(g.cell[1], cell[1])
 
     def test_2uc(self, setup):
         # functions for any-thing to UC
@@ -1461,7 +1468,7 @@ def test_geometry_sort_fail_keyword():
 
 @pytest.mark.category
 @pytest.mark.geom_category
-def test_geometry_sanitize_atom():
+def test_geometry_sanitize_atom_category():
     bi = sisl_geom.bilayer(bottom_atoms=Atom[6], top_atoms=(Atom[5], Atom[7])).tile(2, 0).repeat(2, 1)
     C_idx = (bi.atoms.Z == 6).nonzero()[0]
     check_C = bi.axyz(C_idx)
@@ -1486,6 +1493,12 @@ def test_geometry_sanitize_atom():
                        bi._sanitize_atoms(list_01))
     assert np.allclose(bi._sanitize_atoms(ndarray_01),
                        bi._sanitize_atoms(list_01))
+
+
+def test_geometry_sanitize_atom_shape():
+    bi = sisl_geom.bilayer(bottom_atoms=Atom[6], top_atoms=(Atom[5], Atom[7])).tile(2, 0).repeat(2, 1)
+    cube = Cube(10)
+    assert len(bi.axyz(cube)) != 0
 
 
 def test_geometry_sanitize_orbs():

@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import pytest
 
 import math as m
@@ -111,7 +114,7 @@ class TestDensityMatrix:
         D[1, 2] = (2., 0.5)
         mulliken = D.mulliken('orbital')
         assert np.allclose(mulliken[:2, 0], [1., 3.])
-        assert mulliken.sum() == pytest.approx(4.)
+        assert mulliken.sum() == pytest.approx(4)
         mulliken = D.mulliken('atom')
         assert mulliken[0, 0] == pytest.approx(4)
         assert mulliken.sum() == pytest.approx(4)
@@ -374,3 +377,52 @@ class TestDensityMatrix:
         d = p.loads(s)
         assert d.spsame(D)
         assert np.allclose(d.eigh(), D.eigh())
+
+    def test_transform(self, setup):
+        D = DensityMatrix(setup.g, spin='so')
+        a = np.arange(8)
+        for ia in setup.g:
+            D[ia, ia] = a
+        Dcsr = [D.tocsr(i) for i in range(D.shape[2])]
+
+        Dt = D.transform(spin='unpolarized', dtype=np.float32)
+        assert np.abs(0.5 * Dcsr[0] + 0.5 * Dcsr[1] - Dt.tocsr(0)).sum() == 0
+
+        Dt = D.transform(spin='polarized', orthogonal=False)
+        assert np.abs(Dcsr[0] - Dt.tocsr(0)).sum() == 0
+        assert np.abs(Dcsr[1] - Dt.tocsr(1)).sum() == 0
+        assert np.abs(Dt.tocsr(2)).sum() != 0
+
+        Dt = D.transform(spin='non-colinear', orthogonal=False)
+        assert np.abs(Dcsr[0] - Dt.tocsr(0)).sum() == 0
+        assert np.abs(Dcsr[1] - Dt.tocsr(1)).sum() == 0
+        assert np.abs(Dcsr[2] - Dt.tocsr(2)).sum() == 0
+        assert np.abs(Dcsr[3] - Dt.tocsr(3)).sum() == 0
+        assert np.abs(Dt.tocsr(-1)).sum() != 0
+
+    def test_transform_nonortho(self, setup):
+        D = DensityMatrix(setup.g, spin='polarized', orthogonal=False)
+        a = np.arange(3)
+        a[-1] = 1.
+        for ia in setup.g:
+            D[ia, ia] = a
+
+        Dt = D.transform(spin='unpolarized', dtype=np.float32)
+        assert np.abs(0.5 * D.tocsr(0) + 0.5 * D.tocsr(1) - Dt.tocsr(0)).sum() == 0
+        assert np.abs(D.tocsr(-1) - Dt.tocsr(-1)).sum() == 0
+        Dt = D.transform(spin='polarized')
+        assert np.abs(D.tocsr(0) - Dt.tocsr(0)).sum() == 0
+        assert np.abs(D.tocsr(1) - Dt.tocsr(1)).sum() == 0
+        Dt = D.transform(spin='polarized', orthogonal=True)
+        assert np.abs(D.tocsr(0) - Dt.tocsr(0)).sum() == 0
+        assert np.abs(D.tocsr(1) - Dt.tocsr(1)).sum() == 0
+        Dt = D.transform(spin='non-colinear', orthogonal=False)
+        assert np.abs(D.tocsr(0) - Dt.tocsr(0)).sum() == 0
+        assert np.abs(D.tocsr(1) - Dt.tocsr(1)).sum() == 0
+        assert np.abs(Dt.tocsr(2)).sum() == 0
+        assert np.abs(Dt.tocsr(3)).sum() == 0
+        assert np.abs(D.tocsr(-1) - Dt.tocsr(-1)).sum() == 0
+        Dt = D.transform(spin='so', orthogonal=True)
+        assert np.abs(D.tocsr(0) - Dt.tocsr(0)).sum() == 0
+        assert np.abs(D.tocsr(1) - Dt.tocsr(1)).sum() == 0
+        assert np.abs(Dt.tocsr(-1)).sum() == 0

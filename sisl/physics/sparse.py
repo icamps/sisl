@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import warnings
 
 import numpy as np
@@ -1207,6 +1210,106 @@ class SparseOrbitalBZSpin(SparseOrbitalBZ):
                 D[:, 2] = -D[:, 2]
             else:
                 raise NotImplementedError
+
+        return new
+
+    def transform(self, matrix=None, dtype=None, spin=None, orthogonal=None):
+        r""" Transform the matrix by either a matrix or new spin configuration
+
+        1. General transformation:
+        * If `matrix` is provided, a linear transformation :math:`R^n \rightarrow R^m` is applied
+        to the :math:`n`-dimensional elements of the original sparse matrix.
+        The `spin` and `orthogonal` flags are optional but need to be consistent with the creation of an
+        `m`-dimensional matrix.
+
+        2. Spin conversion:
+        If `spin` is provided (without `matrix`), the spin class
+        is changed according to the following conversions:
+
+        Upscaling
+        * unpolarized -> (polarized, non-colinear, spinorbit): Copy unpolarized value to both up and down components
+        * polarized -> (non-colinear, spinorbit): Copy up and down components
+        * non-colinear -> spinorbit: Copy first four spin components
+        * all other new spin components are set to zero
+
+        Downscaling
+        * (polarized, non-colinear, spinorbit) -> unpolarized: Set unpolarized value to a mix 0.5*up + 0.5*down
+        * (non-colinear, spinorbit) -> polarized: Keep up and down spin components
+        * spinorbit -> non-colinear: Keep first four spin components
+        * all other spin components are dropped
+
+        3. Orthogonality:
+        If the `orthogonal` flag is provided, the overlap matrix is either dropped
+        or explicitly introduced as the identity matrix.
+
+        Notes
+        -----
+        The transformation matrix does *not* act on the rows and columns, only on the
+        final dimension of the matrix.
+
+        Parameters
+        ----------
+        matrix : array_like, optional
+            transformation matrix of shape :math:`m \times n`. Default is no transformation.
+        dtype : numpy.dtype, optional
+            data type contained in the matrix. Defaults to the input type.
+        spin : str, sisl.Spin, optional
+            spin class of created matrix. Defaults to the input type.
+        orthogonal : bool, optional
+            flag to control if the new matrix includes overlaps. Defaults to the input type.
+        """
+        if dtype is None:
+            dtype = self.dtype
+
+        if spin is None:
+            spin = self.spin
+        else:
+            spin = Spin(spin, dtype)
+
+        if orthogonal is None:
+            orthogonal = self.orthogonal
+
+        # get dimensions to check
+        N = n = self.spin.spins
+        if not self.orthogonal:
+            N += 1
+        M = m = spin.spins
+        if not orthogonal:
+            M += 1
+
+        if matrix is None:
+            if spin == self.spin and orthogonal == self.orthogonal:
+                # no transformations needed
+                return self.copy(dtype)
+
+            # construct transformation matrix
+            matrix = np.zeros([M, N], dtype=dtype)
+            matrix[:m, :n] = np.eye(m, n, dtype=dtype)
+            if not self.orthogonal and not orthogonal:
+                # ensure the overlap matrix is carried over
+                matrix[-1, -1] = 1.
+
+            if spin.is_unpolarized and self.spin.spins > 1:
+                # average up and down components
+                matrix[0, [0, 1]] = 0.5
+            elif spin.spins > 1 and self.spin.is_unpolarized:
+                # set up and down components to unpolarized value
+                matrix[[0, 1], 0] = 1.
+
+        if matrix.shape[0] != M or matrix.shape[1] != N:
+            # while this check also occurs in the SparseCSR.transform
+            # code, but the error message is better placed here.
+            raise ValueError(f"{self.__class__.__name__}.transform incompatible "
+                             f"transformation matrix and spin dimensions: "
+                             f"matrix.shape={matrix.shape} and self.spin={N} ; out.spin={M}")
+
+        new = self.__class__(self.geometry.copy(), spin=spin, dtype=dtype, nnzpr=1, orthogonal=orthogonal)
+        new._csr = self._csr.transform(matrix, dtype=dtype)
+
+        if not orthogonal and self.orthogonal:
+            # set identity overlap matrix, loop over rows
+            for i in range(new._csr.shape[0]):
+                new._csr[i, i, -1] = 1.
 
         return new
 

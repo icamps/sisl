@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 from numbers import Integral
 import math as m
 from scipy.sparse import csr_matrix, triu, tril
@@ -194,8 +197,7 @@ class _densitymatrix(SparseOrbitalBZSpin):
 
             # align with vector
             # add factor 1/2 here (instead when unwrapping)
-            A[:, :] = 0.5 * vec.reshape(1, 3) * ((A ** 2)
-                                                 .sum(1)
+            A[:, :] = 0.5 * vec.reshape(1, 3) * (np.sum(A ** 2, axis=1)
                                                  .reshape(-1, 1)) ** 0.5
 
             out = self.copy()
@@ -225,8 +227,7 @@ class _densitymatrix(SparseOrbitalBZSpin):
 
             # align with vector
             # add factor 1/2 here (instead when unwrapping)
-            A[:, :, :] = 0.5 * vec.reshape(1, 1, 3) * ((A ** 2)
-                                                       .sum(2)
+            A[:, :, :] = 0.5 * vec.reshape(1, 1, 3) * (np.sum(A ** 2, axis=2)
                                                        .reshape(-1, 2, 1)) ** 0.5
 
             out = self.copy()
@@ -341,7 +342,7 @@ class _densitymatrix(SparseOrbitalBZSpin):
             else:
                 D = self._csr.copy(range(self.shape[2] - 1))
                 D._D *= self._csr._D[:, -1].reshape(-1, 1)
-                D = D.sum(0)
+                D = np.sum(D, axis=1)
 
             return _convert(D)
 
@@ -352,7 +353,7 @@ class _densitymatrix(SparseOrbitalBZSpin):
             else:
                 D = self._csr.copy(range(self.shape[2] - 1))
                 D._D *= self._csr._D[:, -1].reshape(-1, 1)
-                D = D.sum(0)
+                D = np.sum(D, axis=1)
 
             # Now perform summation per atom
             geom = self.geometry

@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import warnings
 from datetime import datetime
 import numpy as np
@@ -28,7 +31,8 @@ from .siesta_nc import ncSileSiesta
 from .basis import ionxmlSileSiesta, ionncSileSiesta
 from .orb_indx import orbindxSileSiesta
 from .xv import xvSileSiesta
-from sisl import Geometry, Orbital, Atom, AtomGhost, Atoms, SuperCell, DynamicalMatrix
+from sisl import Orbital, SphericalOrbital, Atom, AtomGhost, Atoms
+from sisl import Geometry, SuperCell, DynamicalMatrix
 
 from sisl.utils.cmd import default_ArgumentParser, default_namespace
 from sisl.utils.misc import merge_instances
@@ -477,8 +481,17 @@ class fdfSileSiesta(SileSiesta):
 
     @sile_fh_open()
     def write_supercell(self, sc, fmt='.8f', *args, **kwargs):
-        """ Writes the supercell to the contained file """
-        # Check that we can write to the file
+        """ Writes the supercell
+
+        Parameters
+        ----------
+        sc : SuperCell
+           supercell object to write
+        fmt : str, optional
+           precision used to store the lattice vectors
+        unit : {'Ang', 'Bohr'}
+           the unit used when writing the data.
+        """
         sile_raise_write(self)
 
         fmt_str = ' {{0:{0}}} {{1:{0}}} {{2:{0}}}\n'.format(fmt)
@@ -500,8 +513,18 @@ class fdfSileSiesta(SileSiesta):
 
     @sile_fh_open()
     def write_geometry(self, geometry, fmt='.8f', *args, **kwargs):
-        """ Writes the geometry to the contained file """
-        # Check that we can write to the file
+        """ Writes the geometry
+
+        Parameters
+        ----------
+        geometry : Geometry
+           geometry object to write
+        fmt : str, optional
+           precision used to store the atomic coordinates
+        unit : {'Ang', 'Bohr', 'fractional', 'frac'}
+           the unit used when writing the data.
+           fractional and frac are the same.
+        """
         sile_raise_write(self)
 
         self.write_supercell(geometry.sc, fmt, *args, **kwargs)
@@ -509,7 +532,7 @@ class fdfSileSiesta(SileSiesta):
         self._write('\n')
         self._write(f'NumberOfAtoms {geometry.na}\n')
         unit = kwargs.get('unit', 'Ang').capitalize()
-        is_fractional = unit in ['Frac', 'Fractional']
+        is_fractional = unit in ('Frac', 'Fractional')
         if is_fractional:
             self._write('AtomicCoordinatesFormat Fractional\n')
         else:
@@ -1599,12 +1622,17 @@ class fdfSileSiesta(SileSiesta):
             # so return nothing
             return None
 
+        # We create a dictionary with the different atomic species
+        # and create defaults with another dictionary.
+        atoms = [{} for _ in spcs]
+
+        pao_basis = self.get("PAO.Basis", default=[])
+
         all_mass = self.get('AtomicMass', default=[])
         # default mass
         mass = None
 
         # Now spcs contains the block of the chemicalspecieslabel
-        atoms = [None] * len(spcs)
         for spc in spcs:
             idx, Z, lbl = spc.split()[:3]
             idx = int(idx) - 1 # F-indexing
@@ -1620,8 +1648,156 @@ class fdfSileSiesta(SileSiesta):
                 else:
                     mass = None
 
-            atoms[idx] = Atom(Z=Z, mass=mass, tag=lbl)
-        return atoms
+            atoms[idx]["Z"] = Z
+            atoms[idx]["mass"] = mass
+            atoms[idx]["tag"] = lbl
+            try:
+                # Only in some cases can we parse the PAO.Basis block.
+                # There are many corner cases where we can't parse it
+                # And the we just don't do anything...
+                # We don't even warn the user...
+                atoms[idx]["orbitals"] = self._parse_pao_basis(pao_basis, lbl)
+            except Exception as e:
+                pass
+
+        # Now check if we can find the orbitals
+        return [Atom(**atom) for atom in atoms]
+
+    @classmethod
+    def _parse_pao_basis(cls, block, specie=None):
+        """ Parse the full PAO.Basis block with *optionally* only a single specie
+
+        Notes
+        -----
+        This parsing of the basis set is not complete, in any sense.
+        Especially if users requests filtered orbitals.
+
+        Parameters
+        ----------
+        block : list of str or str
+           the entire PAO.Basis block as read by ``self.get("PAO.Basis")``
+        specie : str, optional
+           which specie to parse
+
+        Returns
+        -------
+        orbitals : list of AtomicOrbital
+            only if requested `specie` is not None
+        tag_orbitals : dict
+            if `specie` is None then a dictionary is returned
+        """
+        if isinstance(block, str):
+            block = block.splitlines()
+        if len(block) == 0:
+            if specie is None:
+                return []
+            return {}
+
+        # make a copy
+        block = list(block)
+
+        def blockline():
+            nonlocal block
+            out = ""
+            while len(out) == 0:
+                if len(block) == 0:
+                    return out
+                out = block.pop(0).split('#')[0].strip(" \n\r\t")
+            return out
+
+        def parse_next():
+            nonlocal blockline
+
+            line = blockline()
+            if len(line) == 0:
+                return None
+
+            # In this basis parser we don't care about the options for
+            # the specifications
+            tag, nl, *_ = line.split()
+
+            # now loop orbitals
+            orbs = []
+            # we just use a non-physical number to signal it didn't get added
+            # in siesta it can automatically determine this, we can't... (yet!)
+            n = 0
+            for _ in range(int(nl)):
+                # we have 2 or 3 lines
+                nl_line = blockline()
+                rc_line = blockline()
+                # check if we have contraction in the line
+                # This is not perfect, but should grab
+                # contration lines rather than next orbital line.
+                # This is because the first n=<integer> should never
+                # contain a ".", whereas the contraction *should*.
+                if len(block) > 0:
+                    if '.' in block[0].split()[0]:
+                        contract_line = blockline()
+
+                # remove n=
+                nl_line = nl_line.replace("n=", "").split()
+
+                # first 3|2: are n?, l, Nzeta
+                first = int(nl_line.pop(0))
+                second = int(nl_line.pop(0))
+                try:
+                    int(nl_line[0])
+                    n = first
+                    l = second
+                    nzeta = int(nl_line.pop(0))
+                except:
+                    l = first
+                    nzeta = second
+
+                # Number of polarizations
+                npol = 0
+                while len(nl_line) > 0:
+                    opt = nl_line.pop(0)
+                    if opt == "P":
+                        try:
+                            npol = int(nl_line[0])
+                            nl_line.pop(0)
+                        except:
+                            npol = 1
+
+                # now we have everything to build the orbitals etc.
+                first_zeta = None
+                for izeta, rc in enumerate(map(float, rc_line.split()), 1):
+                    if rc > 0:
+                        rc *= Bohr2Ang
+                    elif rc == 0:
+                        rc = orbs[-1].R
+                    else:
+                        rc *= -orbs[-1].R
+                    orb = SphericalOrbital(l, None, R=rc)
+                    orbs.extend(orb.toAtomicOrbital(n=n, zeta=izeta))
+                    if izeta == 1:
+                        first_zeta = orb
+                    nzeta -= 1
+
+                # In case the final orbitals hasn't been defined.
+                # They really should be defined in this one, but sometimes it may be
+                # useful to leave the rc's definitions out.
+                orb = orbs[-1]
+                rc = orb.R
+                for izeta in range(orb.zeta, orb.zeta + nzeta):
+                    orb = SphericalOrbital(l, None, R=rc)
+                    orbs.extend(orb.toAtomicOrbital(n=n, zeta=izeta))
+                for ipol in range(1, npol+1):
+                    orb = SphericalOrbital(l+1, None, R=first_zeta.R)
+                    orbs.extend(orb.toAtomicOrbital(n=n, zeta=ipol, P=True))
+
+            return tag, orbs
+
+        atoms = {}
+        ret = parse_next()
+        while ret is not None:
+            atoms[ret[0]] = ret[1]
+            ret = parse_next()
+
+        if specie is None:
+            return atoms
+        return atoms[specie]
 
     def _r_add_overlap(self, parent_call, M):
         """ Internal routine to ensure that the overlap matrix is read and added to the matrix `M` """

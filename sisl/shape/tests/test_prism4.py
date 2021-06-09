@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import pytest
 
 import math as m
@@ -12,6 +15,7 @@ def test_create_cuboid():
     cube = Cuboid([1.0]*3)
     cube = Cuboid([1.0]*3, [1.]*3)
     cube = Cuboid([1.0, 2.0, 3.0], [1.]*3)
+    cube = Cuboid([1.0, 2.0, 3.0], origo=[1.]*3)
     v0 = [1., 0.2, 1.0]
     v1 = [1., -0.2, 1.0]
     v2 = [1., -0.2, -1.0]
@@ -26,6 +30,8 @@ def test_create_fail():
     v3 = [1., -0.2, -1.0]
     with pytest.raises(ValueError):
         el = Cuboid([v0, v1, v2, v3])
+    with pytest.raises(ValueError):
+        el = Cuboid(2, center=v1, origo=v2)
 
 
 def test_tosphere():

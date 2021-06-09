@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 from collections import defaultdict
 import numpy as np
 import plotly.graph_objects as go
@@ -19,11 +22,11 @@ class GridPlot(Plot):
     Versatile visualization tool for any kind of grid.
 
     Parameters
-    -------------
+    ------------
     grid: Grid, optional
         A sisl.Grid object. If provided, grid_file is ignored.
-    grid_file: Sile, optional
-        a sile that can read grids, e.g. `_gridSileSiesta` or `chgSileVASP` and friends.
+    grid_file: cubeSile or rhoSileSiesta or ldosSileSiesta or rhoinitSileSiesta or rhoxcSileSiesta or drhoSileSiesta or baderSileSiesta or iorhoSileSiesta or totalrhoSileSiesta or stsSileSiesta or stmldosSileSiesta or hartreeSileSiesta or neutralatomhartreeSileSiesta or totalhartreeSileSiesta or gridncSileSiesta or ncSileSiesta or fdfSileSiesta or tsvncSileSiesta or chgSileVASP or locpotSileVASP, optional
+        A filename that can be return a Grid through `read_grid`.
     represent:  optional
         The representation of the grid that should be displayed
     transforms:  optional
@@ -35,11 +38,10 @@ class GridPlot(Plot):
         transformations will be applied in the order provided. Some
         transforms might not be necessarily commutable (e.g. "abs" and
         "cos").
-    transform_bc: optional
-        Transform the boundary conditions.
     axes:  optional
-        The axis along you want to see the grid, it will be averaged along
-        the other ones
+                     The axis along you want to see the grid, it will be
+        reduced along the other ones, according to the the `reduce_method`
+        setting.
     plot_geom: bool, optional
         If True the geometry associated to the grid will also be plotted
     geom_kwargs: dict, optional
@@ -52,8 +54,13 @@ class GridPlot(Plot):
     interp: array-like, optional
         Interpolation factors to make the grid finer on each axis.See the
         zsmooth setting for faster smoothing of 2D heatmap.
+    transform_bc:  optional
+                     The boundary conditions when a cell transform is applied
+        to the grid. Cell transforms are only             applied when the
+        grid's cell doesn't follow the cartesian coordinates and the
+        requested display is 2D.
     nsc: array-like, optional
-        number of times the grid should be repeated
+        Number of times the grid should be repeated
     offset: array-like, optional
         The offset of the grid along each axis. This is important if you are
         planning to match this grid with other geometry related plots.
@@ -82,19 +89,22 @@ class GridPlot(Plot):
         color range is used
     colorscale: str, optional
         A valid plotly colorscale. See https://plotly.com/python/colorscales/
+    reduce_method:  optional
+        The method used to reduce the dimensions that will not be displayed
+        in the plot.
     isos: array-like of dict, optional
         The isovalues that you want to represent.             The way they
-        will be represented are of course dependant on the type of
-        representation:                 - 1D representations: Just a scatter
-        mark                 - 2D representations: A contour (i.e. a line)
-        - 3D representations: A surface                Each item is a dict.
-        Structure of the expected dicts:{         'name': The name of the iso
-        query. Note that you can use $isoval$ as a template to indicate where
-        the isoval should go.         'val':          'frac': If val is not
-        provided, this is used to calculate where the isosurface should be
-        drawn.                     It calculates them from the minimum and
-        maximum values of the grid like so:                     If iso_frac =
-        0.3:                     (min_value-----
+        will be represented is of course dependant on the type of
+        representation:                 - 2D representations: A contour (i.e.
+        a line)                 - 3D representations: A surface
+        Each item is a dict. Structure of the expected dicts:{
+        'name': The name of the iso query. Note that you can use $isoval$ as
+        a template to indicate where the isoval should go.         'val': The
+        iso value. If not provided, it will be infered from `frac`
+        'frac': If val is not provided, this is used to calculate where the
+        isosurface should be drawn.                     It calculates them
+        from the minimum and maximum values of the grid like so:
+        If iso_frac = 0.3:                     (min_value-----
         ISOVALUE(30%)-----------max_value)                     Therefore, it
         should be a number between 0 and 1.
         'step_size': The step size to use to calculate the isosurface in case
@@ -104,7 +114,8 @@ class GridPlot(Plot):
         step_size=2). For very big                     grids your computer
         may not even be able to render very fine surfaces, so it's worth
         keeping                     this setting in mind.         'color':
-        'opacity':  }
+        The color of the surface/contour.         'opacity': Opacity of the
+        surface/contour. Between 0 (transparent) and 1 (opaque). }
     root_fdf: fdfSileSiesta, optional
         Path to the fdf file that is the 'parent' of the results.
     results_path: str, optional
@@ -149,7 +160,7 @@ class GridPlot(Plot):
                     {'label': 'Real part', 'value': "real"},
                     {'label': 'Imaginary part', 'value': 'imag'},
                     {'label': 'Complex modulus', 'value': "mod"},
-                    {'label': 'Phase (in rad)', 'value': 'rad_phase'},
+                    {'label': 'Phase (in rad)', 'value': 'phase'},
                     {'label': 'Phase (in deg)', 'value': 'deg_phase'},
                 ],
                 'isMulti': False,
@@ -195,7 +206,7 @@ class GridPlot(Plot):
                 'isSearchable': True,
                 'isClearable': False
             },
-            help = """The axis along you want to see the grid, it will be averaged along the other ones """
+            help = """The axis along you want to see the grid, it will be reduced along the other ones, according to the the `reduce_method` setting."""
         ),
 
         SwitchInput(key='plot_geom', name='Plot geometry',
@@ -245,8 +256,7 @@ class GridPlot(Plot):
                     {'label': 'wrap', 'value': 'wrap'},
                 ],
             },
-            help="""
-            The boundary conditions when a cell transform is applied to the grid. Cell transforms are only
+            help="""The boundary conditions when a cell transform is applied to the grid. Cell transforms are only
             applied when the grid's cell doesn't follow the cartesian coordinates and the requested display is 2D.
             """
         ),
@@ -333,6 +343,17 @@ class GridPlot(Plot):
             key="colorscale", name="Color scale",
             default=None,
             help="""A valid plotly colorscale. See https://plotly.com/python/colorscales/"""
+        ),
+
+        DropdownInput(key="reduce_method", name="Reduce method",
+            default="average",
+            params={
+                'options': [
+                    {'label': 'average', 'value': 'average'},
+                    {'label': 'sum', 'value': 'sum'},
+                ],
+            },
+            help="""The method used to reduce the dimensions that will not be displayed in the plot."""
         ),
 
         QueriesInput(key = "isos", name = "Isosurfaces / contours",
@@ -441,9 +462,15 @@ class GridPlot(Plot):
             self.get_param(key, as_dict=False).update_marks()
 
     def _set_data(self, axes, nsc, interp, trace_name, transforms, represent, cut_vacuum, grid_file,
-        x_range, y_range, z_range, plot_geom, geom_kwargs, transform_bc):
+        x_range, y_range, z_range, plot_geom, geom_kwargs, transform_bc, reduce_method):
 
-        grid = self.grid
+        if trace_name is None and grid_file:
+            trace_name = grid_file.name
+
+        grid = self.grid.copy()
+
+        # Choose the representation of the grid that we want to display
+        grid.grid = self._get_representation(grid, represent)
 
         is_skewed_2d = not grid.sc.is_cartesian() and len(axes) == 2
         if is_skewed_2d or len(axes) == 3:
@@ -464,64 +491,43 @@ class GridPlot(Plot):
             # The interpolation has already happened, so just set it to [1,1,1] for the rest of the method
             interp = [1, 1, 1]
 
+        # Apply all transforms requested by the user
         for transform in transforms:
             grid = self._transform_grid(grid, transform)
-
-        if trace_name is None and grid_file:
-            trace_name = grid_file.name
 
         # Get only the part of the grid that we need
         ax_ranges = [x_range, y_range, z_range]
 
         for ax, ax_range in enumerate(ax_ranges):
             if ax_range is not None:
-                #Build an array with the limits
+                # Build an array with the limits
                 lims = np.zeros((2, 3))
-                lims[:, ax] = ax_range
+                # If the cell was transformed (is_skewed_2d), then we need to modify
+                # the range to get what the user wants.
+                lims[:, ax] = ax_range + self.offsets["cell_transform"][ax] - grid.origo[ax]
 
-                #Get the indices of those points
+                # Get the indices of those points
                 indices = np.array([grid.index(lim) for lim in lims], dtype=int)
 
-                #And finally get the subpart of the grid
+                # And finally get the subpart of the grid
                 grid = grid.sub(np.arange(indices[0, ax], indices[1, ax] + 1), ax)
 
-        if cut_vacuum and getattr(grid, "geometry", None):
-            grid, lims = self._cut_vacuum(grid)
-            self.offsets["vacuum"] = lims[0]
-        else:
-            self.offsets["vacuum"] = [0, 0, 0]
+        # Reduce the dimensions that are not going to be displayed
+        for ax in [0, 1, 2]:
+            if ax not in axes:
+                grid = getattr(grid, reduce_method)(ax)
 
+        # Interpolate the grid to a different shape, if needed
         interp_factors = np.array([factor if ax in axes else 1 for ax, factor in enumerate(interp)], dtype=int)
-
         interpolate = (interp_factors != 1).any()
-
         if interpolate:
             grid = grid.interp((np.array(interp_factors)*grid.shape).astype(int))
 
-        for ax in [0, 1, 2]:
-            if ax not in axes:
-                grid = grid.average(ax)
-
-        # Choose the representation of the grid that we want to display
-        if represent == 'real':
-            values = grid.grid.real
-        elif represent == 'imag':
-            values = grid.grid.imag
-        elif represent == 'mod':
-            values = np.absolute(grid.grid)
-        elif represent.endswith("phase"):
-            values = np.angle(grid.grid, deg=represent.startswith("deg"))
-
         #Remove the leftover dimensions
-        values = np.squeeze(values)
+        values = np.squeeze(grid.grid)
 
         # Choose which plotting function we need to use
-        if values.ndim == 1:
-            plot_func = self._plot1D
-        elif values.ndim == 2:
-            plot_func = self._plot2D
-        elif values.ndim == 3:
-            plot_func = self._plot3D
+        plot_func = getattr(self, f"_plot{values.ndim}D")
 
         # Use it
         plot_func(grid, values, axes, nsc, trace_name, showlegend=bool(trace_name) or values.ndim == 3)
@@ -543,7 +549,7 @@ class GridPlot(Plot):
 
     def _get_ax_range(self, grid, ax, nsc):
 
-        offset = self._get_offset(ax)
+        offset = self._get_offset(grid, ax)
 
         ax_vals = np.arange(0, nsc[ax]*grid.cell[ax, ax], grid.dcell[ax, ax]) + offset
 
@@ -552,49 +558,23 @@ class GridPlot(Plot):
 
         return ax_vals
 
-    def _get_offset(self, ax, offset, x_range, y_range, z_range):
+    def _get_offset(self, grid, ax, offset, x_range, y_range, z_range):
 
         ax_range = [x_range, y_range, z_range][ax]
-        grid_offset = _a.asarrayd(offset) + self.offsets["vacuum"] + self.offsets["cell_transform"]
+        grid_offset =  _a.asarrayd(offset) + self.offsets["vacuum"]
 
+        # Now let's get the offset due to the minimum value of the axis range
         if ax_range is not None:
             offset = ax_range[0]
         else:
-            offset = 0
+            # If a range was specified, the cell_transform and origo offsets were applied
+            # when subbing the grid. Otherwise they have not been applied yet.
+            offset = self.offsets["cell_transform"][ax] + grid.origo[ax]
 
         return offset + grid_offset[ax]
 
-    def _get_offsets(self, display_axes=[0, 1, 2]):
-        return np.array([self._get_offset(ax) for ax in display_axes])
-
-    @staticmethod
-    def _cut_vacuum(grid):
-
-        if not hasattr(grid, "geometry"):
-            raise ValueError("The grid does not have an associated geometry, and therefore we can not calculate where the vacuum is.")
-
-        geom = grid.geometry
-        maxR = geom.maxR()
-
-        # Calculate the limits based on the positions of the atoms and the maxR of
-        # the geometry.
-        lims = np.array([geom.xyz.min(axis=0) - maxR, geom.xyz.max(axis=0) + maxR])
-
-        # Get the limits in indexes
-        i_lims = grid.index(lims)
-
-        # Make sure that the limits don't go outside the cell
-        i_lims[i_lims < 0] = 0
-        for ax in (0, 1, 2):
-            i_lims[1, ax] = min(i_lims[1, ax], grid.shape[ax])
-
-        # Actually "cut" the grid
-        for ax, (min_i, max_i) in enumerate(i_lims.T):
-            grid = grid.sub(range(min_i, max_i), ax)
-
-        # Return the cut grid, but also the limits that have been applied
-        # The user can access the offset of the grid at lims[0]
-        return grid, grid.index2xyz(i_lims)
+    def _get_offsets(self, grid, display_axes=[0, 1, 2]):
+        return np.array([self._get_offset(grid, ax) for ax in display_axes])
 
     @staticmethod
     def _transform_grid(grid, transform):
@@ -609,6 +589,34 @@ class GridPlot(Plot):
                 transform = f"numpy.{transform}"
 
         return grid.apply(transform)
+
+    @staticmethod
+    def _get_representation(grid, represent):
+        """Returns a representation of the grid
+
+        Parameters
+        ------------
+        grid: sisl.Grid
+            the grid for which we want return
+        represent: {"real", "imag", "mod", "phase", "deg_phase", "rad_phase"}
+            the type of representation. "phase" is equivalent to "rad_phase"
+
+        Returns
+        ------------
+        np.ndarray of shape = grid.shape
+        """
+        if represent == 'real':
+            values = grid.grid.real
+        elif represent == 'imag':
+            values = grid.grid.imag
+        elif represent == 'mod':
+            values = np.absolute(grid.grid)
+        elif represent in ['phase', 'rad_phase', 'deg_phase']:
+            values = np.angle(grid.grid, deg=represent.startswith("deg"))
+        else:
+            raise ValueError(f"'{represent}' is not a valid value for the `represent` argument")
+
+        return values
 
     def _plot1D(self, grid, values, display_axes, nsc, name, **kwargs):
         """Takes care of plotting the grid in 1D"""
@@ -676,7 +684,7 @@ class GridPlot(Plot):
 
         # Draw the contours (if any)
         if len(isos) > 0:
-            offsets = self._get_offsets(display_axes)
+            offsets = self._get_offsets(grid, display_axes)
             isos_param = self.get_param("isos")
             minval = np.nanmin(values)
             maxval = np.nanmax(values)
@@ -718,50 +726,6 @@ class GridPlot(Plot):
         axes_titles = {'xaxis_title': f'{("X","Y", "Z")[xaxis]} axis [Ang]', 'yaxis_title': f'{("X","Y", "Z")[yaxis]} axis [Ang]'}
 
         self.update_layout(**axes_titles)
-
-    def _plot_2D_carpet(self, grid, values, xaxis, yaxis):
-        """
-        CURRENTLY NOT USED, but kept here just in case it is needed in the future
-
-        It was supposed to display skewed grids in 2D, but it has some limitations
-        (see https://github.com/zerothi/sisl/pull/268#issuecomment-702758586). In these cases,
-        the grid is first transformed to cartesian coordinates and then plotted in a regular map
-        instead of using the Carpet trace.
-        """
-
-        minval, maxval = values.min(), values.max()
-
-        values = values.T
-
-        x, y = np.mgrid[:values.shape[0], :values.shape[1]]
-        x, y = x * grid.dcell[xaxis, xaxis] + y * grid.dcell[yaxis, xaxis], x * grid.dcell[xaxis, yaxis] + y * grid.dcell[yaxis, yaxis]
-
-        self.figure.add_trace(go.Contourcarpet(
-            z = values,
-            contours = dict(
-                start = minval,
-                end = maxval,
-                size = (maxval - minval) / 40,
-                showlines=False
-            ),
-        ))
-
-        self.figure.add_trace(go.Carpet(
-            a = np.arange(values.shape[1]),
-            b = np.arange(values.shape[0]),
-            x = x,
-            y = y,
-            aaxis = dict(
-                showgrid=False,
-                showline=False,
-                showticklabels="none"
-            ),
-            baxis = dict(
-                showgrid=False,
-                showline=False,
-                showticklabels="none"
-            ),
-        ))
 
     @staticmethod
     def _transform_grid_cell(grid, cell=np.eye(3), output_shape=None, mode="constant", order=1, **kwargs):
@@ -882,7 +846,7 @@ class GridPlot(Plot):
             # Calculate the isosurface
             vertices, faces, normals, intensities = grid.isosurface(isoval, iso.get("step_size", 1))
 
-            vertices = vertices + self._get_offsets()
+            vertices = vertices + self._get_offsets(grid)
 
             # Create the mesh trace and add it to the plot
             x, y, z = vertices.T
@@ -1242,6 +1206,10 @@ class WavefunctionPlot(GridPlot):
     k: array-like, optional
         If the eigenstates need to be calculated from a hamiltonian, the k
         point for which you want them to be calculated
+    spin:  optional
+        The spin component where the eigenstate should be calculated.
+        Only meaningful if the state needs to be calculated from the
+        hamiltonian.
     grid_prec: float, optional
         The spacing between points of the grid where the wavefunction will be
         projected (in Ang).             If you are plotting a 3D
@@ -1254,8 +1222,8 @@ class WavefunctionPlot(GridPlot):
         The index of the wavefunction
     grid: Grid, optional
         A sisl.Grid object. If provided, grid_file is ignored.
-    grid_file: Sile, optional
-        a sile that can read grids, e.g. `_gridSileSiesta` or `chgSileVASP` and friends.
+    grid_file: cubeSile or rhoSileSiesta or ldosSileSiesta or rhoinitSileSiesta or rhoxcSileSiesta or drhoSileSiesta or baderSileSiesta or iorhoSileSiesta or totalrhoSileSiesta or stsSileSiesta or stmldosSileSiesta or hartreeSileSiesta or neutralatomhartreeSileSiesta or totalhartreeSileSiesta or gridncSileSiesta or ncSileSiesta or fdfSileSiesta or tsvncSileSiesta or chgSileVASP or locpotSileVASP, optional
+        A filename that can be return a Grid through `read_grid`.
     represent:  optional
         The representation of the grid that should be displayed
     transforms:  optional
@@ -1267,14 +1235,10 @@ class WavefunctionPlot(GridPlot):
         transformations will be applied in the order provided. Some
         transforms might not be necessarily commutable (e.g. "abs" and
         "cos").
-    transform_bc: optional
-        Transform the boundary conditions.
-    spin : int, optional
-        which spin-component to plot, default to the first spin-component.
-        Only used in polarized wavefunctions.
     axes:  optional
-        The axis along you want to see the grid, it will be averaged along
-        the other ones
+                     The axis along you want to see the grid, it will be
+        reduced along the other ones, according to the the `reduce_method`
+        setting.
     plot_geom: bool, optional
         If True the geometry associated to the grid will also be plotted
     geom_kwargs: dict, optional
@@ -1287,8 +1251,13 @@ class WavefunctionPlot(GridPlot):
     interp: array-like, optional
         Interpolation factors to make the grid finer on each axis.See the
         zsmooth setting for faster smoothing of 2D heatmap.
+    transform_bc:  optional
+                     The boundary conditions when a cell transform is applied
+        to the grid. Cell transforms are only             applied when the
+        grid's cell doesn't follow the cartesian coordinates and the
+        requested display is 2D.
     nsc: array-like, optional
-        number of times the geometry should be repeated
+        Number of times the grid should be repeated
     offset: array-like, optional
         The offset of the grid along each axis. This is important if you are
         planning to match this grid with other geometry related plots.
@@ -1317,35 +1286,33 @@ class WavefunctionPlot(GridPlot):
         color range is used
     colorscale: str, optional
         A valid plotly colorscale. See https://plotly.com/python/colorscales/
-    iso_vals: array-like of shape (2,), optional
-        The minimum and maximum values of the isosurfaces to be displayed.
-        If not provided, iso_frac will be used to calculate these values
-        (which is more versatile).
-    iso_frac: float, optional
-        If iso_vals is not provided, this value is used to calculate where
-        the isosurfaces are drawn.             It calculates them from the
-        minimum and maximum values of the grid like so:             If
-        iso_frac = 0.3:             (min_value----30%-----ISOMIN----------
-        ISOMAX---30%-----max_value)             Therefore, it should be a
-        number between 0 and 0.5.
-    surface_count: int, optional
-        The number of surfaces between the lower and the upper limits of
-        iso_vals
-    type3D:  optional
-        This controls how the 3D data is displayed.              'volume'
-        displays different layers with different levels of opacity so that
-        there is more sensation of depth.             'isosurface' displays
-        only isosurfaces and nothing inbetween them. For plotting grids with
-        positive and negative             values, you should use 'isosurface'
-        or two different 'volume' plots.              If not provided, the
-        plot will decide for you based on the above mentioned fact
-    opacityscale:  optional
-        Controls how the opacity changes through layers.              See
-        https://plotly.com/python/3d-volume-plots/ for a display of the
-        different possibilities
-    surface_opacity: float, optional
-        The opacity of the isosurfaces drawn by 3d plots from 0 (transparent)
-        to 1 (opaque).
+    reduce_method:  optional
+        The method used to reduce the dimensions that will not be displayed
+        in the plot.
+    isos: array-like of dict, optional
+        The isovalues that you want to represent.             The way they
+        will be represented is of course dependant on the type of
+        representation:                 - 2D representations: A contour (i.e.
+        a line)                 - 3D representations: A surface
+        Each item is a dict. Structure of the expected dicts:{
+        'name': The name of the iso query. Note that you can use $isoval$ as
+        a template to indicate where the isoval should go.         'val': The
+        iso value. If not provided, it will be infered from `frac`
+        'frac': If val is not provided, this is used to calculate where the
+        isosurface should be drawn.                     It calculates them
+        from the minimum and maximum values of the grid like so:
+        If iso_frac = 0.3:                     (min_value-----
+        ISOVALUE(30%)-----------max_value)                     Therefore, it
+        should be a number between 0 and 1.
+        'step_size': The step size to use to calculate the isosurface in case
+        it's a 3D representation                     A bigger step-size can
+        speed up the process dramatically, specially the rendering part
+        and the resolution may still be more than satisfactory (try to use
+        step_size=2). For very big                     grids your computer
+        may not even be able to render very fine surfaces, so it's worth
+        keeping                     this setting in mind.         'color':
+        The color of the surface/contour.         'opacity': Opacity of the
+        surface/contour. Between 0 (transparent) and 1 (opaque). }
     root_fdf: fdfSileSiesta, optional
         Path to the fdf file that is the 'parent' of the results.
     results_path: str, optional
@@ -1431,16 +1398,28 @@ class WavefunctionPlot(GridPlot):
         # calling it later in _set_data
         pass
 
-    def _set_data(self, i, geometry, grid, k, grid_prec):
+    def _set_data(self, i, geometry, grid, k, grid_prec, nsc):
 
         if geometry is not None:
             self.geometry = geometry
         if getattr(self, 'geometry', None) is None:
             raise ValueError('No geometry was provided and we need it the basis orbitals to build the wavefunctions from the coefficients!')
 
+        # If we are calculating the wavefunction for any point other than gamma,
+        # the periodicity of the WF will be bigger than the cell. Therefore, if
+        # the user wants to see more than the unit cell, we need to generate the
+        # wavefunction for all the supercell. Here we intercept the `nsc` setting
+        # with this objective.
+        tiled_geometry = self.geometry
+        nsc = list(nsc)
+        for ax, sc_i in enumerate(nsc):
+            if k[ax] != 0:
+                tiled_geometry = tiled_geometry.tile(sc_i, ax)
+                nsc[ax] = 1
+
         if grid is None:
             dtype = np.float64 if (np.array(k) == 0).all() else np.complex128
-            self.grid = sisl.Grid(grid_prec, geometry=self.geometry, dtype=dtype)
+            self.grid = sisl.Grid(grid_prec, geometry=tiled_geometry, dtype=dtype)
 
         # GridPlot's after_read basically sets the x_range, y_range and z_range options
         # which need to know what the grid is, that's why we are calling it here
@@ -1448,7 +1427,7 @@ class WavefunctionPlot(GridPlot):
 
         self.eigenstate[i].wavefunction(self.grid)
 
-        super()._set_data()
+        super()._set_data(nsc=nsc)
 
 # class GridSlice(Plot):
 

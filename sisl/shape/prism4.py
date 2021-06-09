@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import numpy as np
 from numpy import dot
 
@@ -26,6 +29,10 @@ class Cuboid(PureShape):
        along the Euclidean vectors.
     center : (3,), optional
        the center of the cuboid. Defaults to the origo.
+       Not allowed as argument if `origo` is passed.
+    origo : (3,), optional
+       the offset for the cuboid. The center will be equal to ``v.sum(0) + origo``.
+       Not allowed as argument if `center` is passed.
 
     Examples
     --------
@@ -37,8 +44,8 @@ class Cuboid(PureShape):
     """
     __slots__ = ('_v', '_iv')
 
-    def __init__(self, v, center=None):
-        super().__init__(center)
+    def __init__(self, v, center=None, origo=None):
+
         v = _a.asarrayd(v)
         if v.size == 1:
             self._v = np.identity(3) * v # a "Euclidean" cube
@@ -47,7 +54,15 @@ class Cuboid(PureShape):
         elif v.size == 9:
             self._v = v.reshape(3, 3).astype(np.float64)
         else:
-            raise ValueError(self.__class__.__name__ + " requires initialization with 3 vectors defining the cuboid")
+            raise ValueError(f"{self.__class__.__name__} requires initialization with 3 vectors defining the cuboid")
+
+        if center is not None and origo is not None:
+            raise ValueError(f"{self.__class__.__name__} only allows either origo or center argument")
+        elif origo is not None:
+            center = self._v.sum(0) / 2 + origo
+
+        # initialize the center
+        super().__init__(center)
 
         # Create the reciprocal cell
         self._iv = inv(self._v)
@@ -163,8 +178,14 @@ class Cube(Cuboid):
     ----------
     side : float
        side-length of the cube, or vector
+    center : (3,), optional
+       the center of the cuboid. Defaults to the origo.
+       Not allowed as argument if `origo` is passed.
+    origo : (3,), optional
+       the lower left corner of the cuboid.
+       Not allowed as argument if `center` is passed.
     """
 
-    def __init__(self, side, center=None):
+    def __init__(self, side, center=None, origo=None):
         side = _a.asarrayd(side).ravel()[0]
-        super().__init__(side, center)
+        super().__init__(side, center, origo)

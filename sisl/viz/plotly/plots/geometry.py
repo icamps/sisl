@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 from functools import wraps
 from collections import defaultdict
 from collections.abc import Iterable
@@ -442,7 +445,7 @@ class GeometryPlot(Plot):
         if unique:
             points = np.unique(points, axis=0)
 
-        return np.array([xyz(coeffs) for coeffs in points])
+        return self.geometry.origo + np.array([xyz(coeffs) for coeffs in points])
 
     def _get_atoms_bonds(self, bonds, atom, geom=None, sanitize_atom=True):
         """
@@ -862,12 +865,13 @@ class GeometryPlot(Plot):
             cell = self.geometry.cell
 
         cell_xy = self._projected_2Dcoords(xyz=cell, xaxis=xaxis, yaxis=yaxis).T
+        origo_xy = self._projected_2Dcoords(xyz=self.geometry.origo, xaxis=xaxis, yaxis=yaxis).T
 
         return [{
             'type': 'scatter',
             'mode': 'markers+lines',
-            'x': [0, vec[0]],
-            'y': [0, vec[1]],
+            'x': np.array([0, vec[0]]) + origo_xy[0],
+            'y': np.array([0, vec[1]]) + origo_xy[1],
             'name': f'Axis {i}'
         } for i, vec in enumerate(cell_xy)]
 
@@ -1055,9 +1059,9 @@ class GeometryPlot(Plot):
 
         return [{
             'type': 'scatter3d',
-            'x': [0, vec[0]],
-            'y': [0, vec[1]],
-            'z': [0, vec[2]],
+            'x': np.array([0, vec[0]]) + self.geometry.origo[0],
+            'y': np.array([0, vec[1]]) + self.geometry.origo[1],
+            'z': np.array([0, vec[2]]) + self.geometry.origo[2],
             'name': f'Axis {i}'
         } for i, vec in enumerate(cell)]
 

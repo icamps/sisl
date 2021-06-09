@@ -1,3 +1,6 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
 from math import sqrt as msqrt
 
 import numpy as np
@@ -59,7 +62,7 @@ class Shape:
     """
     __slots__ = ('_center', )
 
-    def __init__(self, center):
+    def __init__(self, center=None):
         if center is None:
             self._center = _a.zerosd(3)
         else:

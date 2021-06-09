@@ -1,7 +1,28 @@
 0.X.Y
 =====
 
+- changed license to MPLv2, we encourage contribution of toolboxes
+
+- direction now accepts `abc` and `xyz` keywords to automatically
+	retrieve vectors depending on direction input.
+
+- enabled transform of SparseCSR and SparseOrbitalBZSpin
+	matrices. For the latter, one can also use the function
+	to convert to new spin configuration (#320)
+
+- enabled reading PAO.Basis blocks from both out and fdf files
+	Basis sets should be more complete now (except for filtered, #90)
+
+- enabled doing ufunc.reduce on SparseCSR matrix
+	This does have the problem of *wrong* values for np.prod
+	since there may be 0 values. In fact the prod should probably
+	never be used. Be CAUTIOUS with reduction operations.
+
+- enabled transposing a SparseCSR matrix
+
 - added pymatgen conversion (Geometry.to/from.pymatgen)
+
+- enabled atom indexing by shapes #337
 
 0.11.0
 ======
