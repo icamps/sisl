@@ -363,7 +363,7 @@ This is a keyword-only argument.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.nonzero" title="sisl.physics.Hamiltonian.nonzero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonzero</span></code></a>([atoms, only_col])</p></td>
 <td><p>Indices row and column indices where non-zero elements exists</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.prepend" title="sisl.physics.Hamiltonian.prepend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepend</span></code></a>(other, axis[, eps])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.prepend" title="sisl.physics.Hamiltonian.prepend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepend</span></code></a>(other, axis[, eps, scale])</p></td>
 <td><p>See <a class="reference internal" href="#sisl.physics.Hamiltonian.append" title="sisl.physics.Hamiltonian.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a> for details</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.read" title="sisl.physics.Hamiltonian.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(sile, *args, **kwargs)</p></td>
@@ -420,55 +420,58 @@ This is a keyword-only argument.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.tocsr" title="sisl.physics.Hamiltonian.tocsr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tocsr</span></code></a>([dim, isc])</p></td>
 <td><p>Return a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.6.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">csr_matrix</span></code></a> for the specified dimension</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.transpose" title="sisl.physics.Hamiltonian.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>([hermitian, spin, sort])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.transform" title="sisl.physics.Hamiltonian.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>([matrix, dtype, spin, orthogonal])</p></td>
+<td><p>Transform the matrix by either a matrix or new spin configuration</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.transpose" title="sisl.physics.Hamiltonian.transpose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transpose</span></code></a>([hermitian, spin, sort])</p></td>
 <td><p>A transpose copy of this object, possibly apply the Hermitian conjugate as well</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.trs" title="sisl.physics.Hamiltonian.trs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trs</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.trs" title="sisl.physics.Hamiltonian.trs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trs</span></code></a>()</p></td>
 <td><p>Create a new matrix with applied time-reversal-symmetry</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.velocity" title="sisl.physics.Hamiltonian.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([k, project])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.velocity" title="sisl.physics.Hamiltonian.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([k, project])</p></td>
 <td><p>Calculate the velocity for the eigenstates for a given <em class="xref py py-obj">k</em> point</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.write" title="sisl.physics.Hamiltonian.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(sile, *args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.write" title="sisl.physics.Hamiltonian.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(sile, *args, **kwargs)</p></td>
 <td><p>Writes a Hamiltonian to the <em class="xref py py-obj">Sile</em> as implemented in the <code class="code docutils literal notranslate"><span class="pre">Sile.write_hamiltonian</span></code> method</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.H" title="sisl.physics.Hamiltonian.H"><code class="xref py py-obj docutils literal notranslate"><span class="pre">H</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.H" title="sisl.physics.Hamiltonian.H"><code class="xref py py-obj docutils literal notranslate"><span class="pre">H</span></code></a></p></td>
 <td><p>Access the Hamiltonian elements</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.S" title="sisl.physics.Hamiltonian.S"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.S" title="sisl.physics.Hamiltonian.S"><code class="xref py py-obj docutils literal notranslate"><span class="pre">S</span></code></a></p></td>
 <td><p>Access the overlap elements associated with the sparse matrix</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.dim" title="sisl.physics.Hamiltonian.dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.dim" title="sisl.physics.Hamiltonian.dim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dim</span></code></a></p></td>
 <td><p>Number of components per element</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.dkind" title="sisl.physics.Hamiltonian.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.dkind" title="sisl.physics.Hamiltonian.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
 <td><p>Data type of sparse elements (in str)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.dtype" title="sisl.physics.Hamiltonian.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.dtype" title="sisl.physics.Hamiltonian.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data type of sparse elements</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.finalized" title="sisl.physics.Hamiltonian.finalized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finalized</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.finalized" title="sisl.physics.Hamiltonian.finalized"><code class="xref py py-obj docutils literal notranslate"><span class="pre">finalized</span></code></a></p></td>
 <td><p>Whether the contained data is finalized and non-used elements have been removed</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.geom" title="sisl.physics.Hamiltonian.geom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geom</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.geom" title="sisl.physics.Hamiltonian.geom"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geom</span></code></a></p></td>
 <td><p>deprecated geometry</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.geometry" title="sisl.physics.Hamiltonian.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.geometry" title="sisl.physics.Hamiltonian.geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geometry</span></code></a></p></td>
 <td><p>Associated geometry</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.nnz" title="sisl.physics.Hamiltonian.nnz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nnz</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.nnz" title="sisl.physics.Hamiltonian.nnz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nnz</span></code></a></p></td>
 <td><p>Number of non-zero elements</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.non_orthogonal" title="sisl.physics.Hamiltonian.non_orthogonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_orthogonal</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.non_orthogonal" title="sisl.physics.Hamiltonian.non_orthogonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">non_orthogonal</span></code></a></p></td>
 <td><p>True if the object is using a non-orthogonal basis</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.orthogonal" title="sisl.physics.Hamiltonian.orthogonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthogonal</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.orthogonal" title="sisl.physics.Hamiltonian.orthogonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthogonal</span></code></a></p></td>
 <td><p>True if the object is using an orthogonal basis</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.shape" title="sisl.physics.Hamiltonian.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.shape" title="sisl.physics.Hamiltonian.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Shape of sparse matrix</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.spin" title="sisl.physics.Hamiltonian.spin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Hamiltonian.spin" title="sisl.physics.Hamiltonian.spin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin</span></code></a></p></td>
 <td><p>Associated spin class</p></td>
 </tr>
 </tbody>
@@ -743,7 +746,7 @@ same orbital ordering.</p>
 </pre></div>
 </div>
 <p class="rubric">Notes</p>
-<p>The current implentation does not preserve the hermiticity of the matrix.
+<p>The current implementation does not preserve the hermiticity of the matrix.
 If you want to preserve hermiticity of the matrix you have to do the
 following:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="n">h</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
@@ -1482,10 +1485,10 @@ But for <em>all</em> orbitals.</p></li>
 
 <dl class="py method">
 <dt id="sisl.physics.Hamiltonian.prepend">
-<code class="sig-name descname">prepend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.Hamiltonian.prepend" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prepend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.Hamiltonian.prepend" title="Permalink to this definition">¶</a></dt>
 <dd><p>See <a class="reference internal" href="#sisl.physics.Hamiltonian.append" title="sisl.physics.Hamiltonian.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a> for details</p>
 <p>This is currently equivalent to:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1875,6 +1878,46 @@ to the new supercell by repeating them in blocks like the coordinates.</p>
 <li><p><strong>dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – the dimension in the sparse matrix (for non-orthogonal cases the last
 dimension is the overlap matrix)</p></li>
 <li><p><strong>isc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – the supercell index, or all (if <code class="docutils literal notranslate"><span class="pre">isc=None</span></code>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.physics.Hamiltonian.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">matrix</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orthogonal</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.Hamiltonian.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform the matrix by either a matrix or new spin configuration</p>
+<p>1. General transformation:
+* If <em class="xref py py-obj">matrix</em> is provided, a linear transformation <span class="math notranslate nohighlight">\(R^n \rightarrow R^m\)</span> is applied
+to the <span class="math notranslate nohighlight">\(n\)</span>-dimensional elements of the original sparse matrix.
+The <a class="reference internal" href="#sisl.physics.Hamiltonian.spin" title="sisl.physics.Hamiltonian.spin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin</span></code></a> and <a class="reference internal" href="#sisl.physics.Hamiltonian.orthogonal" title="sisl.physics.Hamiltonian.orthogonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthogonal</span></code></a> flags are optional but need to be consistent with the creation of an
+<em class="xref py py-obj">m</em>-dimensional matrix.</p>
+<p>2. Spin conversion:
+If <a class="reference internal" href="#sisl.physics.Hamiltonian.spin" title="sisl.physics.Hamiltonian.spin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin</span></code></a> is provided (without <em class="xref py py-obj">matrix</em>), the spin class
+is changed according to the following conversions:</p>
+<p>Upscaling
+* unpolarized -&gt; (polarized, non-colinear, spinorbit): Copy unpolarized value to both up and down components
+* polarized -&gt; (non-colinear, spinorbit): Copy up and down components
+* non-colinear -&gt; spinorbit: Copy first four spin components
+* all other new spin components are set to zero</p>
+<p>Downscaling
+* (polarized, non-colinear, spinorbit) -&gt; unpolarized: Set unpolarized value to a mix 0.5*up + 0.5*down
+* (non-colinear, spinorbit) -&gt; polarized: Keep up and down spin components
+* spinorbit -&gt; non-colinear: Keep first four spin components
+* all other spin components are dropped</p>
+<p>3. Orthogonality:
+If the <a class="reference internal" href="#sisl.physics.Hamiltonian.orthogonal" title="sisl.physics.Hamiltonian.orthogonal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">orthogonal</span></code></a> flag is provided, the overlap matrix is either dropped
+or explicitly introduced as the identity matrix.</p>
+<p class="rubric">Notes</p>
+<p>The transformation matrix does <em>not</em> act on the rows and columns, only on the
+final dimension of the matrix.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>matrix</strong> (<em>array_like</em><em>, </em><em>optional</em>) – transformation matrix of shape <span class="math notranslate nohighlight">\(m \times n\)</span>. Default is no transformation.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.20)"><em>numpy.dtype</em></a><em>, </em><em>optional</em>) – data type contained in the matrix. Defaults to the input type.</p></li>
+<li><p><strong>spin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>sisl.Spin</em><em>, </em><em>optional</em>) – spin class of created matrix. Defaults to the input type.</p></li>
+<li><p><strong>orthogonal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – flag to control if the new matrix includes overlaps. Defaults to the input type.</p></li>
 </ul>
 </dd>
 </dl>

@@ -188,7 +188,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sisl.io.siesta.fdf</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
@@ -218,7 +221,8 @@
 <span class="kn">from</span> <span class="nn">.basis</span> <span class="kn">import</span> <span class="n">ionxmlSileSiesta</span><span class="p">,</span> <span class="n">ionncSileSiesta</span>
 <span class="kn">from</span> <span class="nn">.orb_indx</span> <span class="kn">import</span> <span class="n">orbindxSileSiesta</span>
 <span class="kn">from</span> <span class="nn">.xv</span> <span class="kn">import</span> <span class="n">xvSileSiesta</span>
-<span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">Orbital</span><span class="p">,</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">AtomGhost</span><span class="p">,</span> <span class="n">Atoms</span><span class="p">,</span> <span class="n">SuperCell</span><span class="p">,</span> <span class="n">DynamicalMatrix</span>
+<span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="n">Orbital</span><span class="p">,</span> <span class="n">SphericalOrbital</span><span class="p">,</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">AtomGhost</span><span class="p">,</span> <span class="n">Atoms</span>
+<span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">SuperCell</span><span class="p">,</span> <span class="n">DynamicalMatrix</span>
 
 <span class="kn">from</span> <span class="nn">sisl.utils.cmd</span> <span class="kn">import</span> <span class="n">default_ArgumentParser</span><span class="p">,</span> <span class="n">default_namespace</span>
 <span class="kn">from</span> <span class="nn">sisl.utils.misc</span> <span class="kn">import</span> <span class="n">merge_instances</span>
@@ -667,8 +671,17 @@
 
 <div class="viewcode-block" id="fdfSileSiesta.write_supercell"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.fdfSileSiesta.html#sisl.io.siesta.fdfSileSiesta.write_supercell">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">write_supercell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.8f&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Writes the supercell to the contained file &quot;&quot;&quot;</span>
-        <span class="c1"># Check that we can write to the file</span>
+        <span class="sd">&quot;&quot;&quot; Writes the supercell</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sc : SuperCell</span>
+<span class="sd">           supercell object to write</span>
+<span class="sd">        fmt : str, optional</span>
+<span class="sd">           precision used to store the lattice vectors</span>
+<span class="sd">        unit : {&#39;Ang&#39;, &#39;Bohr&#39;}</span>
+<span class="sd">           the unit used when writing the data.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sile_raise_write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="n">fmt_str</span> <span class="o">=</span> <span class="s1">&#39; {{0:</span><span class="si">{0}</span><span class="s1">}} {{1:</span><span class="si">{0}</span><span class="s1">}} {{2:</span><span class="si">{0}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fmt</span><span class="p">)</span>
@@ -690,8 +703,18 @@
 
 <div class="viewcode-block" id="fdfSileSiesta.write_geometry"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.fdfSileSiesta.html#sisl.io.siesta.fdfSileSiesta.write_geometry">[docs]</a>    <span class="nd">@sile_fh_open</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">write_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geometry</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.8f&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Writes the geometry to the contained file &quot;&quot;&quot;</span>
-        <span class="c1"># Check that we can write to the file</span>
+        <span class="sd">&quot;&quot;&quot; Writes the geometry</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        geometry : Geometry</span>
+<span class="sd">           geometry object to write</span>
+<span class="sd">        fmt : str, optional</span>
+<span class="sd">           precision used to store the atomic coordinates</span>
+<span class="sd">        unit : {&#39;Ang&#39;, &#39;Bohr&#39;, &#39;fractional&#39;, &#39;frac&#39;}</span>
+<span class="sd">           the unit used when writing the data.</span>
+<span class="sd">           fractional and frac are the same.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sile_raise_write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">write_supercell</span><span class="p">(</span><span class="n">geometry</span><span class="o">.</span><span class="n">sc</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -699,7 +722,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;NumberOfAtoms </span><span class="si">{</span><span class="n">geometry</span><span class="o">.</span><span class="n">na</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">unit</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;unit&#39;</span><span class="p">,</span> <span class="s1">&#39;Ang&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
-        <span class="n">is_fractional</span> <span class="o">=</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Frac&#39;</span><span class="p">,</span> <span class="s1">&#39;Fractional&#39;</span><span class="p">]</span>
+        <span class="n">is_fractional</span> <span class="o">=</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;Frac&#39;</span><span class="p">,</span> <span class="s1">&#39;Fractional&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">is_fractional</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s1">&#39;AtomicCoordinatesFormat Fractional</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1789,12 +1812,17 @@
             <span class="c1"># so return nothing</span>
             <span class="k">return</span> <span class="kc">None</span>
 
+        <span class="c1"># We create a dictionary with the different atomic species</span>
+        <span class="c1"># and create defaults with another dictionary.</span>
+        <span class="n">atoms</span> <span class="o">=</span> <span class="p">[{}</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">spcs</span><span class="p">]</span>
+
+        <span class="n">pao_basis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;PAO.Basis&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
+
         <span class="n">all_mass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;AtomicMass&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[])</span>
         <span class="c1"># default mass</span>
         <span class="n">mass</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Now spcs contains the block of the chemicalspecieslabel</span>
-        <span class="n">atoms</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">spcs</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">spcs</span><span class="p">:</span>
             <span class="n">idx</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">lbl</span> <span class="o">=</span> <span class="n">spc</span><span class="o">.</span><span class="n">split</span><span class="p">()[:</span><span class="mi">3</span><span class="p">]</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># F-indexing</span>
@@ -1810,8 +1838,156 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">mass</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="n">Z</span><span class="o">=</span><span class="n">Z</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="n">mass</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">lbl</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">atoms</span>
+            <span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Z</span>
+            <span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;mass&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mass</span>
+            <span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lbl</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Only in some cases can we parse the PAO.Basis block.</span>
+                <span class="c1"># There are many corner cases where we can&#39;t parse it</span>
+                <span class="c1"># And the we just don&#39;t do anything...</span>
+                <span class="c1"># We don&#39;t even warn the user...</span>
+                <span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;orbitals&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_pao_basis</span><span class="p">(</span><span class="n">pao_basis</span><span class="p">,</span> <span class="n">lbl</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="c1"># Now check if we can find the orbitals</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Atom</span><span class="p">(</span><span class="o">**</span><span class="n">atom</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">atoms</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_pao_basis</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">specie</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Parse the full PAO.Basis block with *optionally* only a single specie</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This parsing of the basis set is not complete, in any sense.</span>
+<span class="sd">        Especially if users requests filtered orbitals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        block : list of str or str</span>
+<span class="sd">           the entire PAO.Basis block as read by ``self.get(&quot;PAO.Basis&quot;)``</span>
+<span class="sd">        specie : str, optional</span>
+<span class="sd">           which specie to parse</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        orbitals : list of AtomicOrbital</span>
+<span class="sd">            only if requested `specie` is not None</span>
+<span class="sd">        tag_orbitals : dict</span>
+<span class="sd">            if `specie` is None then a dictionary is returned</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">specie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">return</span> <span class="p">{}</span>
+
+        <span class="c1"># make a copy</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">blockline</span><span class="p">():</span>
+            <span class="k">nonlocal</span> <span class="n">block</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">out</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\n\r\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">out</span>
+
+        <span class="k">def</span> <span class="nf">parse_next</span><span class="p">():</span>
+            <span class="k">nonlocal</span> <span class="n">blockline</span>
+
+            <span class="n">line</span> <span class="o">=</span> <span class="n">blockline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+            <span class="c1"># In this basis parser we don&#39;t care about the options for</span>
+            <span class="c1"># the specifications</span>
+            <span class="n">tag</span><span class="p">,</span> <span class="n">nl</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+            <span class="c1"># now loop orbitals</span>
+            <span class="n">orbs</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># we just use a non-physical number to signal it didn&#39;t get added</span>
+            <span class="c1"># in siesta it can automatically determine this, we can&#39;t... (yet!)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">nl</span><span class="p">)):</span>
+                <span class="c1"># we have 2 or 3 lines</span>
+                <span class="n">nl_line</span> <span class="o">=</span> <span class="n">blockline</span><span class="p">()</span>
+                <span class="n">rc_line</span> <span class="o">=</span> <span class="n">blockline</span><span class="p">()</span>
+                <span class="c1"># check if we have contraction in the line</span>
+                <span class="c1"># This is not perfect, but should grab</span>
+                <span class="c1"># contration lines rather than next orbital line.</span>
+                <span class="c1"># This is because the first n=&lt;integer&gt; should never</span>
+                <span class="c1"># contain a &quot;.&quot;, whereas the contraction *should*.</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">block</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="s1">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">block</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]:</span>
+                        <span class="n">contract_line</span> <span class="o">=</span> <span class="n">blockline</span><span class="p">()</span>
+
+                <span class="c1"># remove n=</span>
+                <span class="n">nl_line</span> <span class="o">=</span> <span class="n">nl_line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;n=&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+                <span class="c1"># first 3|2: are n?, l, Nzeta</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nl_line</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nl_line</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">nl_line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">n</span> <span class="o">=</span> <span class="n">first</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">second</span>
+                    <span class="n">nzeta</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nl_line</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">l</span> <span class="o">=</span> <span class="n">first</span>
+                    <span class="n">nzeta</span> <span class="o">=</span> <span class="n">second</span>
+
+                <span class="c1"># Number of polarizations</span>
+                <span class="n">npol</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">nl_line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">opt</span> <span class="o">=</span> <span class="n">nl_line</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="s2">&quot;P&quot;</span><span class="p">:</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">npol</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nl_line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                            <span class="n">nl_line</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                        <span class="k">except</span><span class="p">:</span>
+                            <span class="n">npol</span> <span class="o">=</span> <span class="mi">1</span>
+
+                <span class="c1"># now we have everything to build the orbitals etc.</span>
+                <span class="n">first_zeta</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">for</span> <span class="n">izeta</span><span class="p">,</span> <span class="n">rc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">rc_line</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">rc</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">rc</span> <span class="o">*=</span> <span class="n">Bohr2Ang</span>
+                    <span class="k">elif</span> <span class="n">rc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">rc</span> <span class="o">=</span> <span class="n">orbs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">R</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">rc</span> <span class="o">*=</span> <span class="o">-</span><span class="n">orbs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">R</span>
+                    <span class="n">orb</span> <span class="o">=</span> <span class="n">SphericalOrbital</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">rc</span><span class="p">)</span>
+                    <span class="n">orbs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">toAtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">zeta</span><span class="o">=</span><span class="n">izeta</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">izeta</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">first_zeta</span> <span class="o">=</span> <span class="n">orb</span>
+                    <span class="n">nzeta</span> <span class="o">-=</span> <span class="mi">1</span>
+
+                <span class="c1"># In case the final orbitals hasn&#39;t been defined.</span>
+                <span class="c1"># They really should be defined in this one, but sometimes it may be</span>
+                <span class="c1"># useful to leave the rc&#39;s definitions out.</span>
+                <span class="n">orb</span> <span class="o">=</span> <span class="n">orbs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">rc</span> <span class="o">=</span> <span class="n">orb</span><span class="o">.</span><span class="n">R</span>
+                <span class="k">for</span> <span class="n">izeta</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">zeta</span><span class="p">,</span> <span class="n">orb</span><span class="o">.</span><span class="n">zeta</span> <span class="o">+</span> <span class="n">nzeta</span><span class="p">):</span>
+                    <span class="n">orb</span> <span class="o">=</span> <span class="n">SphericalOrbital</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">rc</span><span class="p">)</span>
+                    <span class="n">orbs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">toAtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">zeta</span><span class="o">=</span><span class="n">izeta</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">ipol</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">npol</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">orb</span> <span class="o">=</span> <span class="n">SphericalOrbital</span><span class="p">(</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">first_zeta</span><span class="o">.</span><span class="n">R</span><span class="p">)</span>
+                    <span class="n">orbs</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">orb</span><span class="o">.</span><span class="n">toAtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">zeta</span><span class="o">=</span><span class="n">ipol</span><span class="p">,</span> <span class="n">P</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+            <span class="k">return</span> <span class="n">tag</span><span class="p">,</span> <span class="n">orbs</span>
+
+        <span class="n">atoms</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">parse_next</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">ret</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">atoms</span><span class="p">[</span><span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">parse_next</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">specie</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">atoms</span>
+        <span class="k">return</span> <span class="n">atoms</span><span class="p">[</span><span class="n">specie</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_r_add_overlap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent_call</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Internal routine to ensure that the overlap matrix is read and added to the matrix `M` &quot;&quot;&quot;</span>

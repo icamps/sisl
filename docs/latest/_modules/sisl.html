@@ -182,7 +182,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sisl</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
+<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">sisl</span>
 <span class="sd">====</span>
 
@@ -224,7 +227,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Nick Papior&quot;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;LGPL-3.0&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MPL-2.0&quot;</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_environ</span>
 
@@ -333,7 +336,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;__</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">__&#39;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bibtex&#39;</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="s1">&#39;minor&#39;</span><span class="p">,</span> <span class="s1">&#39;micro&#39;</span><span class="p">]]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;__</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">__&#39;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;git_revision&#39;</span><span class="p">]]</span>
-<span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;__</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">__&#39;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;copyright&#39;</span><span class="p">]]</span>
+<span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;__</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">__&#39;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;author&#39;</span><span class="p">,</span> <span class="s1">&#39;license&#39;</span><span class="p">]]</span>
 </pre></div>
 
            </div>

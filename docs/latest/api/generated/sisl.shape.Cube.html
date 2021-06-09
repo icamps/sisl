@@ -241,13 +241,19 @@
 <h1>sisl.shape.Cube<a class="headerlink" href="#sisl-shape-cube" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sisl.shape.Cube">
-<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cube</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">side</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cube</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">side</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origo</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cube" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="sisl.shape.Cuboid.html#sisl.shape.Cuboid" title="sisl.shape.Cuboid"><code class="xref py py-class docutils literal notranslate"><span class="pre">sisl.shape.Cuboid</span></code></a></p>
 <p>3D Cube with equal sides</p>
 <p>Equivalent to <code class="docutils literal notranslate"><span class="pre">Cuboid([r,</span> <span class="pre">r,</span> <span class="pre">r])</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – side-length of the cube, or vector</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>side</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – side-length of the cube, or vector</p></li>
+<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the cuboid. Defaults to the origo.
+Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cube.origo" title="sisl.shape.Cube.origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origo</span></code></a> is passed.</p></li>
+<li><p><strong>origo</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the lower left corner of the cuboid.
+Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cube.center" title="sisl.shape.Cube.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a> is passed.</p></li>
+</ul>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
@@ -303,7 +309,7 @@
 </table>
 <dl class="py method">
 <dt id="sisl.shape.Cube.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">side</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cube.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cube.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">side</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origo</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cube.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cube.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 

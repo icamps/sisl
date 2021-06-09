@@ -764,8 +764,10 @@ additional vectors.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>atoms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em>) – indices/boolean of all atoms where angles should be calculated on</p></li>
-<li><p><strong>dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em><em>, </em><em>optional</em>) – the direction from which the angle is calculated from, default to <code class="docutils literal notranslate"><span class="pre">x</span></code></p></li>
-<li><p><strong>ref</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em><em>, </em><em>optional</em>) – the reference point from which the vectors are drawn, default to origo</p></li>
+<li><p><strong>dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em><em>, </em><em>optional</em>) – the direction from which the angle is calculated from, default to <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+An integer specifies the corresponding lattice vector as the direction.</p></li>
+<li><p><strong>ref</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em><em>, </em><em>optional</em>) – the reference point from which the vectors are drawn, default to origo
+An integer species an atomic index.</p></li>
 <li><p><strong>rad</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the returned value is in radians</p></li>
 </ul>
 </dd>
@@ -1957,7 +1959,7 @@ part of the geometry that will be rotated.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>angle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – the angle in degrees to rotate the geometry. Set the <code class="docutils literal notranslate"><span class="pre">rad</span></code>
 argument to use radians.</p></li>
-<li><p><strong>v</strong> (<em>array_like</em>) – the normal vector to the rotated plane, i.e.
+<li><p><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>array_like</em>) – the normal vector to the rotated plane, i.e.
 v = [1,0,0] will rotate the <code class="docutils literal notranslate"><span class="pre">yz</span></code> plane</p></li>
 <li><p><strong>origo</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em><em>, </em><em>optional</em>) – the origin of rotation. Anything but [0, 0, 0] is equivalent
 to a <em class="xref py py-obj">self.move(-origo).rotate(…).move(origo)</em>.

@@ -241,7 +241,7 @@
 <h1>sisl.shape.Cuboid<a class="headerlink" href="#sisl-shape-cuboid" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sisl.shape.Cuboid">
-<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cuboid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cuboid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cuboid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origo</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cuboid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sisl.shape.PureShape</span></code></p>
 <p>A cuboid/rectangular prism (P4)</p>
 <dl class="field-list simple">
@@ -249,7 +249,10 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>(</em><em>3</em><em>,</em><em>) or </em><em>(</em><em>3</em><em>, </em><em>3</em><em>)</em>) – vectors describing the cuboid, if only 3 the cuboid will be
 along the Euclidean vectors.</p></li>
-<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the cuboid. Defaults to the origo.</p></li>
+<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the cuboid. Defaults to the origo.
+Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboid.origo" title="sisl.shape.Cuboid.origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origo</span></code></a> is passed.</p></li>
+<li><p><strong>origo</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the offset for the cuboid. The center will be equal to <code class="docutils literal notranslate"><span class="pre">v.sum(0)</span> <span class="pre">+</span> <span class="pre">origo</span></code>.
+Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboid.center" title="sisl.shape.Cuboid.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a> is passed.</p></li>
 </ul>
 </dd>
 </dl>
@@ -314,7 +317,7 @@ along the Euclidean vectors.</p></li>
 </table>
 <dl class="py method">
 <dt id="sisl.shape.Cuboid.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cuboid.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cuboid.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origo</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cuboid.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cuboid.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 

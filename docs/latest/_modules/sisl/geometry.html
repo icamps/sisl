@@ -184,7 +184,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sisl.geometry</h1><div class="highlight"><pre>
-<span></span><span class="c1"># To check for integers</span>
+<span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
+<span class="c1"># To check for integers</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">acos</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
@@ -552,6 +555,14 @@
     <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
         <span class="c1"># First do categorization</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">AtomCategory</span><span class="o">.</span><span class="n">kw</span><span class="p">(</span><span class="o">**</span><span class="n">atoms</span><span class="p">))</span>
+
+    <span class="nd">@_sanitize_atoms</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Shape</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">):</span>
+        <span class="c1"># This is perhaps a bit weird since a shape could</span>
+        <span class="c1"># extend into the supercell.</span>
+        <span class="c1"># Since the others only does this for unit-cell atoms</span>
+        <span class="c1"># then it seems natural to also do that here...</span>
+        <span class="k">return</span> <span class="n">atoms</span><span class="o">.</span><span class="n">within_index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">)</span>
 
     <span class="nd">@singledispatchmethod</span>
     <span class="k">def</span> <span class="nf">_sanitize_orbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orbitals</span><span class="p">):</span>
@@ -1999,10 +2010,9 @@
         <span class="c1"># We may use broadcasting rules instead of repeating stuff</span>
         <span class="n">xyz</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">reps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">na</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">nr</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arangei</span><span class="p">(</span><span class="n">reps</span><span class="p">)</span>
-        <span class="n">nr</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">reps</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
-            <span class="c1"># Correct the unit-cell offsets along `i`</span>
-            <span class="n">xyz</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">nr</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">axis</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+        <span class="n">nr</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">reps</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Correct the unit-cell offsets</span>
+        <span class="n">xyz</span> <span class="o">+=</span> <span class="n">nr</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">axis</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">xyz</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 
         <span class="c1"># Create the geometry and return it (note the smaller atoms array</span>
@@ -2083,8 +2093,8 @@
         <span class="c1"># Create the geometry and return it</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">reps</span><span class="p">),</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Implement easy repeat function</span>
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;tile&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Implement easy tile/repeat function</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2128,11 +2138,12 @@
             <span class="k">return</span> <span class="bp">self</span> <span class="o">*</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="c1"># Look-up table</span>
-        <span class="n">method_tbl</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="s1">&#39;repeat&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;repeat&#39;</span><span class="p">:</span> <span class="s1">&#39;repeat&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;tile&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;tile&#39;</span><span class="p">:</span> <span class="s1">&#39;tile&#39;</span><span class="p">}</span>
-        <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;tile&#39;</span>
+        <span class="n">method_tbl</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="s1">&#39;repeat&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;repeat&#39;</span><span class="p">:</span> <span class="s1">&#39;repeat&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;tile&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;tile&#39;</span><span class="p">:</span> <span class="s1">&#39;tile&#39;</span>
+        <span class="p">}</span>
 
         <span class="c1"># Determine the type</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -2165,7 +2176,9 @@
 
         <span class="k">return</span> <span class="n">g</span>
 
-    <span class="fm">__rmul__</span> <span class="o">=</span> <span class="fm">__mul__</span>
+    <span class="k">def</span> <span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Default to repeating the atomic structure &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;repeat&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Geometry.angle"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.angle">[docs]</a>    <span class="k">def</span> <span class="nf">angle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atoms</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">ref</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; The angle between atom `atoms` and the direction `dir`, with possibility of a reference coordinate `ref`</span>
@@ -2184,22 +2197,22 @@
 <span class="sd">        atoms : int or array_like</span>
 <span class="sd">           indices/boolean of all atoms where angles should be calculated on</span>
 <span class="sd">        dir : str, int or array_like, optional</span>
-<span class="sd">           the direction from which the angle is calculated from, default to ``x``</span>
+<span class="sd">           the direction from which the angle is calculated from, default to ``x``.</span>
+<span class="sd">           An integer specifies the corresponding lattice vector as the direction.</span>
 <span class="sd">        ref : int or array_like, optional</span>
 <span class="sd">           the reference point from which the vectors are drawn, default to origo</span>
+<span class="sd">           An integer species an atomic index.</span>
 <span class="sd">        rad : bool, optional</span>
 <span class="sd">           whether the returned value is in radians</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">xi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axyz</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)):</span>
-            <span class="nb">dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">direction</span><span class="p">(</span><span class="nb">dir</span><span class="p">),</span> <span class="p">:]</span>
+            <span class="nb">dir</span> <span class="o">=</span> <span class="n">direction</span><span class="p">(</span><span class="nb">dir</span><span class="p">,</span> <span class="n">abc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">dir</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
         <span class="c1"># Normalize so we don&#39;t have to have this in the</span>
         <span class="c1"># below formula</span>
-        <span class="nb">dir</span> <span class="o">/=</span> <span class="n">fnorm</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
-        <span class="c1"># Broad-casting</span>
-        <span class="nb">dir</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="nb">dir</span> <span class="o">=</span> <span class="nb">dir</span> <span class="o">/</span> <span class="n">fnorm</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">ref</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">pass</span>
@@ -2208,7 +2221,9 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">xi</span> <span class="o">-=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">ref</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
         <span class="n">nx</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-        <span class="n">ang</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">nx</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">((</span><span class="n">xi</span> <span class="o">*</span> <span class="nb">dir</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">nx</span><span class="p">),</span> <span class="mf">0.</span><span class="p">)</span>
+        <span class="n">ang</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">nx</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">nx</span> <span class="o">&gt;</span> <span class="mf">1e-6</span><span class="p">)</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ang</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">xi</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">@</span> <span class="nb">dir</span> <span class="o">/</span> <span class="n">nx</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">rad</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ang</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span></div>
@@ -2227,7 +2242,7 @@
 <span class="sd">        angle : float</span>
 <span class="sd">             the angle in degrees to rotate the geometry. Set the ``rad``</span>
 <span class="sd">             argument to use radians.</span>
-<span class="sd">        v     : array_like</span>
+<span class="sd">        v     : int or str or array_like</span>
 <span class="sd">             the normal vector to the rotated plane, i.e.</span>
 <span class="sd">             v = [1,0,0] will rotate the ``yz`` plane</span>
 <span class="sd">        origo : int or array_like, optional</span>
@@ -2257,6 +2272,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Only rotate the unique values</span>
             <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc2uc</span><span class="p">(</span><span class="n">atoms</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">direction</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">abc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
 
         <span class="c1"># Ensure the normal vector is normalized... (flatten == copy)</span>
         <span class="n">vn</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
@@ -4443,14 +4461,7 @@
                 <span class="c1"># Convert value[0] to the direction</span>
                 <span class="c1"># The rotate function expects degree</span>
                 <span class="n">ang</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_rad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="n">d</span> <span class="o">=</span> <span class="n">direction</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-                <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-                <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-                <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="o">*</span><span class="n">opts</span><span class="p">(</span><span class="s1">&#39;--rotate&#39;</span><span class="p">,</span> <span class="s1">&#39;-R&#39;</span><span class="p">),</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;ANGLE&#39;</span><span class="p">,</span> <span class="s1">&#39;DIR&#39;</span><span class="p">),</span>
                        <span class="n">action</span><span class="o">=</span><span class="n">Rotation</span><span class="p">,</span>
                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Rotate geometry around given axis. ANGLE defaults to be specified in degree. Prefix with &quot;r&quot; for input in radians.&#39;</span><span class="p">)</span>
@@ -4461,7 +4472,7 @@
                 <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
                     <span class="c1"># The rotate function expects degree</span>
                     <span class="n">ang</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_rad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                    <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                    <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">)</span>
             <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="o">*</span><span class="n">opts</span><span class="p">(</span><span class="s1">&#39;--rotate-x&#39;</span><span class="p">,</span> <span class="s1">&#39;-Rx&#39;</span><span class="p">),</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;ANGLE&#39;</span><span class="p">,</span>
                            <span class="n">action</span><span class="o">=</span><span class="n">RotationX</span><span class="p">,</span>
                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Rotate geometry around first cell vector. ANGLE defaults to be specified in degree. Prefix with &quot;r&quot; for input in radians.&#39;</span><span class="p">)</span>
@@ -4471,7 +4482,7 @@
                 <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
                     <span class="c1"># The rotate function expects degree</span>
                     <span class="n">ang</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_rad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                    <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                    <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
             <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="o">*</span><span class="n">opts</span><span class="p">(</span><span class="s1">&#39;--rotate-y&#39;</span><span class="p">,</span> <span class="s1">&#39;-Ry&#39;</span><span class="p">),</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;ANGLE&#39;</span><span class="p">,</span>
                            <span class="n">action</span><span class="o">=</span><span class="n">RotationY</span><span class="p">,</span>
                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Rotate geometry around second cell vector. ANGLE defaults to be specified in degree. Prefix with &quot;r&quot; for input in radians.&#39;</span><span class="p">)</span>
@@ -4481,7 +4492,7 @@
                 <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parser</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">option_string</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
                     <span class="c1"># The rotate function expects degree</span>
                     <span class="n">ang</span> <span class="o">=</span> <span class="n">angle</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">in_rad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                    <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+                    <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">ns</span><span class="o">.</span><span class="n">_geometry</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">ang</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">)</span>
             <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="o">*</span><span class="n">opts</span><span class="p">(</span><span class="s1">&#39;--rotate-z&#39;</span><span class="p">,</span> <span class="s1">&#39;-Rz&#39;</span><span class="p">),</span> <span class="n">metavar</span><span class="o">=</span><span class="s1">&#39;ANGLE&#39;</span><span class="p">,</span>
                            <span class="n">action</span><span class="o">=</span><span class="n">RotationZ</span><span class="p">,</span>
                            <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Rotate geometry around third cell vector. ANGLE defaults to be specified in degree. Prefix with &quot;r&quot; for input in radians.&#39;</span><span class="p">)</span>

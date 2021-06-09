@@ -186,7 +186,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sisl.physics.phonon</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Phonon related functions and classes</span>
+<span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
+<span class="sd">&quot;&quot;&quot;Phonon related functions and classes</span>
 <span class="sd">=======================================</span>
 
 <span class="sd">In sisl phonon calculations are relying on routines</span>
@@ -372,12 +375,7 @@
             <span class="c1"># Now diagonalize to find the contributions from individual modes</span>
             <span class="c1"># then re-construct the seperated degenerate modes</span>
             <span class="c1"># Since we do this for all directions we should decouple them all</span>
-            <span class="n">vv</span> <span class="o">=</span> <span class="n">conj</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="n">deg</span><span class="p">,</span> <span class="p">:])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">dDk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="n">deg</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
-            <span class="n">S</span> <span class="o">=</span> <span class="n">_decouple_eigh</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="n">deg</span><span class="p">,</span> <span class="p">:])</span>
-            <span class="n">vv</span> <span class="o">=</span> <span class="n">conj</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">dDk</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
-            <span class="n">S</span> <span class="o">=</span> <span class="n">_decouple_eigh</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-            <span class="n">vv</span> <span class="o">=</span> <span class="n">conj</span><span class="p">(</span><span class="n">S</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">((</span><span class="n">dDk</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
-            <span class="n">mode</span><span class="p">[</span><span class="n">deg</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">_decouple_eigh</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+            <span class="n">mode</span><span class="p">[</span><span class="n">deg</span><span class="p">]</span> <span class="o">=</span> <span class="n">_decouple_eigh</span><span class="p">(</span><span class="n">mode</span><span class="p">[</span><span class="n">deg</span><span class="p">],</span> <span class="o">*</span><span class="n">dDk</span><span class="p">)</span>
 
     <span class="n">cm</span> <span class="o">=</span> <span class="n">conj</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">project</span><span class="p">:</span>

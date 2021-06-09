@@ -184,7 +184,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sisl.sparse_geometry</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">functools</span> <span class="k">as</span> <span class="nn">ftool</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
@@ -1396,7 +1399,7 @@
 <span class="sd">        structure is completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Rij</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
-        <span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
         <span class="k">return</span> <span class="n">R</span></div>
 
 <div class="viewcode-block" id="SparseAtom.Rij"><a class="viewcode-back" href="../../api/generated/sisl.SparseAtom.html#sisl.SparseAtom.Rij">[docs]</a>    <span class="k">def</span> <span class="nf">Rij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
@@ -2140,7 +2143,7 @@
 <span class="sd">        structure is completed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Rij</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-        <span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+        <span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">R</span><span class="o">.</span><span class="n">_csr</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
         <span class="k">return</span> <span class="n">R</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.Rij"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.Rij">[docs]</a>    <span class="k">def</span> <span class="nf">Rij</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="s1">&#39;orbital&#39;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">):</span>
@@ -2327,14 +2330,14 @@
 
         <span class="k">return</span> <span class="n">full</span></div>
 
-<div class="viewcode-block" id="SparseOrbital.prepend"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.prepend">[docs]</a>    <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<div class="viewcode-block" id="SparseOrbital.prepend"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.prepend">[docs]</a>    <span class="k">def</span> <span class="nf">prepend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; See `append` for details</span>
 
 <span class="sd">        This is currently equivalent to:</span>
 
-<span class="sd">        &gt;&gt;&gt; other.append(self, axis, eps)</span>
+<span class="sd">        &gt;&gt;&gt; other.append(self, axis, eps, scale)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SparseOrbital.append"><a class="viewcode-back" href="../../api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Append `other` along `axis` to construct a new connected sparse matrix</span>
@@ -2373,7 +2376,7 @@
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
-<span class="sd">        The current implentation does not preserve the hermiticity of the matrix.</span>
+<span class="sd">        The current implementation does not preserve the hermiticity of the matrix.</span>
 <span class="sd">        If you want to preserve hermiticity of the matrix you have to do the</span>
 <span class="sd">        following:</span>
 

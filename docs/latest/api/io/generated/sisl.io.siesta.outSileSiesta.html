@@ -286,8 +286,8 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read" title="sisl.io.siesta.outSileSiesta.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Generic read method which should be overloaded in child-classes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_basis_block" title="sisl.io.siesta.outSileSiesta.read_basis_block"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_basis_block</span></code></a>()</p></td>
-<td><p>Reads the PAO.Basis block that Siesta writes</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_basis" title="sisl.io.siesta.outSileSiesta.read_basis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_basis</span></code></a>()</p></td>
+<td><p>Reads the basis as found in the output file</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_charge" title="sisl.io.siesta.outSileSiesta.read_charge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_charge</span></code></a>(name[, iscf, imd, key_scf, …])</p></td>
 <td><p>Read charges calculated in SCF loop or MD loop (or both)</p></td>
@@ -310,19 +310,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_scf" title="sisl.io.siesta.outSileSiesta.read_scf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_scf</span></code></a>([key, iscf, imd, as_dataframe])</p></td>
 <td><p>Parse SCF information and return a table of SCF information depending on what is requested</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_species" title="sisl.io.siesta.outSileSiesta.read_species"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_species</span></code></a>()</p></td>
-<td><p>Reads the species from the top of the output file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_stress" title="sisl.io.siesta.outSileSiesta.read_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_stress</span></code></a>([key, last, all])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.read_stress" title="sisl.io.siesta.outSileSiesta.read_stress"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_stress</span></code></a>([key, last, all])</p></td>
 <td><p>Reads the stresses from the Siesta output file</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.write" title="sisl.io.siesta.outSileSiesta.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.write" title="sisl.io.siesta.outSileSiesta.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Generic write method which should be overloaded in child-classes</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.base_file" title="sisl.io.siesta.outSileSiesta.base_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_file</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.base_file" title="sisl.io.siesta.outSileSiesta.base_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_file</span></code></a></p></td>
 <td><p>File of the current <em class="xref py py-obj">Sile</em></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.file" title="sisl.io.siesta.outSileSiesta.file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.outSileSiesta.file" title="sisl.io.siesta.outSileSiesta.file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">file</span></code></a></p></td>
 <td><p>File of the current <em class="xref py py-obj">Sile</em></p></td>
 </tr>
 </tbody>
@@ -376,9 +373,16 @@ and call it with the remaining <code class="docutils literal notranslate"><span 
 </dd></dl>
 
 <dl class="py method">
-<dt id="sisl.io.siesta.outSileSiesta.read_basis_block">
-<code class="sig-name descname">read_basis_block</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/out.html#outSileSiesta.read_basis_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.outSileSiesta.read_basis_block" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads the PAO.Basis block that Siesta writes</p>
+<dt id="sisl.io.siesta.outSileSiesta.read_basis">
+<code class="sig-name descname">read_basis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/out.html#outSileSiesta.read_basis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.outSileSiesta.read_basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the basis as found in the output file</p>
+<p>This parses 3 things:</p>
+<ol class="arabic simple">
+<li><p>At the start of the file there are some initatom output
+specifying which species in the calculation.</p></li>
+<li><p>Reading the &lt;basis_specs&gt; entries for the masses</p></li>
+<li><p>Reading the PAO.Basis block output for orbital information</p></li>
+</ol>
 </dd></dl>
 
 <dl class="py method">
@@ -706,14 +710,6 @@ perform operations very easily on a dataframe.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="sisl.io.siesta.outSileSiesta.read_species">
-<code class="sig-name descname">read_species</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/out.html#outSileSiesta.read_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.outSileSiesta.read_species" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads the species from the top of the output file.</p>
-<p>If wanting the species this HAS to be the first routine called.</p>
-<p>It returns an array of <em class="xref py py-obj">Atom</em> objects which may easily be indexed.</p>
 </dd></dl>
 
 <dl class="py method">

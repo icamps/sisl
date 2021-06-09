@@ -112,6 +112,7 @@
 <li class="toctree-l2"><a class="reference internal" href="ts_fft.html">TranSiesta Hartree correction for FFT Poisson solver</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting <em class="xref py py-obj">atom</em> output</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#command-line-tool">Command line tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#input-generation">Input generation</a></li>
 </ul>
 </li>
 </ul>
@@ -220,6 +221,7 @@
 </style>
 <div class="section" id="plotting-atom-output">
 <span id="toc-tool-atom-plot"></span><h1>Plotting <em class="xref py py-obj">atom</em> output<a class="headerlink" href="#plotting-atom-output" title="Permalink to this headline">¶</a></h1>
+<p>Suggestions and improvements to this utility is most welcome!</p>
 <p>Creating pseudopotentials using <a class="reference external" href="https://siesta-project.org/SIESTA_MATERIAL/Pseudos/atom_licence.html">atom</a> will often require users to
 post-analyze the output of the program.</p>
 <p>Here we aid this visualization process by adding a command line interface
@@ -227,12 +229,12 @@ for plotting details of the output via a simple command.</p>
 <div class="section" id="command-line-tool">
 <h2>Command line tool<a class="headerlink" href="#command-line-tool" title="Permalink to this headline">¶</a></h2>
 <p>It may be called using</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stoolbox atom-plot &lt;output-directory&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>stoolbox atom-plot &lt;atom-output-directory&gt;
 </pre></div>
 </div>
 <p>which by default will create 4 plots.</p>
 <a class="reference internal image-reference" href="../_images/atom_plot_output.png"><img alt="Default `stoolbox atom-plot` output" class="align-center" src="../_images/atom_plot_output.png" style="width: 500px;" /></a>
-<p>It mimicks the shell commands provided by atom for plotting with some additional details.</p>
+<p>It mimicks the shell commands provided by <a class="reference external" href="https://siesta-project.org/SIESTA_MATERIAL/Pseudos/atom_licence.html">atom</a> for plotting with some additional details.</p>
 <p>By default the program will output details regarding the core-charge and valence charge
 overlap (use full for determining whether core-corrections should be used).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Total charge in atom: <span class="m">82</span>.00213
@@ -248,7 +250,28 @@ the pseudo potential valence charge. In this case it prints the radii <span clas
 <p>The full overlap is printed in the title of the charge plot. It is calculated as:</p>
 <div class="math notranslate nohighlight">
 \[\mathcal O = \int \mathrm{min}(\rho_{\mathrm{core}}(r), \rho_{\mathrm{valence}}(r)) \mathrm dr\]</div>
-<p>Suggestions and improvements to this utility is most welcome!</p>
+</div>
+<div class="section" id="input-generation">
+<h2>Input generation<a class="headerlink" href="#input-generation" title="Permalink to this headline">¶</a></h2>
+<p>The tool can also be used to generate the input files for <a class="reference external" href="https://siesta-project.org/SIESTA_MATERIAL/Pseudos/atom_licence.html">atom</a>. While it is possible to read
+input files from <code class="docutils literal notranslate"><span class="pre">INP</span></code> files, one may also define a specific <em class="xref py py-obj">Atom</em> object which
+will be used to generate the input file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sisl_toolbox.siesta.atom</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">AtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">2.4</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">AtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">1.6</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">AtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">AtomicOrbital</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">q0</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">2.</span><span class="p">)</span>
+
+<span class="n">Ag</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="s2">&quot;Ag&quot;</span><span class="p">,</span> <span class="n">orbitals</span><span class="o">=</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
+
+<span class="n">atom_input</span> <span class="o">=</span> <span class="n">AtomInput</span><span class="p">(</span><span class="n">Ag</span><span class="p">,</span> <span class="n">rcore</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">xc</span><span class="o">=</span><span class="s2">&quot;pb&quot;</span><span class="p">,</span> <span class="n">flavor</span><span class="o">=</span><span class="s2">&quot;tm2&quot;</span><span class="p">)</span>
+
+<span class="c1"># write the INP file in current directory</span>
+<span class="n">atom_input</span><span class="o">.</span><span class="n">pg</span><span class="p">()</span>
+</pre></div>
+</div>
 </div>
 </div>
 

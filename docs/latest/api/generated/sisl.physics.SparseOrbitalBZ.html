@@ -336,7 +336,7 @@ This is a keyword-only argument.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.SparseOrbitalBZ.nonzero" title="sisl.physics.SparseOrbitalBZ.nonzero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonzero</span></code></a>([atoms, only_col])</p></td>
 <td><p>Indices row and column indices where non-zero elements exists</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.SparseOrbitalBZ.prepend" title="sisl.physics.SparseOrbitalBZ.prepend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepend</span></code></a>(other, axis[, eps])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.SparseOrbitalBZ.prepend" title="sisl.physics.SparseOrbitalBZ.prepend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prepend</span></code></a>(other, axis[, eps, scale])</p></td>
 <td><p>See <a class="reference internal" href="#sisl.physics.SparseOrbitalBZ.append" title="sisl.physics.SparseOrbitalBZ.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a> for details</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.SparseOrbitalBZ.remove" title="sisl.physics.SparseOrbitalBZ.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(atoms)</p></td>
@@ -569,7 +569,7 @@ same orbital ordering.</p>
 </pre></div>
 </div>
 <p class="rubric">Notes</p>
-<p>The current implentation does not preserve the hermiticity of the matrix.
+<p>The current implementation does not preserve the hermiticity of the matrix.
 If you want to preserve hermiticity of the matrix you have to do the
 following:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">h</span> <span class="o">+</span> <span class="n">h</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span> <span class="o">/</span> <span class="mi">2</span>
@@ -1081,10 +1081,10 @@ But for <em>all</em> orbitals.</p></li>
 
 <dl class="py method">
 <dt id="sisl.physics.SparseOrbitalBZ.prepend">
-<code class="sig-name descname">prepend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.SparseOrbitalBZ.prepend" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">prepend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.01</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.SparseOrbitalBZ.prepend" title="Permalink to this definition">¶</a></dt>
 <dd><p>See <a class="reference internal" href="#sisl.physics.SparseOrbitalBZ.append" title="sisl.physics.SparseOrbitalBZ.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a> for details</p>
 <p>This is currently equivalent to:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">other</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>

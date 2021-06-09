@@ -186,7 +186,10 @@
            <div itemprop="articleBody">
             
   <h1>Source code for sisl.shape.prism4</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
+<span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
+<span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">dot</span>
 
 <span class="kn">import</span> <span class="nn">sisl._array</span> <span class="k">as</span> <span class="nn">_a</span>
@@ -214,6 +217,10 @@
 <span class="sd">       along the Euclidean vectors.</span>
 <span class="sd">    center : (3,), optional</span>
 <span class="sd">       the center of the cuboid. Defaults to the origo.</span>
+<span class="sd">       Not allowed as argument if `origo` is passed.</span>
+<span class="sd">    origo : (3,), optional</span>
+<span class="sd">       the offset for the cuboid. The center will be equal to ``v.sum(0) + origo``.</span>
+<span class="sd">       Not allowed as argument if `center` is passed.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -225,8 +232,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_v&#39;</span><span class="p">,</span> <span class="s1">&#39;_iv&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Cuboid.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
+<div class="viewcode-block" id="Cuboid.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
         <span class="n">v</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span> <span class="c1"># a &quot;Euclidean&quot; cube</span>
@@ -235,7 +242,15 @@
         <span class="k">elif</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">+</span> <span class="s2">&quot; requires initialization with 3 vectors defining the cuboid&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> requires initialization with 3 vectors defining the cuboid&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">origo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> only allows either origo or center argument&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">origo</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">origo</span>
+
+        <span class="c1"># initialize the center</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
 
         <span class="c1"># Create the reciprocal cell</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_iv</span> <span class="o">=</span> <span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v</span><span class="p">)</span></div>
@@ -351,11 +366,17 @@
 <span class="sd">    ----------</span>
 <span class="sd">    side : float</span>
 <span class="sd">       side-length of the cube, or vector</span>
+<span class="sd">    center : (3,), optional</span>
+<span class="sd">       the center of the cuboid. Defaults to the origo.</span>
+<span class="sd">       Not allowed as argument if `origo` is passed.</span>
+<span class="sd">    origo : (3,), optional</span>
+<span class="sd">       the lower left corner of the cuboid.</span>
+<span class="sd">       Not allowed as argument if `center` is passed.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Cube.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Cube.html#sisl.shape.Cube.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Cube.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Cube.html#sisl.shape.Cube.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">side</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">side</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">center</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">origo</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
