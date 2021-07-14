@@ -30,11 +30,10 @@ from scipy.sparse import (
 
 from ._internal import set_module
 from . import _array as _a
-from ._array import asarrayi, arrayi, fulli
+from ._array import asarrayi, arrayi, fulli, array_arange
 from ._indices import indices, indices_only, sorted_unique
 from .messages import warn, SislError
 from ._help import array_fill_repeat, get_dtype, isiterable
-from .utils.ranges import array_arange
 from .utils.mathematics import intersect_and_diff_sets
 from ._sparse import sparse_dense
 
@@ -295,7 +294,26 @@ class SparseCSR(NDArrayOperatorsMixin):
 
     def diagonal(self):
         r""" Return the diagonal elements from the matrix """
-        return np.array([self[i, i] for i in range(self.shape[0])], dtype=self.dtype)
+        # get the diagonal components
+        diag = np.zeros([self.shape[0], self.shape[2]], dtype=self.dtype)
+
+        ptr = self.ptr
+        ncol = self.ncol
+        col = self.col
+        D = self._D
+
+        # Now retrieve rows and cols
+        idx = (ncol > 0).nonzero()[0]
+        row = repeat(idx.astype(int32, copy=False), ncol[idx])
+        idx = array_arange(ptr[:-1], n=ncol, dtype=int32)
+        col = col[idx]
+        # figure out the indices where we have a diagonal index
+        diag_idx = np.equal(row, col)
+        idx = idx[diag_idx]
+        diag[row[diag_idx]] = D[idx]
+        if self.shape[2] == 1:
+            return diag.ravel()
+        return diag
 
     def diags(self, diagonals, offsets=0, dim=None, dtype=None):
         """ Create a `SparseCSR` with diagonal elements with the same shape as the routine
@@ -616,7 +634,7 @@ class SparseCSR(NDArrayOperatorsMixin):
         # We are *only* deleting columns, so if it is finalized,
         # it will still be
 
-    def translate_columns(self, old, new, clean=True):
+    def translate_columns(self, old, new, rows=None, clean=True):
         """ Takes all `old` columns and translates them to `new`.
 
         Parameters
@@ -625,6 +643,8 @@ class SparseCSR(NDArrayOperatorsMixin):
            old column indices
         new : int or array_like
            new column indices
+        rows : int or array_like
+           only translate columns for the given rows
         clean : bool, optional
            whether the new translated columns, outside the shape, should be deleted or not (default delete)
         """
@@ -632,7 +652,7 @@ class SparseCSR(NDArrayOperatorsMixin):
         new = _a.asarrayi(new)
 
         if len(old) != len(new):
-            raise ValueError(self.__class__.__name__+".translate_columns requires input and output columns with "
+            raise ValueError(f"{self.__class__.__name__}.translate_columns requires input and output columns with "
                              "equal length")
 
         if allclose(old, new):
@@ -640,17 +660,19 @@ class SparseCSR(NDArrayOperatorsMixin):
             return
 
         if np_any(old >= self.shape[1]):
-            raise ValueError(self.__class__.__name__+".translate_columns has non-existing old column values")
+            raise ValueError(f"{self.__class__.__name__}.translate_columns has non-existing old column values")
 
         # Now do the translation
         pvt = _a.arangei(self.shape[1])
         pvt[old] = new
 
         # Get indices of valid column entries
-        idx = array_arange(self.ptr[:-1], n=self.ncol)
-        # Convert the old column indices to new ones
-        col = self.col
-        col[idx] = pvt[col[idx]]
+        if rows is None:
+            idx = array_arange(self.ptr[:-1], n=self.ncol)
+        else:
+            idx = array_arange(self.ptr[rows], n=self.ncol[rows])
+            # Convert the old column indices to new ones
+        self.col[idx] = pvt[self.col[idx]]
 
         # After translation, set to not finalized
         self._finalized = False
@@ -658,32 +680,37 @@ class SparseCSR(NDArrayOperatorsMixin):
             if np_any(new >= self.shape[1]):
                 self._clean_columns()
 
-    def scale_columns(self, col, scale):
+    def scale_columns(self, cols, scale, rows=None):
         r""" Scale all values with certain column values with a number
 
         This will multiply all values with certain column values with `scale`
 
         .. math::
-            M[:, cols] *= scale
+            M[rows, cols] *= scale
 
         This is an in-place operation.
 
         Parameters
         ----------
-        col : int or array_like
-           column indices
+        cols : int or array_like
+           column indices to scale
         scale : float or array_like
            scale value for each value (if array-like it has to have the same
            dimension as the sparsity dimension)
+        rows : int or array_like, optional
+           only scale the column values that exists in these rows, default to all
         """
-        col = _a.asarrayi(col)
+        cols = _a.asarrayi(cols)
 
-        if np_any(col >= self.shape[1]):
-            raise ValueError(self.__class__.__name__+".scale_columns has non-existing old column values")
+        if np_any(cols >= self.shape[1]):
+            raise ValueError(f"{self.__class__.__name__}.scale_columns has non-existing old column values")
 
         # Find indices
-        idx = array_arange(self.ptr[:-1], n=self.ncol)
-        scale_idx = np.isin(self.col[idx], col).nonzero()[0]
+        if rows is None:
+            idx = array_arange(self.ptr[:-1], n=self.ncol)
+        else:
+            idx = array_arange(self.ptr[rows], n=self.ncol[rows])
+        scale_idx = np.isin(self.col[idx], cols).nonzero()[0]
 
         # Scale values where columns coincide with scaling factor
         self._D[idx[scale_idx]] *= scale

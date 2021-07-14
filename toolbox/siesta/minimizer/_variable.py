@@ -1,13 +1,59 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
+from collections.abc import Iterable
 import numpy as np
 
 
-__all__ = ['Variable', 'UpdateVariable']
+__all__ = ['Parameter', 'Variable', 'UpdateVariable']
 
 
-class Variable:
+class Parameter:
+    """ A parameter which is static and not changing.
+
+    Parameters
+    ----------
+    name : str
+       name of variable
+    value : float
+       initial value of the variable
+    bounds : (float, float)
+       boundaries of the value
+    **attrs : dict, optional
+       other attributes that are retrievable
+    """
+
+    def __init__(self, name, value, **attrs):
+        self.name = name
+        self.value = value
+        self.attrs = attrs
+
+    def __getattr__(self, key):
+        if key in self.attrs:
+            return self.attrs[key]
+        raise AttributeError(f"could not find attribute {key}")
+
+    def update(self, value):
+        self.value = value
+
+    def normalize(self, value, *args, **kwargs):
+        """ Return normalized value """
+        return value
+
+    def reverse_normalize(self, value, *args, **kwargs):
+        """ Return normalized value """
+        return value
+
+    def __str__(self):
+        return f"{self.__class__.__name__}{{name: {self.name}, value: {self.value}}}"
+
+    def __eq__(self, other):
+        if isinstance(other, Parameter):
+            return self.name == other.name and self.value == other.value
+        return self.name == other
+
+
+class Variable(Parameter):
     """ A minimization variable with associated name, inital value, and possible bounds.
 
     Parameters
@@ -23,24 +69,20 @@ class Variable:
     """
 
     def __init__(self, name, value, bounds, **attrs):
-        self.name = name
-        self.bounds = np.array(bounds, np.float64)
+        super().__init__(name, value, **attrs)
+        self.bounds = np.array(bounds)
         assert self.bounds.size == 2
-        self.value = value
-        self.attrs = attrs
+        assert self.bounds[0] <= self.bounds[1]
 
     def __str__(self):
         return f"{self.__class__.__name__}{{name: {self.name}, value: {self.value}, bounds: {self.bounds}}}"
 
-    def update(self, value):
-        self.value = value
-
     def _parse_norm(self, norm, with_offset):
         """ Return offset, scale factor """
-        if isinstance(norm, (tuple, list)):
-            norm, scale = norm
-        elif isinstance(norm, str):
+        if isinstance(norm, str):
             scale = 1.
+        elif isinstance(norm, Iterable):
+            norm, scale = norm
         else:
             scale = norm
             norm = 'l2'
@@ -54,16 +96,14 @@ class Variable:
             return 0., 1.
         elif norm == 'l2':
             return off, scale / (self.bounds[1] - self.bounds[0])
-        elif norm == 'max':
-            return off, scale / np.fabs(self.bounds).max()
-        raise ValueError("norm not found in [none/identity, l2, max]")
+        raise ValueError("norm not found in [none/identity, l2]")
 
     def normalize(self, value, norm='l2', with_offset=True):
         """ Normalize a value in terms of the norms of this variable
 
         Parameters
         ----------
-        norm : {l2, max, none/identity} or (str, float) or float
+        norm : {l2, none/identity} or (str, float) or float
            whether to scale according to bounds or not
            if a scale value (float) is used then that will be the [0, scale] bounds
            of the normalized value, only passing a float is equivalent to ``('l2', scale)``
@@ -88,25 +128,20 @@ class Variable:
         offset, fac = self._parse_norm(norm, with_offset)
         return value / fac + offset
 
-    def __eq__(self, other):
-        if isinstance(other, Variable):
-            return self.name == other.name and self.value == other.value
-        return self.name == other
-
 
 class UpdateVariable(Variable):
-    def __init__(self, name, value, bounds, update, **attrs):
+    def __init__(self, name, value, bounds, func, **attrs):
         super().__init__(name, value, bounds, **attrs)
-        self._update = update
+        self._func = func
 
     def update(self, value):
         """ Also run update wrapper call for the new value
 
         The update routine should have this interface:
 
-        >>> def update(old_value, new_value):
+        >>> def func(old_value, new_value):
         ...     pass
         """
         old_value = self.value
         super().update(value)
-        self._update(old_value, value)
+        self._func(old_value, value)

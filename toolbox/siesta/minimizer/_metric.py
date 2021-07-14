@@ -13,20 +13,35 @@ class Metric:
     def metric(self, variables, *args, **kwargs):
         """ Return a single number quantifying the metric of the system """
 
+    def __abs__(self):
+        return AbsMetric(self)
+
     def __add__(self, other):
         return SumMetric(self, other)
 
     def __sub__(self, other):
         return SubMetric(self, other)
 
+    def __rsub__(self, other):
+        return SubMetric(other, self)
+
     def __mul__(self, factor):
         return MulMetric(self, factor)
 
     def __truediv__(self, divisor):
-        return MulMetric(self, 1. / divisor)
+        return DivMetric(self, divisor)
+
+    def __rtruediv__(self, divisor):
+        return DivMetric(divisor, self)
 
     def __neg__(self):
         return MulMetric(-1, self)
+
+    def __pow__(self, other, mod=None):
+        return PowMetric(self, other, mod)
+
+    def __rpow__(self, other, mod=None):
+        return PowMetric(other, self, mod)
 
     def min(self, other):
         return MinMetric(self, other)
@@ -44,14 +59,22 @@ class CompositeMetric(Metric):
 
     def _metric_composite(self, variables, *args, **kwargs):
         if isinstance(self.A, Metric):
-            A = self.A(variables, *args, **kwargs)
+            A = self.A.metric(variables, *args, **kwargs)
         else:
             A = self.A
         if isinstance(self.B, Metric):
-            B = self.B(variables, *args, **kwargs)
+            B = self.B.metric(variables, *args, **kwargs)
         else:
             B = self.B
         return A, B
+
+
+class AbsMetric(Metric):
+    def __init__(self, A):
+        self.A = A
+
+    def metric(self, variables, *args, **kwargs):
+        return abs(super().metric(variables, *args, **kwargs))
 
 
 class MinMetric(CompositeMetric):
@@ -82,3 +105,21 @@ class MulMetric(CompositeMetric):
     def metric(self, variables, *args, **kwargs):
         A, B = self._metric_composite(variables, *args, **kwargs)
         return A * B
+
+
+class DivMetric(CompositeMetric):
+    def metric(self, variables, *args, **kwargs):
+        A, B = self._metric_composite(variables, *args, **kwargs)
+        return A / B
+
+
+class PowMetric(CompositeMetric):
+    def __init__(self, A, B, mod=None):
+        super().__init__(A, B)
+        self.mod = mod
+
+    def metric(self, variables, *args, **kwargs):
+        A, B = self._metric_composite(variables, *args, **kwargs)
+        if self.mod is None:
+            return pow(A, B)
+        return pow(A, B, self.mod)

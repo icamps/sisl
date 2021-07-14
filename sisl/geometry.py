@@ -24,7 +24,7 @@ from .messages import info, warn, SislError, deprecate_method
 from ._help import isndarray
 from .utils import default_ArgumentParser, default_namespace, cmd, str_spec
 from .utils import angle, direction
-from .utils import lstranges, strmap, array_arange
+from .utils import lstranges, strmap
 from .utils.mathematics import fnorm
 from .quaternion import Quaternion
 from .supercell import SuperCell, SuperCellChild
@@ -335,8 +335,8 @@ class Geometry(SuperCellChild):
         - range/list/ndarray -> ndarray
         """
         if atoms is None:
-            return _a.arangei(self.na)
-        return np.asarray(atoms, dtype=np.int32)
+            return np.arange(self.na)
+        return np.asarray(atoms)
 
     @_sanitize_atoms.register(str)
     def _(self, atoms):
@@ -363,7 +363,7 @@ class Geometry(SuperCellChild):
                     pass
                 else:
                     yield ia
-        return _a.fromiteri(m(cat))
+        return _a.fromiterl(m(cat))
 
     @_sanitize_atoms.register(dict)
     def _(self, atoms):
@@ -388,7 +388,7 @@ class Geometry(SuperCellChild):
         - dict -> {atom: sub_orbital}
         """
         if orbitals is None:
-            return _a.arangei(self.no)
+            return np.arange(self.no)
         return np.asarray(orbitals)
 
     @_sanitize_orbs.register(ndarray)
@@ -405,7 +405,7 @@ class Geometry(SuperCellChild):
             return np.add.outer(self.firsto[atom], orbs).ravel()
         return np.concatenate(tuple(conv(atom, orbs) for atom, orbs in orbitals.items()))
 
-    def as_primary(self, na_primary, ret_super=False):
+    def as_primary(self, na_primary, axes=(0, 1, 2), ret_super=False):
         """ Try and reduce the geometry to the primary unit-cell comprising `na_primary` atoms
 
         This will basically try and find the tiling/repetitions required for the geometry to only have
@@ -415,6 +415,8 @@ class Geometry(SuperCellChild):
         ----------
         na_primary : int
            number of atoms in the primary unit cell
+        axes : array_like, optional
+           only search the given directions for supercells, default to all directions
         ret_super : bool, optional
            also return the number of supercells used in each direction
 
@@ -434,6 +436,8 @@ class Geometry(SuperCellChild):
         if na % na_primary != 0:
             raise ValueError(f'{self.__class__.__name__}.as_primary requires the number of atoms to be divisable by the '
                              'total number of atoms.')
+
+        axes = _a.arrayi(axes)
 
         n_supercells = len(self) // na_primary
         if n_supercells == 1:
@@ -459,15 +463,17 @@ class Geometry(SuperCellChild):
             bins = np.linspace(0, 1, n_bin + 1)
 
             # Loop directions where we need to check
-            for i in (supercell == 1).nonzero()[0]:
+            for axis in axes:
+                if supercell[axis] != 1:
+                    continue
 
                 # A histogram should yield an equal splitting for each bins
                 # if the geometry is a n_bin repetition along the i'th direction.
                 # Hence if diff == 0 for all elements we have a match.
-                diff_bin = np.diff(np.histogram(fxyz[:, i], bins)[0])
+                diff_bin = np.diff(np.histogram(fxyz[:, axis], bins)[0])
 
                 if diff_bin.sum() == 0:
-                    supercell[i] = n_bin
+                    supercell[axis] = n_bin
                     if np.product(supercell) > n_supercells:
                         # For geometries with more than 1 atom in the primary unit cell
                         # we can get false positives (each layer can be split again)
@@ -1103,17 +1109,17 @@ class Geometry(SuperCellChild):
         """
         # sanitize `other`
         other = self.new(other)
-        s_xyz = self.xyz + (_a.arrayd(offset) - _a.arrayd(offset_other)).reshape(1, 3)
+        s_xyz = self.xyz + (_a.arrayd(offset) - _a.arrayd(offset_other))
         idx_self = []
-        self_append = idx_self.append
+        self_extend = idx_self.extend
         idx_other = []
-        other_append = idx_other.append
+        other_extend = idx_other.extend
 
         for ia, xyz in enumerate(s_xyz):
+            # only search in the primary unit-cell
             idx = other.close_sc(xyz, R=(eps,))
-            for ja in idx:
-                self_append(ia)
-                other_append(ja)
+            self_extend([ia] * idx.size)
+            other_extend(idx)
         return _a.arrayi(idx_self), _a.arrayi(idx_other)
 
     def sort(self, **kwargs):
@@ -1135,12 +1141,9 @@ class Geometry(SuperCellChild):
 
         Parameters
         ----------
-        atoms : list or list of list, optional
+        atoms : int or array_like, optional
            only perform sorting algorithm for subset of atoms. This is *NOT* a positional dependent
            argument. All sorting algorithms will _only_ be performed on these atoms.
-           If a list of indices only the given atoms will be sorted, and all other atoms
-           will be kept in the final structure at their initial indices.
-           If a list of list of indices, each list of indices will be sorted individually (see `ret_atoms`).
            Default, all atoms will be sorted.
         ret_atoms : bool, optional
            return a list of list for the groups of atoms that have been sorted.
@@ -1283,6 +1286,8 @@ class Geometry(SuperCellChild):
         One may group several elements together on an equal footing (``None`` means all non-mentioned elements)
         The order of the groups are important (the first two are _not_ equal, the last three _are_ equal)
 
+        >>> geom.sort(group=('symbol', 'C'), axis=2) # C will be sorted along 3rd axis
+        >>> geom.sort(axis=1, atoms='C', axis1=2) # all along 2nd, then C sorted along 3rd
         >>> geom.sort(group=('symbol', 'C', None)) # C, [B, N]
         >>> geom.sort(group=('symbol', None, 'C')) # [B, N], C
         >>> geom.sort(group=('symbol', ['N', 'B'], 'C')) # [B, N], C (B and N unaltered order)
@@ -1325,7 +1330,7 @@ class Geometry(SuperCellChild):
                 if not idx is None:
                     self.append(idx, sort)
             def append(self, idx, sort=False):
-                if isinstance(idx, (tuple, list)):
+                if isinstance(idx, (tuple, list, ndarray)):
                     if isinstance(idx[0], (tuple, list, ndarray)):
                         for ix in idx:
                             self.append(ix, sort)
@@ -1341,8 +1346,17 @@ class Geometry(SuperCellChild):
                 yield from self._idx
             def __len__(self):
                 return len(self._idx)
+            def ravel(self):
+                if len(self) == 0:
+                    return np.array([], dtype=np.int64)
+                return concatenate([i for i in self]).ravel()
             def tolist(self):
                 return self._idx
+            def __str__(self):
+                if len(self) == 0:
+                    return f"{self.__class__.__name__}{{empty}}"
+                out = ',\n '.join(map(lambda x: str(x.tolist()), self))
+                return f"{self.__class__.__name__}{{\n {out}}}"
 
         def _sort(val, atoms, **kwargs):
             """ We do not sort according to lexsort """
@@ -1498,10 +1512,11 @@ class Geometry(SuperCellChild):
             """
             # Create new list
             nl = NestedList()
+
             if isinstance(method_group, str):
                 method = method_group
                 groups = []
-            else:
+            elif isinstance(method_group[0], str):
                 method, *in_groups = method_group
 
                 # Ensure all groups are lists
@@ -1512,6 +1527,14 @@ class Geometry(SuperCellChild):
                         groups.append(group)
                     else:
                         groups.append([group])
+            else:
+                # a special case where group is a list of lists
+                # i.e. [[0, 1, 2], [3, 4, 5]]
+                for idx in method_group:
+                    idx = self._sanitize_atoms(idx)
+                    for at in atoms:
+                        nl.append(at[isin(at, idx)])
+                return nl
 
             method = method.lower()
 
@@ -1558,17 +1581,7 @@ class Geometry(SuperCellChild):
             return False
 
         # Default to all atoms
-        atoms = NestedList(kwargs.pop("atoms", None))
-        if len(atoms) > 0:
-            # Ensure the user has not supplied duplicate atomic indices
-            atomsl = concatenate(atoms.tolist())
-            if len(np.unique(atomsl)) != len(atomsl):
-                raise ValueError(f"{self.__class__.__name__}.sort requires 'atoms' argument to not have duplicate values")
-            del atomsl
-        else:
-            # Always ensure the first nested list has *something in it*
-            atoms = NestedList(_a.arangei(len(self)))
-
+        atoms = NestedList(self._sanitize_atoms(kwargs.pop("atoms", None)))
         ret_atoms = kwargs.pop("ret_atoms", False)
 
         # In case the user just did geometry.sort, it will default to sort x, y, z
@@ -1584,7 +1597,8 @@ class Geometry(SuperCellChild):
             # call sorting algorithm and retrieve new grouped sorting
             atoms = funcs[key](method, atoms, **func_kw)
 
-        atoms_flat = concatenate(atoms.tolist()).ravel()
+        # convert to direct list
+        atoms_flat = atoms.ravel()
 
         # Ensure that all atoms are present
         if len(atoms_flat) != len(self):
@@ -1767,6 +1781,8 @@ class Geometry(SuperCellChild):
         sub : the negative of this routine, i.e. retain a subset of atoms
         """
         atoms = self.sc2uc(atoms)
+        if atoms.size == 0:
+            return self.copy()
         atoms = np.delete(_a.arangei(self.na), atoms)
         return self.sub(atoms)
 
@@ -1774,9 +1790,6 @@ class Geometry(SuperCellChild):
         """ Tile the geometry to create a bigger one
 
         The atomic indices are retained for the base structure.
-
-        This method allows to utilise Bloch's theorem when creating
-        Hamiltonian parameter sets for TBtrans.
 
         Tiling and repeating a geometry will result in the same geometry.
         The *only* difference between the two is the final ordering of the atoms.
@@ -1826,7 +1839,7 @@ class Geometry(SuperCellChild):
         nr = _a.arangei(reps)
         nr.shape = (reps, 1, 1)
         # Correct the unit-cell offsets
-        xyz += nr * self.cell[axis, :].reshape(1, 1, 3)
+        xyz += nr * self.cell[axis, :]
         xyz.shape = (-1, 3)
 
         # Create the geometry and return it (note the smaller atoms array
@@ -1846,9 +1859,6 @@ class Geometry(SuperCellChild):
         ...     for id,r in args:
         ...        for i in range(r):
         ...           ja = ia + cell[id,:] * i
-
-        This method allows to utilise Bloch's theorem when creating
-        Hamiltonian parameter sets for TBtrans.
 
         For geometries with a single atom this routine returns the same as
         `tile`.
@@ -1968,20 +1978,19 @@ class Geometry(SuperCellChild):
                 method = method_tbl[m[1]]
                 m = m[0]
 
+        g = self
         if len(m) == 1:
             #  r
             m = m[0]
-            g = self.copy()
             for i in range(3):
                 g = getattr(g, method)(m, i)
 
         elif len(m) == 2:
             #  (r, axis)
-            g = getattr(self, method)(m[0], m[1])
+            g = getattr(g, method)(m[0], m[1])
 
         elif len(m) == 3:
             #  (r, r, r)
-            g = self.copy()
             for i in range(3):
                 g = getattr(g, method)(m[i], i)
 
@@ -2585,6 +2594,34 @@ class Geometry(SuperCellChild):
         # so we will do nothing...
         return self.add(o)
 
+    def replace(self, atoms, other, offset=None):
+        """ Create a new geometry from `self` and replace `atoms` with `other`
+
+        Parameters
+        ----------
+        atoms : array_like of int, optional
+            atoms in `self` to be removed and replaced by other
+            `other` will be placed in the geometry at the lowest index of `atoms`
+        other : Geometry
+            the other Geometry to insert instead, the unit-cell will not
+            be used.
+        offset : (3,), optional
+            the offset for `other` when adding its coordinates, default to no offset
+        """
+        # Find lowest value in atoms
+        atoms = self._sanitize_atoms(atoms)
+        index = atoms.min()
+        if offset is None:
+            offset = _a.zerosd(3)
+
+        # remove atoms, preparing for inserting new geometry
+        out = self.remove(atoms)
+
+        # insert new positions etc.
+        out.xyz = np.insert(out.xyz, index, other.xyz + offset, axis=0)
+        out._atoms = out.atoms.insert(index, other.atoms)
+        return out
+
     def reverse(self, atoms=None):
         """ Returns a reversed geometry
 
@@ -2695,9 +2732,7 @@ class Geometry(SuperCellChild):
         """
         if atoms is None and isc is None:
             return self.xyz
-
-        if not atoms is None:
-            atoms = self._sanitize_atoms(atoms)
+        atoms = self._sanitize_atoms(atoms)
 
         # If only atoms has been specified
         if isc is None:
@@ -2706,17 +2741,8 @@ class Geometry(SuperCellChild):
             offset = self.sc.offset(isc)
             return self.xyz[self.sc2uc(atoms), :] + offset
 
-        elif atoms is None:
-            offset = self.sc.offset(isc)
-            return self.xyz[:, :] + offset[None, :]
-
         # Neither of atoms, or isc are `None`, we add the offset to all coordinates
-        offset = self.sc.offset(isc)
-
-        if atoms.ndim == 0:
-            return self.axyz(atoms) + offset
-
-        return self.axyz(atoms) + offset[None, :]
+        return self.axyz(atoms) + self.sc.offset(isc)
 
     def scale(self, scale):
         """ Scale coordinates and unit-cell to get a new geometry with proper scaling
@@ -3519,9 +3545,9 @@ class Geometry(SuperCellChild):
         """ Transposes connections from `orb1` to `orb2` such that supercell connections are transposed
 
         When handling supercell indices it is useful to get the *transposed* connection. I.e. if you have
-        a connection from site ``i`` (in unit cell indices) to site ``j`` (in supercell indices) it may be
+        a connection from site ``i`` (in unit cell indices) to site ``J`` (in supercell indices) it may be
         useful to get the equivalent supercell connection such for site ``j`` (in unit cell indices) to
-        site ``i`` (in supercell indices) such that they correspond to the transposed coupling.
+        site ``I`` (in supercell indices) such that they correspond to the transposed coupling.
 
         Note that since this transposes couplings the indices returned are always expanded to the full
         length if either of the inputs are a single index.
@@ -3605,7 +3631,7 @@ class Geometry(SuperCellChild):
         if isinstance(ob, Integral):
             return _a.arangei(ob, oe)
 
-        return array_arange(ob, oe)
+        return _a.array_arange(ob, oe)
 
     def o2a(self, io, unique=False):
         """ Atomic index corresponding to the orbital indicies.
@@ -3665,20 +3691,20 @@ class Geometry(SuperCellChild):
         return atoms
     asc2uc = sc2uc
 
-    def osc2uc(self, orb, unique=False):
+    def osc2uc(self, orbitals, unique=False):
         """ Returns orbitals from supercell indices to unit-cell indices, possibly removing dublicates
 
         Parameters
         ----------
-        orb : array_like or int
+        orbitals : array_like or int
            the orbital supercell indices to be converted to unit-cell indices
         unique : bool, optional
            If True the returned indices are unique and sorted.
         """
-        orb = _a.asarrayi(orb) % self.no
+        orbitals = _a.asarrayi(orbitals) % self.no
         if unique:
-            return np.unique(orb)
-        return orb
+            return np.unique(orbitals)
+        return orbitals
 
     def ouc2sc(self, orbitals, unique=False):
         """ Returns orbitals from unit-cell indices to supercell indices, possibly removing dublicates
@@ -4196,7 +4222,7 @@ class Geometry(SuperCellChild):
            to create a new.
         limit_arguments : bool, optional
            If ``False`` additional options will be created which are similar to other options.
-           For instance ``--repeat-x`` which is equivalent to ``--repeat x``.
+           For instance ``--repeat-x <>`` which is equivalent to ``--repeat <> x``.
            Default `True`.
         short : bool, optional
            Create short options for a selected range of options.
@@ -4230,21 +4256,18 @@ class Geometry(SuperCellChild):
 
         # Create actions
         class Format(argparse.Action):
-
             def __call__(self, parser, ns, value, option_string=None):
                 ns._geom_fmt = value[0]
         p.add_argument(*opts('--format'), action=Format, nargs=1, default='.8f',
                    help='Specify output format for coordinates.')
 
         class MoveOrigin(argparse.Action):
-
             def __call__(self, parser, ns, no_value, option_string=None):
                 ns._geometry.xyz[:, :] -= np.amin(ns._geometry.xyz, axis=0)[None, :]
         p.add_argument(*opts('--origin', '-O'), action=MoveOrigin, nargs=0,
                    help='Move all atoms such that the smallest value along each Cartesian direction will be at the origin.')
 
         class MoveCenterOf(argparse.Action):
-
             def __call__(self, parser, ns, value, option_string=None):
                 xyz = ns._geometry.center(what='xyz')
                 ns._geometry = ns._geometry.translate(ns._geometry.center(what=value) - xyz)
@@ -4253,7 +4276,6 @@ class Geometry(SuperCellChild):
                        help='Move coordinates to the center of the designated choice.')
 
         class MoveUnitCell(argparse.Action):
-
             def __call__(self, parser, ns, value, option_string=None):
                 if value in ['translate', 'tr', 't']:
                     # Simple translation
@@ -4270,7 +4292,6 @@ class Geometry(SuperCellChild):
 
         # Rotation
         class Rotation(argparse.Action):
-
             def __call__(self, parser, ns, values, option_string=None):
                 # Convert value[0] to the direction
                 # The rotate function expects degree
@@ -4282,7 +4303,6 @@ class Geometry(SuperCellChild):
 
         if not limit_args:
             class RotationX(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     # The rotate function expects degree
                     ang = angle(value, rad=False, in_rad=False)
@@ -4292,7 +4312,6 @@ class Geometry(SuperCellChild):
                            help='Rotate geometry around first cell vector. ANGLE defaults to be specified in degree. Prefix with "r" for input in radians.')
 
             class RotationY(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     # The rotate function expects degree
                     ang = angle(value, rad=False, in_rad=False)
@@ -4302,7 +4321,6 @@ class Geometry(SuperCellChild):
                            help='Rotate geometry around second cell vector. ANGLE defaults to be specified in degree. Prefix with "r" for input in radians.')
 
             class RotationZ(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     # The rotate function expects degree
                     ang = angle(value, rad=False, in_rad=False)
@@ -4313,7 +4331,6 @@ class Geometry(SuperCellChild):
 
         # Reduce size of geometry
         class ReduceSub(argparse.Action):
-
             def __call__(self, parser, ns, value, option_string=None):
                 # Get atomic indices
                 rng = lstranges(strmap(int, value))
@@ -4323,7 +4340,6 @@ class Geometry(SuperCellChild):
                        help='Removes specified atoms, can be complex ranges.')
 
         class ReduceCut(argparse.Action):
-
             def __call__(self, parser, ns, values, option_string=None):
                 s = int(values[0])
                 d = direction(values[1])
@@ -4334,7 +4350,6 @@ class Geometry(SuperCellChild):
 
         # Swaps atoms
         class AtomSwap(argparse.Action):
-
             def __call__(self, parser, ns, value, option_string=None):
                 # Get atomic indices
                 a = lstranges(strmap(int, value[0]))
@@ -4348,7 +4363,6 @@ class Geometry(SuperCellChild):
 
         # Add an atom
         class AtomAdd(argparse.Action):
-
             def __call__(self, parser, ns, values, option_string=None):
                 # Create an atom from the input
                 g = Geometry([float(x) for x in values[0].split(',')], atoms=Atom(values[1]))
@@ -4357,9 +4371,7 @@ class Geometry(SuperCellChild):
                        action=AtomAdd,
                        help='Adds an atom, coordinate is comma separated (in Ang). Z is the atomic number.')
 
-        # Translate
         class Translate(argparse.Action):
-
             def __call__(self, parser, ns, values, option_string=None):
                 # Create an atom from the input
                 if ',' in values[0]:
@@ -4373,7 +4385,6 @@ class Geometry(SuperCellChild):
 
         # Periodicly increase the structure
         class PeriodRepeat(argparse.Action):
-
             def __call__(self, parser, ns, values, option_string=None):
                 r = int(values[0])
                 d = direction(values[1])
@@ -4384,7 +4395,6 @@ class Geometry(SuperCellChild):
 
         if not limit_args:
             class PeriodRepeatX(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     ns._geometry = ns._geometry.repeat(int(value), 0)
             p.add_argument(*opts('--repeat-x', '-rx'), metavar='TIMES',
@@ -4392,7 +4402,6 @@ class Geometry(SuperCellChild):
                            help='Repeats the geometry along the first cell vector.')
 
             class PeriodRepeatY(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     ns._geometry = ns._geometry.repeat(int(value), 1)
             p.add_argument(*opts('--repeat-y', '-ry'), metavar='TIMES',
@@ -4400,7 +4409,6 @@ class Geometry(SuperCellChild):
                            help='Repeats the geometry along the second cell vector.')
 
             class PeriodRepeatZ(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     ns._geometry = ns._geometry.repeat(int(value), 2)
             p.add_argument(*opts('--repeat-z', '-rz'), metavar='TIMES',
@@ -4408,7 +4416,6 @@ class Geometry(SuperCellChild):
                            help='Repeats the geometry along the third cell vector.')
 
         class PeriodTile(argparse.Action):
-
             def __call__(self, parser, ns, values, option_string=None):
                 r = int(values[0])
                 d = direction(values[1])
@@ -4419,7 +4426,6 @@ class Geometry(SuperCellChild):
 
         if not limit_args:
             class PeriodTileX(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     ns._geometry = ns._geometry.tile(int(value), 0)
             p.add_argument(*opts('--tile-x', '-tx'), metavar='TIMES',
@@ -4427,7 +4433,6 @@ class Geometry(SuperCellChild):
                            help='Tiles the geometry along the first cell vector.')
 
             class PeriodTileY(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     ns._geometry = ns._geometry.tile(int(value), 1)
             p.add_argument(*opts('--tile-y', '-ty'), metavar='TIMES',
@@ -4435,7 +4440,6 @@ class Geometry(SuperCellChild):
                            help='Tiles the geometry along the second cell vector.')
 
             class PeriodTileZ(argparse.Action):
-
                 def __call__(self, parser, ns, value, option_string=None):
                     ns._geometry = ns._geometry.tile(int(value), 2)
             p.add_argument(*opts('--tile-z', '-tz'), metavar='TIMES',
@@ -4489,7 +4493,6 @@ class Geometry(SuperCellChild):
                        help='Print, to stdout, some regular information about the geometry.')
 
         class Out(argparse.Action):
-
             def __call__(self, parser, ns, value, option_string=None):
                 if value is None:
                     return
@@ -4737,18 +4740,18 @@ def sgeom(geometry=None, argv=None, ret_geometry=False):
 This manipulation utility is highly advanced and one should note that the ORDER of
 options is determining the final structure. For instance:
 
-   {exe} geom.xyz --repeat x 2 --repeat y 2
+   {exe} geom.xyz --repeat 2 x --repeat 2 y
 
 is NOT equivalent to:
 
-   {exe} geom.xyz --repeat y 2 --repeat x 2
+   {exe} geom.xyz --repeat 2 y --repeat 2 x
 
 This may be unexpected but enables one to do advanced manipulations.
 
 Additionally, in between arguments, one may store the current state of the geometry
 by writing to a standard file.
 
-   {exe} geom.xyz --repeat y 2 geom_repy.xyz --repeat x 2 geom_repy_repx.xyz
+   {exe} geom.xyz --repeat 2 y geom_repy.xyz --repeat 2 x geom_repy_repx.xyz
 
 will create two files:
    geom_repy.xyz

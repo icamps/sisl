@@ -589,16 +589,49 @@ class TestHamiltonian:
             assert np.allclose(e, es.eig)
             assert np.allclose(v, es.state.T)
             assert np.allclose(es.norm2(), 1)
-            assert np.allclose(es.inner(diagonal=False) - np.eye(len(es)), 0)
+            assert np.allclose(es.inner(diag=False), np.eye(len(es)))
 
             assert es.inner(es.sub(0)).shape == (1, )
-            assert es.inner(es.sub(0), diagonal=False).shape == (len(es), 1)
+            assert es.inner(es.sub(0), diag=False).shape == (len(es), 1)
 
             eig1 = HS.eigh(k)
             eig2 = np.sort(HS.eig(k).real)
             eig3 = np.sort(HS.eig(k, eigvals_only=False)[0].real)
+            eig4 = es.inner(matrix=HS.Hk(k))
+            eig5 = es.inner(ket=es, matrix=HS.Hk(k))
             assert np.allclose(eig1, eig2, atol=1e-5)
             assert np.allclose(eig1, eig3, atol=1e-5)
+            assert np.allclose(eig1, eig4, atol=1e-5)
+            assert np.allclose(eig1, eig5, atol=1e-5)
+
+            assert es.inner(matrix=HS.Hk([0.1] * 3), ket=HS.eigenstate([0.3] * 3),
+                            diag=False).shape == (len(es), len(es))
+
+    def test_inner(self, setup):
+        HS = setup.HS.copy()
+        HS.construct([(0.1, 1.5), ((2., 1.), (3., 0.))])
+        HS = HS.tile(2, 0).tile(2, 1)
+
+        es1 = HS.eigenstate([0.1] * 3)
+        es2 = HS.eigenstate([0.2] * 3)
+        m1 = es1.inner(es2, diag=False)
+        assert m1.shape == (len(es1), len(es2))
+        m2 = es2.inner(es1, diag=False)
+        assert np.allclose(m1, m2.conj().T)
+        m3 = es2.inner(es1.state, diag=False)
+        assert np.allclose(m1, m3.conj().T)
+
+        r = range(3)
+        m1 = es1.sub(r).inner(es2, diag=False)
+        m2 = es2.inner(es1.sub(r), diag=False)
+        assert np.allclose(m1, m2.conj().T)
+        assert es1.sub(r).inner(es2, diag=False).shape == (len(r), len(es2))
+        assert es1.inner(es2.sub(r), diag=False).shape == (len(es1), len(r))
+        m1 = es1.sub(r).inner(es2, diag=True)
+        assert m1.shape == (len(r), )
+        m2 = es2.inner(es1.sub(r), diag=True)
+        assert m2.shape == (len(r), )
+        assert np.allclose(m1, m2.conj())
 
     def test_gauge_eig(self, setup):
         # Test of eigenvalues
@@ -617,6 +650,67 @@ class TestHamiltonian:
         es2 = H.eigenstate(k, gauge='r', dtype=np.complex64)
         assert np.allclose(es1.eig, es2.eig)
         assert not np.allclose(es1.state, es2.state)
+
+    def test_eigenstate_tile(self, setup):
+        # Test of eigenvalues
+        R, param = [0.1, 1.5], [0., 2.7]
+        H1 = setup.H.copy()
+        H1.construct((R, param))
+        H2 = H1.tile(2, 1)
+
+        k = [0] * 3
+        # we must select a k that does not fold on
+        # itself which then creates degenerate states
+        for k1 in [0.5, 1/3]:
+            k[1] = k1
+            es1 = H1.eigenstate(k)
+            es1_2 = es1.tile(2, 1, normalize=True)
+            es2 = H2.eigenstate(es1_2.info['k'])
+
+            # we need to check that these are somewhat the same
+            out = es1_2.inner(es2, diag=False)
+            abs_out = np.absolute(out)
+            assert np.isclose(abs_out, 1).sum() == len(es1)
+
+    def test_eigenstate_tile_offset(self, setup):
+        # Test of eigenvalues
+        R, param = [0.1, 1.5], [0., 2.7]
+        H1 = setup.H.copy()
+        H1.construct((R, param))
+        H2 = H1.tile(2, 1)
+
+        k = [0] * 3
+        # we must select a k that does not fold on
+        # itself which then creates degenerate states
+        for k1 in [0.5, 1/3]:
+            k[1] = k1
+            es1 = H1.eigenstate(k)
+            es1_2 = es1.tile(2, 1, normalize=True, offset=1)
+            es2 = H2.eigenstate(es1_2.info['k']).translate([0, 1, 0])
+
+            # we need to check that these are somewhat the same
+            out = es1_2.inner(es2, diag=False)
+            abs_out = np.absolute(out)
+            assert np.isclose(abs_out, 1).sum() == len(es1)
+
+    def test_eigenstate_translate(self, setup):
+        # Test of eigenvalues
+        R, param = [0.1, 1.5], [0., 2.7]
+        H = setup.H.copy()
+        H.construct((R, param))
+
+        k = [0] * 3
+        # we must select a k that does not fold on
+        # itself which then creates degenerate states
+        for k1 in [0.5, 1/3]:
+            k[1] = k1
+            es1 = H.eigenstate(k)
+            es1_2 = es1.tile(2, 1)
+            es2 = es1.translate([0, 1, 0])
+            assert np.allclose(es1_2.state[:, :len(es1)],
+                               es1.state)
+            assert np.allclose(es1_2.state[:, len(es1):],
+                               es2.state)
 
     def test_gauge_velocity(self, setup):
         R, param = [0.1, 1.5], [1., 0.1]
@@ -785,14 +879,14 @@ class TestHamiltonian:
         for k in ([0] *3, [0.2] * 3):
             es = H.eigenstate(k)
 
-            d = es.expectation(D)
+            d = es.inner(matrix=D)
             assert np.allclose(d, D)
-            d = es.expectation(D, diag=False)
+            d = es.inner(matrix=D, diag=False)
             assert np.allclose(d, I)
 
-            d = es.expectation(I)
+            d = es.inner(matrix=I)
             assert np.allclose(d, D)
-            d = es.expectation(I, diag=False)
+            d = es.inner(matrix=I, diag=False)
             assert np.allclose(d, I)
 
     def test_velocity_orthogonal(self, setup):
@@ -1151,7 +1245,7 @@ class TestHamiltonian:
 
             # Perform spin-moment calculation
             sm = es.spin_moment()
-            sm2 = es.expectation(SZ).real
+            sm2 = es.inner(matrix=SZ).real
             sm3 = np.diag(np.dot(np.conj(es.state), SZ).dot(es.state.T)).real
             assert np.allclose(sm[:, 2], sm2)
             assert np.allclose(sm[:, 2], sm3)
@@ -1292,7 +1386,7 @@ class TestHamiltonian:
             assert np.allclose(es.eig, eig1)
 
             sm = es.spin_moment()
-            sm2 = es.expectation(SZ).real
+            sm2 = es.inner(matrix=SZ).real
             sm3 = np.diag(np.dot(np.conj(es.state), SZ).dot(es.state.T)).real
             assert np.allclose(sm[:, 2], sm2)
             assert np.allclose(sm[:, 2], sm3)

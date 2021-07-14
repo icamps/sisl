@@ -1,6 +1,28 @@
 0.X.Y
 =====
 
+- removed keywords align for State.inner|outer, instead one
+	should manually align, if required
+
+- removed methods State.expectation
+
+- enabled tiling a State object, #354 and #355
+
+- enabled reading from STRUCT_* files (Siesta input/output) #308
+
+- enabled reading the SuperCell block from fdf
+
+- added Spin.spinor to get number of spinor components
+
+- added sc argument to xyzSile.read_geometry for user defined sc
+
+- enabled stool as a future replacement for stoolbox (shorter)
+
+- ensured AtomicOrbital can be instantiated without specifying m
+	default to 0
+
+- fixed bug in copying orbitals
+
 - changed license to MPLv2, we encourage contribution of toolboxes
 
 - direction now accepts `abc` and `xyz` keywords to automatically

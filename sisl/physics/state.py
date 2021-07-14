@@ -2,7 +2,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import numpy as np
-from numpy import einsum
+from numpy import einsum, exp
 from numpy import ndarray, bool_
 
 from sisl._internal import set_module
@@ -26,6 +26,27 @@ _pi2 = np.pi * 2
 
 def _inner(v1, v2):
     return _dot(_conj(v1), v2)
+
+
+class _FakeMatrix:
+    """ Replacement object which superseedes a matrix """
+    __slots__ = ('n',)
+    ndim = 2
+
+    def __init__(self, n):
+        self.n = n
+
+    @property
+    def shape(self):
+        return (self.n, self.n)
+
+    @staticmethod
+    def dot(v):
+        return v
+
+    @property
+    def T(self):
+        return self
 
 
 @set_module("sisl.physics")
@@ -284,6 +305,106 @@ class State(ParentContainer):
         sub.info = self.info
         return sub
 
+    def translate(self, isc):
+        r""" Translate the vectors to a new unit-cell position
+
+        The method is thoroughly explained in `tile` while this one only
+        selects the corresponding state vector
+
+        Parameters
+        ----------
+        isc : (3,)
+           number of offsets for the statevector
+
+        See Also
+        --------
+        tile : equivalent method for generating more cells simultaneously
+        """
+        # the k-point gets reduced
+        k = _a.asarrayd(self.info.get("k", [0]*3))
+        assert len(isc) == 3
+
+        s = self.copy()
+        # translate the bloch coefficients with:
+        #   exp(i k.T)
+        # with T being
+        #   i * a_0 + j * a_1 + k * a_2
+        if not np.allclose(k, 0):
+            # there will only be a phase if k != 0
+            s.state *= exp(2j*_pi * k @ isc)
+        return s
+
+    def tile(self, reps, axis, normalize=False, offset=0):
+        r"""Tile the state vectors for a new supercell
+
+        Tiling a state vector makes use of the Bloch factors for a state by utilizing
+
+        .. math::
+
+           \psi_{\mathbf k}(\mathbf r + \mathbf T) \propto e^{i\mathbf k\cdot \mathbf T}
+
+        where :math:`\mathbf T = i\mathbf a_0 + j\mathbf a_1 + l\mathbf a_2`. Note that `axis`
+        selects which of the :math:`\mathbf a_i` vectors that are translated and `reps` corresponds
+        to the :math:`i`, :math:`j` and :math:`l` variables. The `offset` moves the individual states
+        by said amount, i.e. :math:`i\to i+\mathrm{offset}`.
+
+        Parameters
+        ----------
+        reps : int
+           number of repetitions along a specific lattice vector
+        axis : int
+           lattice vector to tile along
+        normalize: bool, optional
+           whether the states are normalized upon return, may be useful for
+           eigenstates
+        offset: float, optional
+           the offset for the phase factors
+
+        See Also
+        --------
+        Geometry.tile
+        """
+        # the parent gets tiled
+        parent = self.parent.tile(reps, axis)
+        # the k-point gets reduced
+        k = _a.asarrayd(self.info.get("k", [0]*3))
+
+        # now tile the state vectors
+        state = np.tile(self.state, (1, reps)).astype(np.complex128, copy=False)
+        # re-shape to apply phase-factors
+        state.shape = (len(self), reps, -1)
+
+        # Tiling stuff is trivial since we simply
+        # translate the bloch coefficients with:
+        #   exp(i k.T)
+        # with T being
+        #   i * a_0 + j * a_1 + k * a_2
+        # We can leave out the lattice vectors entirely
+        phase = exp(2j*_pi * k[axis] * (_a.aranged(reps) + offset))
+
+        state *= phase.reshape(1, -1, 1)
+        state.shape = (len(self), -1)
+
+        # update new k; when we double the system, we halve the periodicity
+        # and hence we need to account for this
+        k[axis] = (k[axis] * reps % 1)
+        while k[axis] > 0.5:
+            k[axis] -= 1
+        while k[axis] <= -0.5:
+            k[axis] += 1
+
+        # this allows us to make the same usable for StateC classes
+        s = self.copy()
+        s.parent = parent
+        s.state = state
+        # update the k-point
+        s.info = dict(**self.info)
+        s.info.update({'k': k})
+
+        if normalize:
+            return s.normalize()
+        return s
+
     def __getitem__(self, key):
         """ Return a new state with only one associated state
 
@@ -375,16 +496,14 @@ class State(ParentContainer):
         s.info = self.info
         return s
 
-    def outer(self, right=None, align=True):
+    def outer(self, ket=None):
         r""" Return the outer product by :math:`\sum_i|\psi_i\rangle\langle\psi'_i|`
 
         Parameters
         ----------
-        right : State, optional
-           the right object to calculate the outer product of, if not passed it will do the outer
-           product with itself. This object will always be the left :math:`|\psi_i\rangle`
-        align : bool, optional
-           first align `right` with the angles for this state (see `align`)
+        ket : State, optional
+           the ket object to calculate the outer product of, if not passed it will do the outer
+           product with itself. The object itself will always be the bra :math:`|\psi_i\rangle`
 
         Notes
         -----
@@ -395,59 +514,78 @@ class State(ParentContainer):
         numpy.ndarray
             a matrix with the sum of outer state products
         """
-        if right is None:
-            return einsum('ki,kj->ij', self.state, _conj(self.state))
-        if not np.array_equal(self.shape, right.shape):
-            raise ValueError(f"{self.__class__.__name__}.outer requires the objects to have the same shape")
-        if align:
-            # Align the states
-            right = self.align_phase(right, copy=False)
-        return einsum('ki,kj->ij', self.state, _conj(right.state))
+        if ket is None:
+            ket = self.state
+        elif isinstance(ket, State):
+            ket = ket.state
 
-    def inner(self, right=None, diagonal=True, align=False):
-        r""" Return the inner product as :math:`\mathbf M_{ij} = \langle\psi_i|\psi'_j\rangle`
+        if not np.array_equal(self.shape, ket.shape):
+            raise ValueError(f"{self.__class__.__name__}.outer requires the objects to have the same shape")
+        return einsum('ki,kj->ij', self.state, _conj(ket))
+
+    def inner(self, ket=None, matrix=None, diag=True):
+        r""" Calculate the inner product as :math:`\mathbf A_{ij} = \langle\psi_i|\mathbf M|\psi'_j\rangle`
 
         Parameters
         ----------
-        right : State, optional
-           the right object to calculate the inner product with, if not passed it will do the inner
-           product with itself. This object will always be the left :math:`\langle\psi_i|`
-        diagonal : bool, optional
-           only return the diagonal matrix :math:`\mathbf M_{ii}`.
-        align : bool, optional
-           first align `right` with the angles for this state (see `align`)
+        ket : State, optional
+           the ket object to calculate the inner product with, if not passed it will do the inner
+           product with itself. The object itself will always be the bra :math:`\langle\psi_i|`
+        matrix : array_like, optional
+           whether a matrix is sandwiched between the bra and ket, default to the identity matrix
+        diag : bool, optional
+           only return the diagonal matrix :math:`\mathbf A_{ii}`.
 
         Notes
         -----
         This does *not* take into account a possible overlap matrix when non-orthogonal basis sets are used.
+
+        Raises
+        ------
+        ValueError : if the number of state coefficients are different for the bra and ket
 
         Returns
         -------
         numpy.ndarray
             a matrix with the sum of inner state products
         """
-        if right is None:
-            if diagonal:
-                return einsum('ij,ij->i', _conj(self.state), self.state).real
-            return _inner(self.state, self.state.T)
+        if matrix is None:
+            M = _FakeMatrix(self.shape[-1])
+        else:
+            M = matrix
+        ndim = M.ndim
+
+        bra = self.state
+        # decide on the ket
+        if ket is None:
+            ket = self.state
+        elif isinstance(ket, State):
+            # check whether this, and ket are both originating from
+            # non-orthogonal basis. That would be non-ideal
+            ket = ket.state
+        if len(ket.shape) == 1:
+            ket.shape = (1, -1)
 
         # They *must* have same number of basis points per state
-        if self.shape[-1] != right.shape[-1]:
-            raise ValueError(f"{self.__class__.__name__}.inner requires the objects to have the same shape")
+        if self.shape[-1] != ket.shape[-1]:
+            raise ValueError(f"{self.__class__.__name__}.inner requires the objects to have the same number of coefficients per vector {self.shape[-1]} != {ket.shape[-1]}")
 
-        if align:
-            if self.shape[0] != right.shape[0]:
-                raise ValueError(f"{self.__class__.__name__}.inner with align=True requires exactly the same shape!")
-            # Align the states
-            right = self.align_phase(right, copy=False)
-
-        if diagonal:
-            if self.shape[0] < right.shape[0]:
-                return einsum('ij,kj->i', _conj(self.state), right.state)
-            elif self.shape[0] > right.shape[0]:
-                return einsum('ij,kj->k', _conj(self.state), right.state)
-            return einsum('ij,ij->i', _conj(self.state), right.state)
-        return _conj(self.state).dot(right.state.T)
+        if diag:
+            if len(bra) != len(ket):
+                warn(f"{self.__class__.__name__}.inner matrix product is non-square, only the first {min(len(bra), len(ket))} diagonal elements will be returned.")
+                if len(bra) < len(ket):
+                    ket = ket[:len(bra)]
+                else:
+                    bra = bra[:len(ket)]
+            if ndim == 2:
+                Aij = einsum('ij,ji->i', _conj(bra), M.dot(ket.T))
+            elif ndim == 1:
+                Aij = einsum('ij,j,ij->i', _conj(bra), M, ket)
+        elif ndim == 2:
+            Aij = _conj(bra) @ M.dot(ket.T)
+        elif ndim == 1:
+            Aij = einsum('ij,j,kj->ik', _conj(bra), M, ket)
+        return Aij
 
     def phase(self, method='max', return_indices=False):
         r""" Calculate the Euler angle (phase) for the elements of the state, in the range :math:`]-\pi;\pi]`
@@ -583,7 +721,7 @@ class State(ParentContainer):
            whether the rotation is per state, or a single maximum component is chosen.
         """
         # Convert angle to complex phase
-        phi = np.exp(1j * phi)
+        phi = exp(1j * phi)
         s = self.state.view()
         if individual:
             for i in range(len(self)):
@@ -594,6 +732,53 @@ class State(ParentContainer):
             # Find the maximum amplitude index among all elements
             idx = np.unravel_index(_argmax(_abs(s)), s.shape)
             s *= phi * _conj(s[idx] / _abs(s[idx]))
+
+    def change_gauge(self, gauge):
+        r""" In-place change of the gauge of the state coefficients
+
+        The two gauges are related through:
+
+        .. math::
+
+            \tilde C_j = e^{i\mathbf k\mathbf r_j} C_j
+
+        where :math:`C_j` and :math:`\tilde C_j` belongs to the ``r`` and ``R`` gauge, respectively.
+
+        Parameters
+        ----------
+        gauge : {'R', 'r'}
+            specify the new gauge for the mode coefficients
+        """
+        # These calls will fail if the gauge is not specified.
+        # In that case it will not do anything
+        if self.info.get('gauge', gauge) == gauge:
+            # Quick return
+            return
+
+        # Update gauge value
+        self.info['gauge'] = gauge
+
+        # Check that we can do a gauge transformation
+        k = _a.asarrayd(self.info.get('k', [0., 0., 0.]))
+        if k.dot(k) <= 0.000000001:
+            return
+
+        g = self.parent.geometry
+        phase = g.xyz[g.o2a(_a.arangei(g.no)), :] @ (k @ g.rcell)
+
+        try:
+            if self.parent.spin.has_noncolinear:
+                # for NC/SOC we have a 2x2 spin-box per orbital
+                phase = np.repeat(phase, 2)
+        except:
+            pass
+
+        if gauge == 'r':
+            # R -> r gauge tranformation.
+            self.state *= exp(-1j * phase).reshape(1, -1)
+        elif gauge == 'R':
+            # r -> R gauge tranformation.
+            self.state *= exp(1j * phase).reshape(1, -1)
 
     # def toStateC(self, norm=1.):
     #     r""" Transforms the states into normalized values equal to `norm` and specifies the coefficients in `StateC` as the norm

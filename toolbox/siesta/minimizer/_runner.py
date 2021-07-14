@@ -14,11 +14,16 @@ from ._path import path_abs, path_rel_or_abs
 
 
 __all__ = ["AbstractRunner", "AndRunner", "PathRunner",
-           "CleanRunner", "CopyRunner", "ScriptRunner",
+           "CleanRunner", "CopyRunner", "CommandRunner",
            "AtomRunner", "SiestaRunner", "FunctionRunner"]
 
 
-_log = logging.getLogger("sisl_toolbox.siesta.pseudo")
+_log = logging.getLogger("sisl_toolbox.siesta.minimize")
+
+
+def commonprefix(*paths):
+    common = os.path.commonprefix(paths)
+    return common, [Path(path).relative_to(common) for path in paths]
 
 
 class AbstractRunner(ABC):
@@ -141,9 +146,9 @@ class CopyRunner(PathRunner):
         self.files = files
         self.rename = rename
         if not self.path.is_dir():
-            raise ValueError(f"script {self.path} must be a directory")
+            raise ValueError(f"{self.__class__.__name__} path={self.path} must be a directory")
         if not self.to.is_dir():
-            raise ValueError(f"script {self.to} must be a directory")
+            raise ValueError(f"{self.__class__.__name__} path={self.to} must be a directory")
 
     def run(self):
         copy = []
@@ -151,7 +156,9 @@ class CopyRunner(PathRunner):
         for f in self.files:
             fin = self.path / f
             fout = self.to / f
-            if fin.is_file():
+            if not f_in.is_file():
+                copy.append(f"Path({common}) {f_in_rel}->{f_out_rel}")
+            elif fin.is_file():
                 copy.append(str(f))
                 shutil.copyfile(fin, fout)
             elif fout.is_file():
@@ -160,29 +167,66 @@ class CopyRunner(PathRunner):
         for fin, fout in self.rename.items():
             f_in = self.path / fin
             f_out = self.to / fout
-            if f_in.is_file():
-                copy.append("{}->{}".format(str(fin), str(fout)))
+            common, (f_in_rel, f_out_rel) = commonprefix(f_in, f_out)
+            if not f_in.is_file():
+                _log.warning(f"file {f_in} not found for copying")
+            elif f_in.is_file():
+                copy.append(f"Path({common}) {f_in_rel}->{f_out_rel}")
                 shutil.copyfile(f_in, f_out)
             elif f_out.is_file():
-                rem.append("->{}".format(str(fout)))
+                rem.append(f"[{common}] rm {fout}")
                 os.remove(f_out)
         _log.debug(f"copying {copy}; removing {rem}")
 
 
-class ScriptRunner(PathRunner):
-    def __init__(self, path, script="run.sh"):
+class CommandRunner(PathRunner):
+    def __init__(self, path, cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, hook=None):
         super().__init__(path)
-        self.script = path_abs(script, self.path)
+        abs_cmd = path_abs(cmd, self.path)
+        if abs_cmd.is_file():
+            self.cmd = [abs_cmd]
+            if not os.access(self.cmd, os.X_OK):
+                raise ValueError(f"{self.__class__.__name__} shell script {self.cmd.relative_to(self.path.cwd())} not executable")
+        else:
+            self.cmd = cmd.split()
 
-        if not self.script.is_file():
-            raise ValueError(f"script {self.script.relative_to(self.path.cwd())} must be a file")
-        # ensure scirpt is executable
-        if not os.access(self.script, os.X_OK):
-            raise ValueError(f"Script {self.script.relative_to(self.path.cwd())} not executable")
+        if isinstance(stdout, type(subprocess.PIPE)):
+            self.stdout = stdout
+        else:
+            self.stdout = path_rel_or_abs(stdout, self.path)
+        if isinstance(stderr, type(subprocess.PIPE)):
+            self.stderr = stderr
+        else:
+            self.stderr = path_rel_or_abs(stderr, self.path)
+
+        if hook is None:
+            def hook(subprocess_output):
+                return subprocess_output
+        assert callable(hook)
+        self.hook = hook
+
+    def _get_standard(self):
+        out = self.stdout
+        if isinstance(out, (Path, str)):
+            out = open(out, 'w')
+        err = self.stderr
+        if isinstance(err, (Path, str)):
+            err = open(err, 'w')
+        return out, err
+
+    def run(self):
+        cmd = [str(cmd) for cmd in self.cmd]
+        _log.debug(f"running command: {' '.join(cmd)}")
+        # atom generates lots of files
+        # We need to clean the directory so that subsequent VPSFMT users don't
+        # accidentially use a prior output
+        stdout, stderr = self._get_standard()
+        return self.hook(subprocess.run(cmd, cwd=self.path, encoding='utf-8',
+                                        stdout=stdout, stderr=stderr, check=False))
 
 
-class AtomRunner(ScriptRunner):
-    """ Run a script with atom-input file as first argument and output file as second argument
+class AtomRunner(CommandRunner):
+    """ Run a command with atom-input file as first argument and output file as second argument
 
     This is tailored for atom in the sense of arguments for this class, but not
     restricted in any way.
@@ -199,24 +243,24 @@ class AtomRunner(ScriptRunner):
     ... # cd ..
     """
 
-    def __init__(self, path, script="run.sh", input="INP", out="OUT"):
-        super().__init__(path, script)
-        self.input = path_rel_or_abs(input)
-        self.out = path_rel_or_abs(out)
+    def __init__(self, path, cmd="atom", input="INP", stdout=subprocess.PIPE, stderr=subprocess.PIPE, hook=None):
+        super().__init__(path, cmd, stdout, stderr, hook)
+        self.input = path_rel_or_abs(input, self.path)
 
     def run(self):
-        _log.debug(f"running atom using script: {self.script}")
+        cmd = [str(cmd) for cmd in self.cmd + [self.input]]
+        _log.debug(f"running atom using command: {' '.join(cmd)}")
         # atom generates lots of files
         # We need to clean the directory so that subsequent VPSFMT users don't
         # accidentially use a prior output
         self.clean("RHO", "OUT", "PS*", "AE*", "CHARGE", "COREQ", "FOURIER*", "VPS*")
-        return subprocess.run([self.script, self.input, self.out], cwd=self.path,
-                              encoding='utf-8',
-                              capture_output=True, check=False)
+        stdout, stderr = self._get_standard()
+        return self.hook(subprocess.run(cmd, cwd=self.path, encoding='utf-8',
+                                        stdout=stdout, stderr=stderr, check=False))
 
 
-class SiestaRunner(ScriptRunner):
-    """ Run a script with fdf as first argument and output file as second argument
+class SiestaRunner(CommandRunner):
+    """ Run a script/cmd with fdf as first argument and output file as second argument
 
     This is tailored for Siesta in the sense of arguments for this class, but not
     restricted in any way.
@@ -231,21 +275,27 @@ class SiestaRunner(ScriptRunner):
     ... # cd ..
     """
 
-    def __init__(self, path, script="run.sh", fdf="RUN.fdf", out="RUN.out"):
-        super().__init__(path, script)
-        self.fdf = path_rel_or_abs(fdf)
-        self.out = path_rel_or_abs(out)
+    def __init__(self, path, cmd="siesta", fdf="RUN.fdf", stdout="RUN.out", stderr=subprocess.PIPE, hook=None):
+        super().__init__(path, cmd, stdout, stderr, hook)
+        self.fdf = path_rel_or_abs(fdf, self.path)
 
         fdf = self.absattr("fdf")
         self.systemlabel = fdfSileSiesta(fdf, base=self.path).get("SystemLabel", "siesta")
 
     def run(self):
-        _log.debug(f"running siesta using script: {self.script}")
+        pipe = ""
+        stdout, stderr = self._get_standard()
+        for pre, f in [('>', stdout), ('2>', stderr)]:
+            try:
+                pipe += f"{pre} {f.name}"
+            except:
+                pass
+        cmd = [str(cmd) for cmd in self.cmd + [self.fdf]]
+        _log.debug(f"running Siesta using command[{self.path}]: {' '.join(cmd)} {pipe}")
         # Remove stuff to ensure that we don't read information from prior calculations
-        self.clean("*.ion*", "fdf-*.log", f"{self.systemlabel}.*", self.out)
-        return subprocess.run([self.script, self.fdf, self.out], cwd=self.path,
-                              encoding='utf-8',
-                              capture_output=True, check=False)
+        self.clean("*.ion*", "fdf-*.log", f"{self.systemlabel}.*")
+        return self.hook(subprocess.run(cmd, cwd=self.path, encoding='utf-8',
+                                        stdout=stdout, stderr=stderr, check=False))
 
 
 class FunctionRunner(AbstractRunner):

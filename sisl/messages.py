@@ -65,29 +65,36 @@ class SislInfo(SislWarning):
 
 
 @set_module("sisl")
-def deprecate(message):
+def deprecate(message, from_version=None):
     """ Issue sisl deprecation warnings
 
     Parameters
     ----------
     message : str
+       the displayed message
+    from_version : optional
+       which version to deprecate this method from
     """
+    if from_version is not None:
+        message = f"{message} [>={from_version}]"
     warnings.warn_explicit(message, SislDeprecation, 'dep', 0, registry=_sisl_warn_registry)
 
 
 @set_module("sisl")
-def deprecate_method(msg):
+def deprecate_method(message, from_version=None):
     """ Decorator for deprecating a method
 
     Parameters
     ----------
-    msg : str
+    message : str
        message displayed
+    from_version : optional
+       which version to deprecate this method from
     """
     def install_deprecate(func):
         @wraps(func)
         def wrapped(*args, **kwargs):
-            deprecate(msg)
+            deprecate(message, from_version)
             return func(*args, **kwargs)
         return wrapped
     return install_deprecate
@@ -210,8 +217,9 @@ def tqdm_eta(count, desc, unit, eta):
        description on the stdout when running the progressbar
     unit : str
        unit shown in the progressbar
-    eta : bool
+    eta : bool or str
        if True a ``tqdm`` progressbar is returned. Else a fake instance is returned.
+       If a str, that will be used as the description
 
     Returns
     -------
@@ -219,6 +227,8 @@ def tqdm_eta(count, desc, unit, eta):
        progress bar if `eta` is true, otherwise an object which does nothing
     """
     if eta:
+        if isinstance(eta, str):
+            desc = eta
         bar = _tqdm(total=count, desc=desc, unit=unit)
     else:
         # Since the eta bar is not needed we simply create a fake object which

@@ -20,7 +20,6 @@ from .messages import deprecate_method
 from .shape import Shape
 from .utils import default_ArgumentParser, default_namespace
 from .utils import cmd, strseq, direction, str_spec
-from .utils import array_arange
 from .utils import import_attr
 from .utils.mathematics import fnorm
 
@@ -1189,7 +1188,7 @@ class Grid(SuperCellChild):
             raise ValueError(self.__class__.__name__ + '.pyamg_fix only works for csr/csc sparse matrices')
 
         # Clean all couplings between the respective indices and all other data
-        s = array_arange(A.indptr[pyamg_indices], A.indptr[pyamg_indices+1])
+        s = _a.array_arange(A.indptr[pyamg_indices], A.indptr[pyamg_indices+1])
         A.data[s] = 0.
         # clean-up
         del s
@@ -1228,7 +1227,7 @@ class Grid(SuperCellChild):
         """
         def Neumann(idx_bc, idx_p1):
             # Set all boundary equations to 0
-            s = array_arange(A.indptr[idx_bc], A.indptr[idx_bc+1])
+            s = _a.array_arange(A.indptr[idx_bc], A.indptr[idx_bc+1])
             A.data[s] = 0
             # force the boundary cells to equal the neighbouring cell
             A[idx_bc, idx_bc] = 1
@@ -1366,7 +1365,6 @@ class Grid(SuperCellChild):
            to create a new.
         limit_arguments : bool, True
            If `False` additional options will be created which are similar to other options.
-           For instance `--repeat-x` which is equivalent to `--repeat x`.
         short : bool, False
            Create short options for a selected range of options
         positional_out : bool, False

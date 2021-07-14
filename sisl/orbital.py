@@ -105,7 +105,7 @@ class Orbital:
     >>> orbq.q0
     1.
     """
-    __slots__ = ['_R', '_tag', '_q0']
+    __slots__ = ('_R', '_tag', '_q0')
 
     def __init__(self, R, q0=0., tag=''):
         """ Initialize orbital object """
@@ -359,19 +359,19 @@ class SphericalOrbital(Orbital):
     True
     """
     # Additional slots (inherited classes retain the same slots)
-    __slots__ = ['_l', 'f']
+    __slots__ = ('_l', 'f')
 
     def __init__(self, l, rf_or_func, q0=0., tag='', **kwargs):
         """ Initialize spherical orbital object """
         self._l = l
 
+        self._R = kwargs.pop('R', -1.)
         # Set the internal function
         if callable(rf_or_func):
             self.set_radial(rf_or_func, **kwargs)
-        elif rf_or_func is None:
+        elif rf_or_func is None or rf_or_func is NotImplemented:
             # We don't do anything
             self.f = NotImplemented
-            self._R = kwargs.pop('R', -1.)
         else:
             # it must be two arguments
             self.set_radial(rf_or_func[0], rf_or_func[1], **kwargs)
@@ -749,7 +749,7 @@ class AtomicOrbital(Orbital):
     #   P = polarization shell or not
     # orb is the SphericalOrbital class that retains the radial
     # grid and enables to calculate psi(r)
-    __slots__ = ['_n', '_l', '_m', '_zeta', '_P', '_orb']
+    __slots__ = ('_n', '_l', '_m', '_zeta', '_P', '_orb')
 
     def __init__(self, *args, **kwargs):
         """ Initialize atomic orbital object """
@@ -801,10 +801,10 @@ class AtomicOrbital(Orbital):
                     # Remove n specification
                     s = s[1:]
                 except:
-                    n = _n.get(s[0])
+                    n = _n.get(s[0], n)
 
                 # Get l
-                l = _l.get(s[0])
+                l = _l.get(s[0], l)
 
                 # Get number of zeta shell
                 iZ = s.find('Z')
@@ -821,7 +821,7 @@ class AtomicOrbital(Orbital):
                         s = s[:iZ] + s[iZ+1:]
 
                 # We should be left with m specification
-                m = _m.get(s)
+                m = _m.get(s, m)
 
                 # Now we should figure out how the spherical orbital
                 # has been passed.
@@ -834,7 +834,7 @@ class AtomicOrbital(Orbital):
                     if isinstance(args[0], SphericalOrbital):
                         self._orb = args.pop(0)
                     else:
-                        self._orb = SphericalOrbital(l, args.pop(0))
+                        self._orb = SphericalOrbital(l, args.pop(0), q0=self.q0)
             else:
 
                 # Arguments *have* to be
@@ -843,11 +843,8 @@ class AtomicOrbital(Orbital):
                     n = args.pop(0)
                 if l is None and len(args) > 0:
                     l = args.pop(0)
-                if l > 0:
-                    if m is None and len(args) > 0:
-                        m = args.pop(0)
-                else:
-                    m = 0
+                if m is None and len(args) > 0:
+                    m = args.pop(0)
 
                 # Now we need to figure out if they are shell
                 # information or radial functions
@@ -863,11 +860,14 @@ class AtomicOrbital(Orbital):
                     if isinstance(args[0], SphericalOrbital):
                         self._orb = args.pop(0)
                     else:
-                        self._orb = SphericalOrbital(l, args.pop(0))
+                        self._orb = SphericalOrbital(l, args.pop(0), q0=self.q0)
 
         # Still if n is None, we assign the default (lowest) quantum number
         if n is None:
             n = l + 1
+        # Still if m is None, we assign the default value of 0
+        if m is None:
+            m = 0
 
         # Copy over information
         self._n = n
@@ -890,12 +890,12 @@ class AtomicOrbital(Orbital):
         elif isinstance(s, Orbital):
             self._orb = s
         else:
-            self._orb = SphericalOrbital(l, s)
+            self._orb = SphericalOrbital(l, s, q0=self.q0)
 
         if self._orb is None:
             # Default orbital to none, this will not create any radial functions
             # But any use of the orbital will still work
-            self._orb = Orbital(self.R)
+            self._orb = Orbital(self.R, q0=self.q0)
 
         self._R = self._orb.R
 

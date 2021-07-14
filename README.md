@@ -69,6 +69,7 @@ Installing sisl using PyPi or Conda is the easiest:
 If performing a manual installation, these packages are required:
 
    - A C- and fortran-compiler
+   - __Cython__ (0.28 or later)
    - __numpy__ (1.13 or later)
    - __scipy__ (0.18 or later)
    - __netCDF4__
@@ -121,11 +122,13 @@ which fills in the version number.
 
 ## Help sisl help you! ##
 
-- If you've ideas of missing features
-- If you've ideas for improving documentation
-- If you've found a bug
-- If you've found a documentation error
-- If you've created a tutorial
+If you have
+
+- ideas of missing features
+- ideas for improving documentation
+- found a bug
+- found a documentation error
+- created a tutorial
 
 Then please share them [here][issue]!
 
