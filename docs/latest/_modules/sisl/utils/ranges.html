@@ -190,10 +190,11 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
 
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">zeros</span><span class="p">,</span> <span class="n">ones</span><span class="p">,</span> <span class="n">cumsum</span><span class="p">,</span> <span class="n">take</span><span class="p">,</span> <span class="n">int32</span><span class="p">,</span> <span class="n">int64</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">asarray</span>
+<span class="kn">from</span> <span class="nn">sisl._array</span> <span class="kn">import</span> <span class="n">array_arange</span>
+
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;strmap&quot;</span><span class="p">,</span> <span class="s2">&quot;strseq&quot;</span><span class="p">,</span> <span class="s2">&quot;lstranges&quot;</span><span class="p">,</span> <span class="s2">&quot;erange&quot;</span><span class="p">,</span> <span class="s2">&quot;list2str&quot;</span><span class="p">,</span> <span class="s2">&quot;fileindex&quot;</span><span class="p">]</span>
+<span class="c1"># this will be deprecated sooner or later</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;array_arange&quot;</span><span class="p">]</span>
 
 
@@ -445,65 +446,6 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">fname</span><span class="p">,</span> <span class="n">rng</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">fname</span><span class="p">,</span> <span class="n">rng</span></div>
-
-
-<div class="viewcode-block" id="array_arange"><a class="viewcode-back" href="../../../api/generated/sisl.utils.array_arange.html#sisl.utils.array_arange">[docs]</a><span class="k">def</span> <span class="nf">array_arange</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">int64</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Creates a single array from a sequence of `numpy.arange`</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    start : array_like</span>
-<span class="sd">       a list of start elements for `numpy.arange`</span>
-<span class="sd">    end : array_like</span>
-<span class="sd">       a list of end elements (exclusive) for `numpy.arange`.</span>
-<span class="sd">       This argument is not used if `n` is passed.</span>
-<span class="sd">    n : array_like</span>
-<span class="sd">       a list of counts of elements for `numpy.arange`.</span>
-<span class="sd">       This is equivalent to ``end=start + n``.</span>
-<span class="sd">    dtype : numpy.dtype</span>
-<span class="sd">       the returned lists data-type</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; array_arange([1, 5], [3, 6])</span>
-<span class="sd">    array([1, 2, 5], dtype=int64)</span>
-<span class="sd">    &gt;&gt;&gt; array_arange([1, 6], [4, 9])</span>
-<span class="sd">    array([1, 2, 3, 6, 7, 8], dtype=int64)</span>
-<span class="sd">    &gt;&gt;&gt; array_arange([1, 6], n=[2, 2])</span>
-<span class="sd">    array([1, 2, 6, 7], dtype=int64)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Tests show that the below code is faster than</span>
-    <span class="c1"># implicit for-loops, or list-comprehensions</span>
-    <span class="c1"># concatenate(map(..)</span>
-    <span class="c1"># The below is much faster and does not require _any_ loops</span>
-    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># We need n to speed things up</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="o">-</span> <span class="n">asarray</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">asarray</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-    <span class="c1"># The below algorithm only works for non-zero n</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># Grab corner case</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-
-    <span class="c1"># Reduce size</span>
-    <span class="n">start</span> <span class="o">=</span> <span class="n">take</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">take</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-
-    <span class="c1"># Create array of 1&#39;s.</span>
-    <span class="c1"># The 1&#39;s are important when issuing the cumultative sum</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
-
-    <span class="c1"># set pointers such that we can</span>
-    <span class="c1"># correct for final cumsum</span>
-    <span class="n">ptr</span> <span class="o">=</span> <span class="n">cumsum</span><span class="p">(</span><span class="n">n</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="c1"># Define start and correct for previous values</span>
-    <span class="n">a</span><span class="p">[</span><span class="n">ptr</span><span class="p">]</span> <span class="o">=</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">start</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">n</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="k">return</span> <span class="n">cumsum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

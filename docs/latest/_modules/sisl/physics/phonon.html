@@ -464,46 +464,6 @@
         <span class="sd">&quot;&quot;&quot; Eigenmodes (states) &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
 
-    <span class="k">def</span> <span class="nf">change_gauge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gauge</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; In-place change of the gauge of the mode coefficients</span>
-
-<span class="sd">        The two gauges are related through:</span>
-
-<span class="sd">        .. math::</span>
-
-<span class="sd">            \tilde C_j = e^{i\mathbf k\mathbf r_j} C_j</span>
-
-<span class="sd">        where :math:`C_j` and :math:`\tilde C_j` belongs to the ``r`` and ``R`` gauge, respectively.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        gauge : {&#39;R&#39;, &#39;r&#39;}</span>
-<span class="sd">            specify the new gauge for the mode coefficients</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># These calls will fail if the gauge is not specified.</span>
-        <span class="c1"># In that case it will not do anything</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;gauge&#39;</span><span class="p">,</span> <span class="n">gauge</span><span class="p">)</span> <span class="o">==</span> <span class="n">gauge</span><span class="p">:</span>
-            <span class="c1"># Quick return</span>
-            <span class="k">return</span>
-
-        <span class="c1"># Update gauge value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;gauge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gauge</span>
-
-        <span class="c1"># Check that we can do a gauge transformation</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.000000001</span><span class="p">:</span>
-            <span class="k">return</span>
-
-        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">geometry</span>
-        <span class="n">phase</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">o2a</span><span class="p">(</span><span class="n">_a</span><span class="o">.</span><span class="n">arangei</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">no</span><span class="p">)),</span> <span class="p">:],</span> <span class="n">dot</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">rcell</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">gauge</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
-            <span class="c1"># R -&gt; r gauge tranformation.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">gauge</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span>
-            <span class="c1"># r -&gt; R gauge tranformation.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
 
 <div class="viewcode-block" id="CoefficientPhonon"><a class="viewcode-back" href="../../../api/generated/sisl.physics.phonon.CoefficientPhonon.html#sisl.physics.phonon.CoefficientPhonon">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.phonon&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">CoefficientPhonon</span><span class="p">(</span><span class="n">Coefficient</span><span class="p">):</span>

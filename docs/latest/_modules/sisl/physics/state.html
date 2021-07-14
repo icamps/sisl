@@ -190,7 +190,7 @@
 <span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
 <span class="c1"># file, You can obtain one at https://mozilla.org/MPL/2.0/.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">einsum</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">einsum</span><span class="p">,</span> <span class="n">exp</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span><span class="p">,</span> <span class="n">bool_</span>
 
 <span class="kn">from</span> <span class="nn">sisl._internal</span> <span class="kn">import</span> <span class="n">set_module</span>
@@ -214,6 +214,27 @@
 
 <span class="k">def</span> <span class="nf">_inner</span><span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">_dot</span><span class="p">(</span><span class="n">_conj</span><span class="p">(</span><span class="n">v1</span><span class="p">),</span> <span class="n">v2</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">_FakeMatrix</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Replacement object which superseedes a matrix &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,)</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">n</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">dot</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">v</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
 
 
 <span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics&quot;</span><span class="p">)</span>
@@ -472,6 +493,106 @@
         <span class="n">sub</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">sub</span></div>
 
+<div class="viewcode-block" id="State.translate"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isc</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Translate the vectors to a new unit-cell position</span>
+
+<span class="sd">        The method is thoroughly explained in `tile` while this one only</span>
+<span class="sd">        selects the corresponding state vector</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        isc : (3,)</span>
+<span class="sd">           number of offsets for the statevector</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        tile : equivalent method for generating more cells simultaneously</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the k-point gets reduced</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">isc</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># translate the bloch coefficients with:</span>
+        <span class="c1">#   exp(i k.T)</span>
+        <span class="c1"># with T being</span>
+        <span class="c1">#   i * a_0 + j * a_1 + k * a_2</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># there will only be a phase if k != 0</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">_pi</span> <span class="o">*</span> <span class="n">k</span> <span class="o">@</span> <span class="n">isc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="State.tile"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.tile">[docs]</a>    <span class="k">def</span> <span class="nf">tile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Tile the state vectors for a new supercell</span>
+
+<span class="sd">        Tiling a state vector makes use of the Bloch factors for a state by utilizing</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">           \psi_{\mathbf k}(\mathbf r + \mathbf T) \propto e^{i\mathbf k\cdot \mathbf T}</span>
+
+<span class="sd">        where :math:`\mathbf T = i\mathbf a_0 + j\mathbf a_1 + l\mathbf a_2`. Note that `axis`</span>
+<span class="sd">        selects which of the :math:`\mathbf a_i` vectors that are translated and `reps` corresponds</span>
+<span class="sd">        to the :math:`i`, :math:`j` and :math:`l` variables. The `offset` moves the individual states</span>
+<span class="sd">        by said amount, i.e. :math:`i\to i+\mathrm{offset}`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        reps : int</span>
+<span class="sd">           number of repetitions along a specific lattice vector</span>
+<span class="sd">        axis : int</span>
+<span class="sd">           lattice vector to tile along</span>
+<span class="sd">        normalize: bool, optional</span>
+<span class="sd">           whether the states are normalized upon return, may be useful for</span>
+<span class="sd">           eigenstates</span>
+<span class="sd">        offset: float, optional</span>
+<span class="sd">           the offset for the phase factors</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        Geometry.tile</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the parent gets tiled</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="c1"># the k-point gets reduced</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
+
+        <span class="c1"># now tile the state vectors</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">reps</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># re-shape to apply phase-factors</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">reps</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Tiling stuff is trivial since we simply</span>
+        <span class="c1"># translate the bloch coefficients with:</span>
+        <span class="c1">#   exp(i k.T)</span>
+        <span class="c1"># with T being</span>
+        <span class="c1">#   i * a_0 + j * a_1 + k * a_2</span>
+        <span class="c1"># We can leave out the lattice vectors entirely</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="n">j</span><span class="o">*</span><span class="n">_pi</span> <span class="o">*</span> <span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">_a</span><span class="o">.</span><span class="n">aranged</span><span class="p">(</span><span class="n">reps</span><span class="p">)</span> <span class="o">+</span> <span class="n">offset</span><span class="p">))</span>
+
+        <span class="n">state</span> <span class="o">*=</span> <span class="n">phase</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># update new k; when we double the system, we halve the periodicity</span>
+        <span class="c1"># and hence we need to account for this</span>
+        <span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">*</span> <span class="n">reps</span> <span class="o">%</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">:</span>
+            <span class="n">k</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># this allows us to make the same usable for StateC classes</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="c1"># update the k-point</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="n">k</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a new state with only one associated state</span>
 
@@ -563,16 +684,14 @@
         <span class="n">s</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span>
         <span class="k">return</span> <span class="n">s</span></div>
 
-<div class="viewcode-block" id="State.outer"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.outer">[docs]</a>    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="State.outer"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.outer">[docs]</a>    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ket</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return the outer product by :math:`\sum_i|\psi_i\rangle\langle\psi&#39;_i|`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        right : State, optional</span>
-<span class="sd">           the right object to calculate the outer product of, if not passed it will do the outer</span>
-<span class="sd">           product with itself. This object will always be the left :math:`|\psi_i\rangle`</span>
-<span class="sd">        align : bool, optional</span>
-<span class="sd">           first align `right` with the angles for this state (see `align`)</span>
+<span class="sd">        ket : State, optional</span>
+<span class="sd">           the ket object to calculate the outer product of, if not passed it will do the outer</span>
+<span class="sd">           product with itself. The object itself will always be the bra :math:`|\psi_i\rangle`</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
@@ -583,59 +702,78 @@
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            a matrix with the sum of outer state products</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ki,kj-&gt;ij&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.outer requires the objects to have the same shape&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">align</span><span class="p">:</span>
-            <span class="c1"># Align the states</span>
-            <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">align_phase</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ki,kj-&gt;ij&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="p">))</span></div>
+        <span class="k">if</span> <span class="n">ket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ket</span><span class="p">,</span> <span class="n">State</span><span class="p">):</span>
+            <span class="n">ket</span> <span class="o">=</span> <span class="n">ket</span><span class="o">.</span><span class="n">state</span>
 
-<div class="viewcode-block" id="State.inner"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return the inner product as :math:`\mathbf M_{ij} = \langle\psi_i|\psi&#39;_j\rangle`</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">ket</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.outer requires the objects to have the same shape&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ki,kj-&gt;ij&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="n">ket</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="State.inner"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.inner">[docs]</a>    <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ket</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the inner product as :math:`\mathbf A_{ij} = \langle\psi_i|\mathbf M|\psi&#39;_j\rangle`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        right : State, optional</span>
-<span class="sd">           the right object to calculate the inner product with, if not passed it will do the inner</span>
-<span class="sd">           product with itself. This object will always be the left :math:`\langle\psi_i|`</span>
-<span class="sd">        diagonal : bool, optional</span>
-<span class="sd">           only return the diagonal matrix :math:`\mathbf M_{ii}`.</span>
-<span class="sd">        align : bool, optional</span>
-<span class="sd">           first align `right` with the angles for this state (see `align`)</span>
+<span class="sd">        ket : State, optional</span>
+<span class="sd">           the ket object to calculate the inner product with, if not passed it will do the inner</span>
+<span class="sd">           product with itself. The object itself will always be the bra :math:`\langle\psi_i|`</span>
+<span class="sd">        matrix : array_like, optional</span>
+<span class="sd">           whether a matrix is sandwiched between the bra and ket, default to the identity matrix</span>
+<span class="sd">        diag : bool, optional</span>
+<span class="sd">           only return the diagonal matrix :math:`\mathbf A_{ii}`.</span>
 
 <span class="sd">        Notes</span>
 <span class="sd">        -----</span>
 <span class="sd">        This does *not* take into account a possible overlap matrix when non-orthogonal basis sets are used.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError : if the number of state coefficients are different for the bra and ket</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            a matrix with the sum of inner state products</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">diagonal</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,ij-&gt;i&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
-            <span class="k">return</span> <span class="n">_inner</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">matrix</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">_FakeMatrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">M</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="n">ndim</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">ndim</span>
+
+        <span class="n">bra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+        <span class="c1"># decide on the ket</span>
+        <span class="k">if</span> <span class="n">ket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ket</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ket</span><span class="p">,</span> <span class="n">State</span><span class="p">):</span>
+            <span class="c1"># check whether this, and ket are both originating from</span>
+            <span class="c1"># non-orthogonal basis. That would be non-ideal</span>
+            <span class="n">ket</span> <span class="o">=</span> <span class="n">ket</span><span class="o">.</span><span class="n">state</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ket</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">ket</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># They *must* have same number of basis points per state</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.inner requires the objects to have the same shape&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">ket</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.inner requires the objects to have the same number of coefficients per vector </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">ket</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">align</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.inner with align=True requires exactly the same shape!&quot;</span><span class="p">)</span>
-            <span class="c1"># Align the states</span>
-            <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">align_phase</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">diagonal</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,kj-&gt;i&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span> <span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">right</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-                <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,kj-&gt;k&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span> <span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,ij-&gt;i&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span> <span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">_conj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">T</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">diag</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bra</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ket</span><span class="p">):</span>
+                <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.inner matrix product is non-square, only the first </span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bra</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">ket</span><span class="p">))</span><span class="si">}</span><span class="s2"> diagonal elements will be returned.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bra</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ket</span><span class="p">):</span>
+                    <span class="n">ket</span> <span class="o">=</span> <span class="n">ket</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">bra</span><span class="p">)]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">bra</span> <span class="o">=</span> <span class="n">bra</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">ket</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">Aij</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,ji-&gt;i&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="n">bra</span><span class="p">),</span> <span class="n">M</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ket</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">Aij</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,j,ij-&gt;i&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="n">bra</span><span class="p">),</span> <span class="n">M</span><span class="p">,</span> <span class="n">ket</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">Aij</span> <span class="o">=</span> <span class="n">_conj</span><span class="p">(</span><span class="n">bra</span><span class="p">)</span> <span class="o">@</span> <span class="n">M</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ket</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">Aij</span> <span class="o">=</span> <span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ij,j,kj-&gt;ik&#39;</span><span class="p">,</span> <span class="n">_conj</span><span class="p">(</span><span class="n">bra</span><span class="p">),</span> <span class="n">M</span><span class="p">,</span> <span class="n">ket</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Aij</span></div>
 
 <div class="viewcode-block" id="State.phase"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.phase">[docs]</a>    <span class="k">def</span> <span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">return_indices</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the Euler angle (phase) for the elements of the state, in the range :math:`]-\pi;\pi]`</span>
@@ -771,7 +909,7 @@
 <span class="sd">           whether the rotation is per state, or a single maximum component is chosen.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Convert angle to complex phase</span>
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phi</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">individual</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)):</span>
@@ -782,6 +920,53 @@
             <span class="c1"># Find the maximum amplitude index among all elements</span>
             <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">_argmax</span><span class="p">(</span><span class="n">_abs</span><span class="p">(</span><span class="n">s</span><span class="p">)),</span> <span class="n">s</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
             <span class="n">s</span> <span class="o">*=</span> <span class="n">phi</span> <span class="o">*</span> <span class="n">_conj</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">_abs</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span></div>
+
+<div class="viewcode-block" id="State.change_gauge"><a class="viewcode-back" href="../../../api/generated/sisl.physics.State.html#sisl.physics.State.change_gauge">[docs]</a>    <span class="k">def</span> <span class="nf">change_gauge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gauge</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; In-place change of the gauge of the state coefficients</span>
+
+<span class="sd">        The two gauges are related through:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \tilde C_j = e^{i\mathbf k\mathbf r_j} C_j</span>
+
+<span class="sd">        where :math:`C_j` and :math:`\tilde C_j` belongs to the ``r`` and ``R`` gauge, respectively.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gauge : {&#39;R&#39;, &#39;r&#39;}</span>
+<span class="sd">            specify the new gauge for the mode coefficients</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># These calls will fail if the gauge is not specified.</span>
+        <span class="c1"># In that case it will not do anything</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;gauge&#39;</span><span class="p">,</span> <span class="n">gauge</span><span class="p">)</span> <span class="o">==</span> <span class="n">gauge</span><span class="p">:</span>
+            <span class="c1"># Quick return</span>
+            <span class="k">return</span>
+
+        <span class="c1"># Update gauge value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">[</span><span class="s1">&#39;gauge&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gauge</span>
+
+        <span class="c1"># Check that we can do a gauge transformation</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.000000001</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">geometry</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">g</span><span class="o">.</span><span class="n">o2a</span><span class="p">(</span><span class="n">_a</span><span class="o">.</span><span class="n">arangei</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">no</span><span class="p">)),</span> <span class="p">:]</span> <span class="o">@</span> <span class="p">(</span><span class="n">k</span> <span class="o">@</span> <span class="n">g</span><span class="o">.</span><span class="n">rcell</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">spin</span><span class="o">.</span><span class="n">has_noncolinear</span><span class="p">:</span>
+                <span class="c1"># for NC/SOC we have a 2x2 spin-box per orbital</span>
+                <span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">gauge</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
+            <span class="c1"># R -&gt; r gauge tranformation.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">gauge</span> <span class="o">==</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span>
+            <span class="c1"># r -&gt; R gauge tranformation.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">*=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
     <span class="c1"># def toStateC(self, norm=1.):</span>
     <span class="c1">#     r&quot;&quot;&quot; Transforms the states into normalized values equal to `norm` and specifies the coefficients in `StateC` as the norm</span>

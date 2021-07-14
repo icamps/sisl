@@ -152,6 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.fcSileSiesta.html">sisl.io.siesta.fcSileSiesta</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.kpSileSiesta.html">sisl.io.siesta.kpSileSiesta</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.rkpSileSiesta.html">sisl.io.siesta.rkpSileSiesta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.structSileSiesta.html">sisl.io.siesta.structSileSiesta</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../siesta.html#transiesta">TranSiesta</a></li>
@@ -297,7 +298,7 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.xvSileSiesta.write" title="sisl.io.siesta.xvSileSiesta.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Generic write method which should be overloaded in child-classes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.xvSileSiesta.write_geometry" title="sisl.io.siesta.xvSileSiesta.write_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_geometry</span></code></a>(geom[, fmt, velocity])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.io.siesta.xvSileSiesta.write_geometry" title="sisl.io.siesta.xvSileSiesta.write_geometry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_geometry</span></code></a>(geometry[, fmt, velocity])</p></td>
 <td><p>Writes the geometry to the contained file</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.io.siesta.xvSileSiesta.base_file" title="sisl.io.siesta.xvSileSiesta.base_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base_file</span></code></a></p></td>
@@ -420,14 +421,14 @@ and call it with the remaining <code class="docutils literal notranslate"><span 
 
 <dl class="py method">
 <dt id="sisl.io.siesta.xvSileSiesta.write_geometry">
-<code class="sig-name descname">write_geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">geom</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'.9f'</span></em>, <em class="sig-param"><span class="n">velocity</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/xv.html#xvSileSiesta.write_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.xvSileSiesta.write_geometry" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_geometry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">geometry</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'.9f'</span></em>, <em class="sig-param"><span class="n">velocity</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/sisl/io/siesta/xv.html#xvSileSiesta.write_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.io.siesta.xvSileSiesta.write_geometry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes the geometry to the contained file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>geom</strong> (<a class="reference internal" href="../../generated/sisl.Geometry.html#sisl.Geometry" title="sisl.Geometry"><em>Geometry</em></a>) – geometry to write in the XV file</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="../../generated/sisl.Geometry.html#sisl.Geometry" title="sisl.Geometry"><em>Geometry</em></a>) – geometry to write in the XV file</p></li>
 <li><p><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><em>optional</em>) – the precision used for writing the XV file</p></li>
-<li><p><strong>velocity</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)"><em>numpy.ndarray</em></a><em>, </em><em>optional</em>) – velocities to write in the XV file (will be zero if not specified).
+<li><p><strong>velocity</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><em>numpy.ndarray</em></a><em>, </em><em>optional</em>) – velocities to write in the XV file (will be zero if not specified).
 Units input must be in Ang/fs.</p></li>
 </ul>
 </dd>

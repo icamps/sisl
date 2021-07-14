@@ -265,7 +265,7 @@ usage of the different spin-components.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>kind</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><a class="reference internal" href="#sisl.physics.Spin" title="sisl.physics.Spin"><em>Spin</em></a><em>, </em><em>optional</em>) – specify the spin kind</p></li>
-<li><p><strong>dtype</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.20)"><em>numpy.dtype</em></a><em>, </em><em>optional</em>) – the data-type used for the spin-component.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.21)"><em>numpy.dtype</em></a><em>, </em><em>optional</em>) – the data-type used for the spin-component.</p></li>
 </ul>
 </dd>
 </dl>
@@ -327,8 +327,14 @@ usage of the different spin-components.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Spin.kind" title="sisl.physics.Spin.kind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">kind</span></code></a></p></td>
 <td><p>A unique ID for the kind of spin configuration</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Spin.size" title="sisl.physics.Spin.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>Number of elements to describe the spin-components</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.Spin.spinor" title="sisl.physics.Spin.spinor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spinor</span></code></a></p></td>
+<td><p>Number of spinor components (1 or 2)</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.Spin.spins" title="sisl.physics.Spin.spins"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spins</span></code></a></p></td>
-<td><p>Number of spin-components</p></td>
+<td><p>Number of elements to describe the spin-components</p></td>
 </tr>
 </tbody>
 </table>
@@ -434,9 +440,21 @@ usage of the different spin-components.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="sisl.physics.Spin.size">
+<em class="property">property </em><code class="sig-name descname">size</code><a class="headerlink" href="#sisl.physics.Spin.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of elements to describe the spin-components</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.physics.Spin.spinor">
+<em class="property">property </em><code class="sig-name descname">spinor</code><a class="headerlink" href="#sisl.physics.Spin.spinor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of spinor components (1 or 2)</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="sisl.physics.Spin.spins">
 <em class="property">property </em><code class="sig-name descname">spins</code><a class="headerlink" href="#sisl.physics.Spin.spins" title="Permalink to this definition">¶</a></dt>
-<dd><p>Number of spin-components</p>
+<dd><p>Number of elements to describe the spin-components</p>
 </dd></dl>
 
 </dd></dl>

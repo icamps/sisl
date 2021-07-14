@@ -152,6 +152,7 @@
 <li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.fcSileSiesta.html">sisl.io.siesta.fcSileSiesta</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.kpSileSiesta.html">sisl.io.siesta.kpSileSiesta</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.rkpSileSiesta.html">sisl.io.siesta.rkpSileSiesta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sisl.io.siesta.structSileSiesta.html">sisl.io.siesta.structSileSiesta</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../siesta.html#transiesta">TranSiesta</a></li>
@@ -587,7 +588,7 @@ By default this is <code class="docutils literal notranslate"><span class="pre">
 <dd class="field-odd"><p><strong>force_constant</strong> – vector <code class="docutils literal notranslate"><span class="pre">[*,</span> <span class="pre">3,</span> <span class="pre">2,</span> <span class="pre">*,</span> <span class="pre">3]</span></code>  with force constant element for each of the atomic displacements</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)">numpy.ndarray</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -604,7 +605,7 @@ only a single file ending.</p>
 <li><p><strong>output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to read geometry from output files (default to read from
 the fdf file).</p></li>
 <li><p><strong>order</strong> (<em>list of str</em><em>, </em><em>optional</em>) – the order of which to try and read the geometry.
-By default this is <code class="docutils literal notranslate"><span class="pre">['XV',</span> <span class="pre">'nc',</span> <span class="pre">'fdf',</span> <span class="pre">'TSHS']</span></code> if <em class="xref py py-obj">output</em> is true
+By default this is <code class="docutils literal notranslate"><span class="pre">['XV',</span> <span class="pre">'nc',</span> <span class="pre">'fdf',</span> <span class="pre">'TSHS',</span> <span class="pre">'STRUCT']</span></code> if <em class="xref py py-obj">output</em> is true
 If <em class="xref py py-obj">order</em> is present <em class="xref py py-obj">output</em> is disregarded.</p></li>
 </ul>
 </dd>

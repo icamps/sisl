@@ -200,7 +200,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;merge_instances&quot;</span><span class="p">,</span> <span class="s2">&quot;str_spec&quot;</span><span class="p">,</span> <span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;iter_shape&quot;</span><span class="p">,</span> <span class="s2">&quot;math_eval&quot;</span><span class="p">,</span> <span class="s2">&quot;allow_kwargs&quot;</span><span class="p">]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;import_attr&quot;</span><span class="p">,</span> <span class="s2">&quot;lazy_import&quot;</span><span class="p">]</span>
-<span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;PropertyDict&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">&quot;PropertyDict&quot;</span><span class="p">,</span> <span class="s2">&quot;NotNonePropertyDict&quot;</span><span class="p">]</span>
 
 
 <span class="c1"># supported operators</span>
@@ -605,6 +605,14 @@
 
     <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+
+<span class="k">class</span> <span class="nc">NotNonePropertyDict</span><span class="p">(</span><span class="n">PropertyDict</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </pre></div>
 
            </div>
