@@ -8,7 +8,6 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
 [![Build Status](https://travis-ci.org/zerothi/sisl.svg?branch=master)](https://travis-ci.org/zerothi/sisl)
 [![Checkout sisl code coverage](https://codecov.io/gh/zerothi/sisl/branch/master/graph/badge.svg)](https://codecov.io/gh/zerothi/sisl)
-[![Donate money to support development of sisl](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=NGNU2AA3JXX94&lc=DK&item_name=Papior%2dCodes&item_number=codes&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)
 
 ## Why sisl ##
 
@@ -61,8 +60,8 @@ which may be analysed using VMD, XCrySDen or other tools.
 
 Installing sisl using PyPi or Conda is the easiest:
 
-    pip3 install sisl
-    pip3 install sisl[analysis] # also installs tqdm and xarray
+    python3 -m pip install sisl
+    python3 -m pip install sisl[analysis] # also installs tqdm and xarray
     # or
     conda install -c conda-forge sisl
 
@@ -79,6 +78,7 @@ If performing a manual installation, these packages are required:
    - __matplotlib__, encouraged optional dependency
    - __tqdm__, encouraged optional dependency
    - __xarray__, optional dependency
+   - __plotly__, optional dependency
 
 Subsequently manual installation may be done using this command:
 
@@ -109,7 +109,7 @@ We recommend to specify the version of sisl in combination of this citation:
     @misc{zerothi_sisl,
       author = {Papior, Nick},
       title  = {sisl: v<fill-version>},
-      year   = {2020},
+      year   = {2021},
       doi    = {10.5281/zenodo.597181},
       url    = {https://doi.org/10.5281/zenodo.597181}
     }

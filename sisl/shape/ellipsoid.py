@@ -11,7 +11,7 @@ import sisl._array as _a
 from sisl.utils.mathematics import orthogonalize, fnorm, fnorm2, expand
 from sisl._math_small import product3
 from sisl._indices import indices_in_sphere
-from .base import PureShape
+from .base import PureShape, ShapeToDispatcher
 
 
 __all__ = ['Ellipsoid', 'Sphere']
@@ -29,7 +29,7 @@ class Ellipsoid(PureShape):
        I.e. the first vector is considered a principal axis, then the second vector will
        be orthogonalized onto the first, and this is the second principal axis. And so on.
     center : (3,), optional
-       the center of the ellipsoid. Defaults to the origo.
+       the center of the ellipsoid. Defaults to the origin.
 
     Examples
     --------
@@ -38,6 +38,8 @@ class Ellipsoid(PureShape):
     True
     """
     __slots__ = ('_v', '_iv')
+
+    to = PureShape.to.copy()
 
     def __init__(self, v, center=None):
         super().__init__(center)
@@ -124,10 +126,6 @@ class Ellipsoid(PureShape):
         from .prism4 import Cuboid
         return Cuboid(self._v * 2, self.center)
 
-    def set_center(self, center):
-        """ Change the center of the object """
-        super().__init__(center)
-
     def within_index(self, other, tol=1.e-8):
         r""" Return indices of the points that are within the shape
 
@@ -155,6 +153,33 @@ class Ellipsoid(PureShape):
         return fnorm(self._v)
 
 
+class EllipsoidToEllipsoid(ShapeToDispatcher):
+    def dispatch(self, *args, **kwargs):
+        return self._obj.copy()
+
+Ellipsoid.to.register("ellipsoid", EllipsoidToEllipsoid)
+Ellipsoid.to.register("Ellipsoid", EllipsoidToEllipsoid)
+
+
+class EllipsoidToSphere(ShapeToDispatcher):
+    def dispatch(self, *args, **kwargs):
+        shape = self._obj
+        return Sphere(shape.radius.max(), shape.center)
+
+Ellipsoid.to.register("sphere", EllipsoidToSphere)
+Ellipsoid.to.register("Sphere", EllipsoidToSphere)
+
+
+class EllipsoidToCuboid(ShapeToDispatcher):
+    def dispatch(self, *args, **kwargs):
+        from .prism4 import Cuboid
+        shape = self._obj
+        return Cuboid(shape._v * 2, shape.center)
+
+Ellipsoid.to.register("cuboid", EllipsoidToCuboid)
+Ellipsoid.to.register("Cuboid", EllipsoidToCuboid)
+
+
 @set_module("sisl.shape")
 class Sphere(Ellipsoid):
     """ 3D Sphere
@@ -164,6 +189,7 @@ class Sphere(Ellipsoid):
     r : float
        radius of the sphere
     """
+    __slots__ = ()
 
     def __init__(self, radius, center=None):
         radius = _a.asarrayd(radius).ravel()

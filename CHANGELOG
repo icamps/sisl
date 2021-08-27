@@ -1,6 +1,26 @@
 0.X.Y
 =====
 
+- renamed origo to origin, see #365
+
+- enabled copying Dispatchers for subclasses.
+	This allows chained dictionary look-ups for subclasses.
+	By default the dispatch dictionary is a chainmap and
+	one can then of course have multiple same keys in the chain,
+	but only the highest will have precedence.
+
+- added dispatchers to Shapes, Ellipsoid.to.sphere()
+	is now effective.
+
+- enabled replacing atoms in SparseOrbital geometries #139
+
+- partially fixed #102, much related to #365 and how
+	origin is interpreted in the code
+
+- fixed reading coordinates from siesta.out when bands are calculated #362
+
+- fixed complex warning for spin_moment #360 and #363
+
 - removed keywords align for State.inner|outer, instead one
 	should manually align, if required
 

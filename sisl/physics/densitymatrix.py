@@ -15,7 +15,7 @@ from sisl.supercell import SuperCell
 import sisl._array as _a
 from sisl._indices import indices_le, indices_fabs_le
 from sisl._math_small import xyz_to_spherical_cos_phi
-from sisl.messages import warn, tqdm_eta
+from sisl.messages import warn, progressbar
 from sisl.utils.ranges import array_arange
 from .spin import Spin
 from sisl.sparse import SparseCSR, _ncol_to_indptr
@@ -365,7 +365,7 @@ class _densitymatrix(SparseOrbitalBZSpin):
 
         raise NotImplementedError(f"{self.__class__.__name__}.mulliken only allows projection [orbital, atom]")
 
-    def density(self, grid, spinor=None, tol=1e-7, eta=False):
+    def density(self, grid, spinor=None, tol=1e-7, eta=None):
         r""" Expand the density matrix to the charge density on a grid
 
         This routine calculates the real-space density components on a specified grid.
@@ -544,15 +544,15 @@ class _densitymatrix(SparseOrbitalBZSpin):
         # For extremely skewed lattices this will be way too much, hence we make
         # them square.
         o = sc.toCuboid(True)
-        sc = SuperCell(o._v + np.diag(2 * add_R), origo=o.origo - add_R)
+        sc = SuperCell(o._v + np.diag(2 * add_R), origin=o.origin - add_R)
 
         # Retrieve all atoms within the grid supercell
         # (and the neighbours that connect into the cell)
         IA, XYZ, ISC = geometry.within_inf(sc, periodic=pbc)
-        XYZ -= grid.sc.origo.reshape(1, 3)
+        XYZ -= grid.sc.origin.reshape(1, 3)
 
         # Retrieve progressbar
-        eta = tqdm_eta(len(IA), f"{self.__class__.__name__}.density", "atom", eta)
+        eta = progressbar(len(IA), f"{self.__class__.__name__}.density", "atom", eta)
 
         cell = geometry.cell
         atoms = geometry.atoms
@@ -619,8 +619,8 @@ class _densitymatrix(SparseOrbitalBZSpin):
 
         # Get offset in supercell in orbitals
         off = geometry.no * primary_i_s
-        origo = grid.origo
-        # TODO sum the non-origo atoms to the csrDM matrix
+        origin = grid.origin
+        # TODO sum the non-origin atoms to the csrDM matrix
         #      this would further decrease the loops required.
 
         # Loop over all atoms in the grid-cell
@@ -629,7 +629,7 @@ class _densitymatrix(SparseOrbitalBZSpin):
             ia_atom = atoms[ia]
             IO = a2o(ia)
             IO_range = range(ia_atom.no)
-            cell_offset = (cell * isc.reshape(3, 1)).sum(0) - origo
+            cell_offset = (cell * isc.reshape(3, 1)).sum(0) - origin
 
             # Extract maximum R
             R = ia_atom.maxR()

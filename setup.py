@@ -43,13 +43,22 @@ min_version ={
 }
 
 viz = {
-    "plotly": [
-        'dill >= 0.3.2', # see https://github.com/pfebrer/sisl/issues/11
+    "core": [
+        # These are the dependencies needed by the sisl.viz module regardless
+        # of the backend chosen.
+        'dill >= 0.3.2',  # see https://github.com/pfebrer/sisl/issues/11
         'pathos',
-        'plotly',
         'pandas',
         "xarray >= " + min_version["xarray"],
         'scikit-image'
+    ],
+    # Here are specific requirements for each of the backends implemented by
+    # sisl.
+    "plotly": [
+        'plotly',
+    ],
+    "matplotlib": [
+        'matplotlib'
     ],
     "blender": [
     ], # for when blender enters
@@ -388,7 +397,7 @@ def cythonizer(extensions, *args, **kwargs):
 
 
 MAJOR = 0
-MINOR = 11
+MINOR = 12
 MICRO = 0
 ISRELEASED = False
 VERSION = f"{MAJOR}.{MINOR}.{MICRO}"
@@ -449,10 +458,11 @@ setuptools_kwargs = {
             "xarray >= " + min_version["xarray"],
             "tqdm",
         ],
-        "viz": reduce(lambda a, b: a + b, viz.values()),
-        "visualization": reduce(lambda a, b: a + b, viz.values()),
-        "viz-plotly": viz["plotly"],
-        "viz-blender": viz["blender"],
+        "viz": viz["core"],
+        "visualization": viz["core"],
+        "viz-plotly": viz["core"] + viz["plotly"],
+        "viz-matplotlib": viz["core"] + viz["matplotlib"],
+        "viz-blender": viz["core"] + viz["blender"],
         "viz-ase": viz["ase"],
     },
     "zip_safe": False,
@@ -474,10 +484,11 @@ packages = find_packages(include=["sisl", "sisl.*"])
 # 2. In 'package_dir' we defer the package name to the local file path
 packages += map(lambda x: f"sisl_toolbox.{x}", find_packages("toolbox"))
 
-# Also ensure we have all "pxd" files
+# Please update MANIFEST.in file for stuff to be shipped in the distribution.
+# Otherwise we should use package_data to ensure it gets installed.
 package_data = {p: ["*.pxd"] for p in packages}
-# Add toolbox data
-package_data["sisl_toolbox.siesta.minimizer"] = ["basis.yaml", "pseudo.yaml"]
+package_data["sisl_toolbox.siesta.minimizer"] = ["*.yaml"]
+
 
 metadata = dict(
     name=DISTNAME,
@@ -489,8 +500,15 @@ metadata = dict(
     url="https://github.com/zerothi/sisl",
     download_url=DOWNLOAD_URL,
     license=LICENSE,
+    classifiers=CLASSIFIERS,
+    platforms="any",
+    project_urls=PROJECT_URLS,
+    cmdclass=cmdclass,
+
     # Ensure the packages are being found in the correct locations
     package_dir={"sisl_toolbox": "toolbox"},
+    # This forces MANIFEST.in usage
+    include_package_data=True,
     package_data=package_data,
     packages=packages,
     ext_modules=cythonizer(extensions, compiler_directives=directives),
@@ -505,10 +523,6 @@ metadata = dict(
          ]
         #"splotly = sisl.viz.plotly.splot:splot",
     },
-    classifiers=CLASSIFIERS,
-    platforms="any",
-    project_urls=PROJECT_URLS,
-    cmdclass=cmdclass,
     **setuptools_kwargs
 )
 

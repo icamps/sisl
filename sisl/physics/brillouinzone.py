@@ -151,7 +151,7 @@ from sisl.quaternion import Quaternion
 from sisl.utils.mathematics import cart2spher, fnorm
 from sisl.utils.misc import allow_kwargs
 import sisl._array as _a
-from sisl.messages import info, SislError, tqdm_eta, deprecate_method, deprecate
+from sisl.messages import info, SislError, progressbar, deprecate_method, deprecate
 from sisl.supercell import SuperCell
 from sisl.grid import Grid
 from sisl._dispatcher import ClassDispatcher
@@ -328,8 +328,8 @@ class BrillouinZone:
         return BrillouinZone(sc, k)
 
     @classmethod
-    def param_circle(self, sc, N_or_dk, kR, normal, origo, loop=False):
-        r""" Create a parameterized k-point list where the k-points are generated on a circle around an origo
+    def param_circle(self, sc, N_or_dk, kR, normal, origin, loop=False):
+        r""" Create a parameterized k-point list where the k-points are generated on a circle around an origin
 
         The generated circle is a perfect circle in the reciprocal space (Cartesian coordinates).
         To generate a perfect circle in units of the reciprocal lattice vectors one can
@@ -349,8 +349,8 @@ class BrillouinZone:
            radius of the k-point. In 1/Ang
         normal : array_like of float
            normal vector to determine the circle plane
-        origo : array_like of float
-           origo of the circle used to generate the circular parameterization
+        origin : array_like of float
+           origin of the circle used to generate the circular parameterization
         loop : bool, optional
            whether the first and last point are equal
 
@@ -385,9 +385,9 @@ class BrillouinZone:
         bz = BrillouinZone(sc)
 
         normal = _a.arrayd(normal)
-        origo = _a.arrayd(origo)
+        origin = _a.arrayd(origin)
         k_n = bz.tocartesian(normal)
-        k_o = bz.tocartesian(origo)
+        k_o = bz.tocartesian(origin)
 
         # Generate a preset list of k-points on the unit-circle
         if loop:
@@ -610,7 +610,7 @@ class BrillouinZone:
             has_wrap = 'wrap' in kwargs
             if has_wrap:
                 wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap'))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.asarray',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.asarray',
                            'k', kwargs.pop('eta', False))
             parent = self.parent
             k = self.k
@@ -676,7 +676,7 @@ class BrillouinZone:
         def asnone(self, *args, **kwargs):
             func = self._bz_get_func()
             wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap', lambda x: x))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.asnone',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.asnone',
                            'k', kwargs.pop('eta', False))
             parent = self.parent
             k = self.k
@@ -740,7 +740,7 @@ class BrillouinZone:
                 has_wrap = 'wrap' in kwargs
                 if has_wrap:
                     wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap'))
-                eta = tqdm_eta(len(self), f'{self.__class__.__name__}.asarray',
+                eta = progressbar(len(self), f'{self.__class__.__name__}.asarray',
                                'k', kwargs.pop('eta', False))
                 parent = self.parent
                 k = self.k
@@ -826,7 +826,7 @@ class BrillouinZone:
             has_wrap = 'wrap' in kwargs
             if has_wrap:
                 wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap'))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.aslist',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.aslist',
                            'k', kwargs.pop('eta', False))
             a = [None] * len(self)
             parent = self.parent
@@ -884,7 +884,7 @@ class BrillouinZone:
             has_wrap = 'wrap' in kwargs
             if has_wrap:
                 wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap'))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.asyield',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.asyield',
                            'k', kwargs.pop('eta', False))
             parent = self.parent
             k = self.k
@@ -951,7 +951,7 @@ class BrillouinZone:
             has_wrap = 'wrap' in kwargs
             if has_wrap:
                 wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap'))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.asaverage',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.asaverage',
                            'k', kwargs.pop('eta', False))
             parent = self.parent
             k = self.k
@@ -1027,7 +1027,7 @@ class BrillouinZone:
             has_wrap = 'wrap' in kwargs
             if has_wrap:
                 wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap'))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.assum',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.assum',
                            'k', kwargs.pop('eta', False))
             parent = self.parent
             k = self.k
@@ -1376,7 +1376,7 @@ class MonkhorstPack(BrillouinZone):
 
             func = self._bz_get_func()
             wrap = allow_kwargs('parent', 'k', 'weight')(kwargs.pop('wrap', lambda x: x))
-            eta = tqdm_eta(len(self), f'{self.__class__.__name__}.asgrid',
+            eta = progressbar(len(self), f'{self.__class__.__name__}.asgrid',
                            'k', kwargs.pop('eta', False))
             parent = self.parent
             k = self.k
@@ -1419,8 +1419,8 @@ class MonkhorstPack(BrillouinZone):
             else:
                 cell = parent.sc.rcell * self._size.reshape(1, -1) / units('Ang', grid_unit)
 
-            # Find the grid origo
-            origo = -(cell * 0.5).sum(0)
+            # Find the grid origin
+            origin = -(cell * 0.5).sum(0)
 
             # Calculate first k-point (to get size and dtype)
             v = wrap(func(*args, k=k[0], **kwargs), parent=parent, k=k[0], weight=w[0])
@@ -1446,7 +1446,7 @@ class MonkhorstPack(BrillouinZone):
 
             # Correct cell for the grid
             if trs_axis >= 0:
-                origo[trs_axis] = 0.
+                origin[trs_axis] = 0.
                 # Correct offset since we only have the positive halve
                 if self._diag[trs_axis] % 2 == 0 and not self._centered:
                     offset[trs_axis] = steps[trs_axis] / 2
@@ -1459,7 +1459,7 @@ class MonkhorstPack(BrillouinZone):
                                                    centered=self._centered, trs=True)[1])
 
             # Create the grid in the reciprocal cell
-            sc = SuperCell(cell, origo=origo)
+            sc = SuperCell(cell, origin=origin)
             grid = Grid(diag, sc=sc, dtype=v.dtype)
             if data_axis is None:
                 grid[k2idx(k[0])] = v

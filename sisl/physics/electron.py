@@ -64,7 +64,7 @@ from sisl._math_small import xyz_to_spherical_cos_phi
 import sisl._array as _a
 from sisl.linalg import svd_destroy, eigvals_destroy
 from sisl.linalg import eigh, eigh_destroy, det_destroy
-from sisl.messages import info, warn, SislError, tqdm_eta
+from sisl.messages import info, warn, SislError, progressbar
 from sisl._help import dtype_complex_to_real, dtype_real_to_complex
 from .distribution import get_distribution
 from .spin import Spin
@@ -387,7 +387,7 @@ def spin_moment(state, S=None, project=False):
             cs = conj(state[i]).reshape(-1, 2)
             Sstate = S.dot(state[i].reshape(-1, 2))
             D = cs.T @ Sstate
-            s[i, 2] = D[0, 0] - D[1, 1]
+            s[i, 2] = (D[0, 0] - D[1, 1]).real
             s[i, 0] = (D[1, 0] + D[0, 1]).real
             s[i, 1] = (D[1, 0] - D[0, 1]).imag
 
@@ -1050,7 +1050,7 @@ def berry_phase(contour, sub=None, eigvals=False, closed=True, method='berry'):
     method : {'berry', 'zak'}
        'berry' will return the usual integral of the Berry connection over the specified contour
        'zak' will compute the Zak phase for 1D systems by performing a closed loop integration but
-       taking into account the Bloch factor :math:`e^{-i2\pi/a x}` accumulated over a Brillouin zone,
+       taking into account the Bloch factor :math:`e^{i2\pi/a x}` accumulated over a Brillouin zone,
        see [1]_.
 
     Notes
@@ -1071,8 +1071,8 @@ def berry_phase(contour, sub=None, eigvals=False, closed=True, method='berry'):
     >>> N = 30
     >>> kR = 0.01
     >>> normal = [0, 0, 1]
-    >>> origo = [1/3, 2/3, 0]
-    >>> bz = BrillouinZone.param_circle(H, N, kR, normal, origo)
+    >>> origin = [1/3, 2/3, 0]
+    >>> bz = BrillouinZone.param_circle(H, N, kR, normal, origin)
     >>> phase = berry_phase(bz)
 
     Calculate Berry-phase for first band
@@ -1080,8 +1080,8 @@ def berry_phase(contour, sub=None, eigvals=False, closed=True, method='berry'):
     >>> N = 30
     >>> kR = 0.01
     >>> normal = [0, 0, 1]
-    >>> origo = [1/3, 2/3, 0]
-    >>> bz = BrillouinZone.param_circle(H, N, kR, normal, origo)
+    >>> origin = [1/3, 2/3, 0]
+    >>> bz = BrillouinZone.param_circle(H, N, kR, normal, origin)
     >>> phase = berry_phase(bz, sub=0)
 
     References
@@ -1145,11 +1145,11 @@ def berry_phase(contour, sub=None, eigvals=False, closed=True, method='berry'):
                     axis = contour.k[1] - contour.k[0]
                     axis /= axis.dot(axis) ** 0.5
                     phase = dot(g.xyz[g.o2a(_a.arangei(g.no)), :], dot(axis, g.rcell)).reshape(1, -1)
-                    if spin.has_noncolinear:
+                    if spin.is_diagonal:
+                        prev.state *= exp(1j * phase)
+                    else:
                         # for NC/SOC we have a 2x2 spin-box per orbital
                         prev.state *= np.repeat(exp(1j * phase), 2, axis=1)
-                    else:
-                        prev.state *= exp(1j * phase)
 
                 # Include last-to-first segment
                 prd = _process(prd, prev.inner(first, diag=False))
@@ -1172,11 +1172,11 @@ def berry_phase(contour, sub=None, eigvals=False, closed=True, method='berry'):
                     axis = contour.k[1] - contour.k[0]
                     axis /= axis.dot(axis) ** 0.5
                     phase = dot(g.xyz[g.o2a(_a.arangei(g.no)), :], dot(axis, g.rcell)).reshape(1, -1)
-                    if spin.has_noncolinear:
+                    if spin.is_diagonal:
+                        prev.state *= exp(1j * phase)
+                    else:
                         # for NC/SOC we have a 2x2 spin-box per orbital
                         prev.state *= np.repeat(exp(1j * phase), 2, axis=1)
-                    else:
-                        prev.state *= exp(1j * phase)
                 prd = _process(prd, prev.inner(first, diag=False))
             return prd
 
@@ -1194,7 +1194,7 @@ def berry_phase(contour, sub=None, eigvals=False, closed=True, method='berry'):
 
 
 @set_module("sisl.physics.electron")
-def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False):
+def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=None):
     r""" Add the wave-function (`Orbital.psi`) component of each orbital to the grid
 
     This routine calculates the real-space wave-function components in the
@@ -1205,8 +1205,8 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
     It may be instructive to check that an eigenstate is normalized:
 
     >>> grid = Grid(...)
-    >>> psi(state, grid)
-    >>> (np.abs(grid.grid) ** 2).sum() * grid.dvolume == 1.
+    >>> wavefunction(state, grid)
+    >>> (np.absolute(grid.grid) ** 2).sum() * grid.dvolume == 1.
 
     Note: To calculate :math:`\psi(\mathbf r)` in a unit-cell different from the
     originating geometry, simply pass a grid with a unit-cell smaller than the originating
@@ -1215,13 +1215,13 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
     The wavefunctions are calculated in real-space via:
 
     .. math::
-       \psi(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi\rangle_i \exp(-i\mathbf k \mathbf R)
+       \psi(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi\rangle_i \exp(i\mathbf k \mathbf R)
 
     While for non-colinear/spin-orbit calculations the wavefunctions are determined from the
     spinor component (`spinor`)
 
     .. math::
-       \psi_{\alpha/\beta}(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi_{\alpha/\beta}\rangle_i \exp(-i\mathbf k \mathbf R)
+       \psi_{\alpha/\beta}(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi_{\alpha/\beta}\rangle_i \exp(i\mathbf k \mathbf R)
 
     where ``spinor in [0, 1]`` determines :math:`\alpha` or :math:`\beta`, respectively.
 
@@ -1231,7 +1231,7 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
     you are passing a `v` with the incorrect gauge you will find a phase-shift according to:
 
     .. math::
-        \tilde v_j = e^{-i\mathbf k\mathbf r_j} v_j
+        \tilde v_j = e^{i\mathbf k\mathbf r_j} v_j
 
     where :math:`j` is the orbital index and :math:`\mathbf r_j` is the orbital position.
 
@@ -1268,6 +1268,9 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
         geometry = grid.geometry
     if geometry is None:
         raise SislError("wavefunction: did not find a usable Geometry through keywords or the Grid!")
+    # Ensure coordinates are in the primary unit-cell, regardless of origin etc.
+    geometry = geometry.copy()
+    geometry.xyz = (geometry.fxyz % 1) @ geometry.sc.cell
 
     # In case the user has passed several vectors we sum them to plot the summed state
     if v.ndim == 2:
@@ -1362,7 +1365,7 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
     del ctheta_sphi, stheta_sphi, cphi, idx, rxyz, nrxyz
 
     # Fast loop (only per specie)
-    origo = grid.sc.origo.reshape(1, 3)
+    origin = grid.sc.origin.reshape(1, 3)
     idx_mm = _a.emptyd([geometry.na, 2, 3])
     all_negative_R = True
     for atom, ia in geometry.atoms.iter(True):
@@ -1373,9 +1376,9 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
 
         # Now do it for all the atoms to get indices of the middle of
         # the atoms
-        # The coordinates are relative to origo, so we need to shift (when writing a grid
-        # it is with respect to origo)
-        idx = dot(geometry.xyz[ia, :] - origo, ic_shape.T)
+        # The coordinates are relative to origin, so we need to shift (when writing a grid
+        # it is with respect to origin)
+        idx = dot(geometry.xyz[ia, :] - origin, ic_shape.T)
 
         # Get min-max for all atoms
         idx_mm[ia, 0, :] = idxm * R + idx
@@ -1388,7 +1391,7 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
     # When we run the below loop all indices can be retrieved by looking
     # up in the above table.
     # Before continuing, we can easily clean up the temporary arrays
-    del origo, idx
+    del origin, idx
 
     arangei = _a.arangei
 
@@ -1413,22 +1416,22 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
     # them square.
 
     o = sc.toCuboid(True)
-    sc = SuperCell(o._v + np.diag(2 * add_R), origo=o.origo - add_R)
+    sc = SuperCell(o._v + np.diag(2 * add_R), origin=o.origin - add_R)
 
     # Retrieve all atoms within the grid supercell
     # (and the neighbours that connect into the cell)
-    # Note that we cannot pass the "moved" origo because then ISC would be wrong
+    # Note that we cannot pass the "moved" origin because then ISC would be wrong
     IA, XYZ, ISC = geometry.within_inf(sc, periodic=pbc)
-    # We need to revert the grid supercell origo as that is not subtracted in the `within_inf` returned
-    # coordinates (and the below loop expects positions with respect to the origo of the plotting
+    # We need to revert the grid supercell origin as that is not subtracted in the `within_inf` returned
+    # coordinates (and the below loop expects positions with respect to the origin of the plotting
     # grid).
-    XYZ -= grid.sc.origo.reshape(1, 3)
+    XYZ -= grid.sc.origin.reshape(1, 3)
 
     phk = k * 2 * np.pi
     phase = 1
 
     # Retrieve progressbar
-    eta = tqdm_eta(len(IA), "wavefunction", "atom", eta)
+    eta = progressbar(len(IA), "wavefunction", "atom", eta)
 
     # Loop over all atoms in the grid-cell
     for ia, xyz, isc in zip(IA, XYZ, ISC):
@@ -1477,7 +1480,7 @@ def wavefunction(v, grid, geometry=None, k=None, spinor=0, spin=None, eta=False)
         io = geometry.a2o(ia)
 
         if has_k:
-            phase = exp(-1j * phk.dot(isc))
+            phase = exp(1j * phk.dot(isc))
 
         # Allocate a temporary array where we add the psi elements
         psi = psi_init(n)
@@ -1539,7 +1542,7 @@ class _electron_State:
     def __is_nc(self):
         """ Internal routine to check whether this is a non-colinear calculation """
         try:
-            return self.parent.spin.has_noncolinear
+            return not self.parent.spin.is_diagonal
         except:
             return False
 
@@ -1647,7 +1650,7 @@ class _electron_State:
         """
         return spin_moment(self.state, self.Sk(), project=project)
 
-    def wavefunction(self, grid, spinor=0, eta=False):
+    def wavefunction(self, grid, spinor=0, eta=None):
         r""" Expand the coefficients as the wavefunction on `grid` *as-is*
 
         See `~sisl.physics.electron.wavefunction` for argument details, the arguments not present
