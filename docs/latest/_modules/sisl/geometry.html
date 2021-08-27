@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -1156,8 +1156,8 @@
             <span class="n">center</span> <span class="o">=</span> <span class="n">xyz_m</span> <span class="o">+</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">dxyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span> <span class="o">*</span> <span class="n">dxyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">z</span> <span class="o">*</span> <span class="n">dxyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
             <span class="c1"># Correct in case the iteration steps across the maximum</span>
             <span class="n">center</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="n">center</span> <span class="o">&lt;</span> <span class="n">xyz_M</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">xyz_M</span><span class="p">)</span>
-            <span class="n">dS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_center</span><span class="p">(</span><span class="n">center</span><span class="p">[:])</span>
-            <span class="n">dS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_center</span><span class="p">(</span><span class="n">center</span><span class="p">[:])</span>
+            <span class="n">dS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span><span class="p">[:]</span>
+            <span class="n">dS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="n">center</span><span class="p">[:]</span>
 
             <span class="c1"># Now perform the iteration</span>
             <span class="c1"># get all elements within two radii</span>
@@ -2209,7 +2209,7 @@
 <span class="sd">           the direction from which the angle is calculated from, default to ``x``.</span>
 <span class="sd">           An integer specifies the corresponding lattice vector as the direction.</span>
 <span class="sd">        ref : int or array_like, optional</span>
-<span class="sd">           the reference point from which the vectors are drawn, default to origo</span>
+<span class="sd">           the reference point from which the vectors are drawn, default to origin</span>
 <span class="sd">           An integer species an atomic index.</span>
 <span class="sd">        rad : bool, optional</span>
 <span class="sd">           whether the returned value is in radians</span>
@@ -2237,7 +2237,7 @@
             <span class="k">return</span> <span class="n">ang</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">ang</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Geometry.rotate"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="s1">&#39;abc+xyz&#39;</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.rotate"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only</span><span class="o">=</span><span class="s1">&#39;abc+xyz&#39;</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Rotate geometry around vector and return a new geometry</span>
 
 <span class="sd">        Per default will the entire geometry be rotated, such that everything</span>
@@ -2254,9 +2254,9 @@
 <span class="sd">        v     : int or str or array_like</span>
 <span class="sd">             the normal vector to the rotated plane, i.e.</span>
 <span class="sd">             v = [1,0,0] will rotate the ``yz`` plane</span>
-<span class="sd">        origo : int or array_like, optional</span>
+<span class="sd">        origin : int or array_like, optional</span>
 <span class="sd">             the origin of rotation. Anything but [0, 0, 0] is equivalent</span>
-<span class="sd">             to a `self.move(-origo).rotate(...).move(origo)`.</span>
+<span class="sd">             to a `self.move(-origin).rotate(...).move(origin)`.</span>
 <span class="sd">             If this is an `int` it corresponds to the atomic index.</span>
 <span class="sd">        atoms : int or array_like, optional</span>
 <span class="sd">             only rotate the given atomic indices, if not specified, all</span>
@@ -2272,11 +2272,11 @@
 <span class="sd">        --------</span>
 <span class="sd">        Quaternion : class to rotate</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">origo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">origo</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origo</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
-            <span class="n">origo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axyz</span><span class="p">(</span><span class="n">origo</span><span class="p">)</span>
-        <span class="n">origo</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">origo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axyz</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">atoms</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Only rotate the unique values</span>
@@ -2302,8 +2302,8 @@
             <span class="c1"># Prepare quaternion...</span>
             <span class="n">q</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">vn</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="n">rad</span><span class="p">)</span>
             <span class="n">q</span> <span class="o">/=</span> <span class="n">q</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
-            <span class="c1"># subtract and add origo, before and after rotation</span>
-            <span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">origo</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">+</span> <span class="n">origo</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+            <span class="c1"># subtract and add origin, before and after rotation</span>
+            <span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">origin</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:])</span> <span class="o">+</span> <span class="n">origin</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sc</span><span class="o">=</span><span class="n">sc</span><span class="p">)</span></div>
 
@@ -2773,7 +2773,7 @@
 
         <span class="c1"># Now create a copy of the other geometry</span>
         <span class="c1"># so that we move it...</span>
-        <span class="c1"># Translate to origo, then back to position in new cell</span>
+        <span class="c1"># Translate to origin, then back to position in new cell</span>
         <span class="n">o</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">other_atom</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atom</span><span class="p">]</span> <span class="o">+</span> <span class="n">v</span><span class="p">)</span>
 
         <span class="c1"># We do not know how to handle the lattice-vectors,</span>
@@ -4254,7 +4254,7 @@
 
         <span class="k">return</span> <span class="n">d</span></div>
 
-<div class="viewcode-block" id="Geometry.within_inf"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.within_inf">[docs]</a>    <span class="k">def</span> <span class="nf">within_inf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Geometry.within_inf"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.within_inf">[docs]</a>    <span class="k">def</span> <span class="nf">within_inf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sc</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Find all atoms within a provided supercell</span>
 
 <span class="sd">        Note this function is rather different from `close` and `within`.</span>
@@ -4281,8 +4281,8 @@
 <span class="sd">            length tolerance for the fractional coordinates to be on a duplicate site (in Ang).</span>
 <span class="sd">            This allows atoms within `tol` of the cell boundaries to be taken as *inside* the</span>
 <span class="sd">            cell.</span>
-<span class="sd">        origo : (3, ) of float</span>
-<span class="sd">            origo that is the basis for comparison</span>
+<span class="sd">        origin : (3,) of float, optional</span>
+<span class="sd">            origin that is the basis for comparison, default to 0.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -4298,8 +4298,8 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">periodic</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">periodic</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">origo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">origo</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">zerosd</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">zerosd</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="c1"># Our first task is to construct a geometry large</span>
         <span class="c1"># enough to fully encompass the supercell</span>
@@ -4318,24 +4318,24 @@
         <span class="n">tile_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tmp</span> <span class="o">&lt;</span> <span class="n">tile_max</span><span class="p">,</span> <span class="n">tile_max</span><span class="p">,</span> <span class="n">tmp</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">int32</span><span class="p">)</span>
         <span class="k">del</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tmp</span>
 
-        <span class="c1"># 1a) correct for origo displacement</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">origo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">icell</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="c1"># 1a) correct for origin displacement</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">icell</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
         <span class="n">tile_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tile_min</span> <span class="o">&lt;</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tile_min</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">int32</span><span class="p">)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">origo</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">icell</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">origin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">icell</span><span class="o">.</span><span class="n">T</span><span class="p">))</span>
         <span class="n">tile_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">tile_min</span> <span class="o">&lt;</span> <span class="n">idx</span><span class="p">,</span> <span class="n">tile_min</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">int32</span><span class="p">)</span>
 
         <span class="c1"># 2. Reduce tiling along non-periodic directions</span>
         <span class="n">tile_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="n">tile_min</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">tile_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">periodic</span><span class="p">,</span> <span class="n">tile_max</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-        <span class="c1"># 3. Find the *new* origo according to the *negative* tilings.</span>
+        <span class="c1"># 3. Find the *new* origin according to the *negative* tilings.</span>
         <span class="c1">#    This is important for skewed cells as the placement of the new</span>
         <span class="c1">#    larger geometry has to be shifted to have sc inside</span>
-        <span class="n">big_origo</span> <span class="o">=</span> <span class="p">(</span><span class="n">tile_min</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">big_origin</span> <span class="o">=</span> <span class="p">(</span><span class="n">tile_min</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># The xyz geometry that fully encompass the (possibly) larger supercell</span>
         <span class="n">tile</span> <span class="o">=</span> <span class="n">tile_max</span> <span class="o">-</span> <span class="n">tile_min</span>
-        <span class="n">full_geom</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span> <span class="o">*</span> <span class="n">tile</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">big_origo</span> <span class="o">-</span> <span class="n">origo</span><span class="p">)</span>
+        <span class="n">full_geom</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span> <span class="o">*</span> <span class="n">tile</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">big_origin</span> <span class="o">-</span> <span class="n">origin</span><span class="p">)</span>
 
         <span class="c1"># Now we have to figure out all atomic coordinates within</span>
         <span class="n">cuboid</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">toCuboid</span><span class="p">()</span>

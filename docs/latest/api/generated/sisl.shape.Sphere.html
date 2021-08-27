@@ -113,7 +113,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
@@ -265,32 +265,32 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.scale" title="sisl.shape.Sphere.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(scale)</p></td>
 <td><p>Return a new sphere with a larger radius</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.set_center" title="sisl.shape.Sphere.set_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_center</span></code></a>(center)</p></td>
-<td><p>Change the center of the object</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.toCuboid" title="sisl.shape.Sphere.toCuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toCuboid</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.toCuboid" title="sisl.shape.Sphere.toCuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toCuboid</span></code></a>()</p></td>
 <td><p>Return a cuboid with side lengths equal to the diameter of each ellipsoid vectors</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.toEllipsoid" title="sisl.shape.Sphere.toEllipsoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toEllipsoid</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.toEllipsoid" title="sisl.shape.Sphere.toEllipsoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toEllipsoid</span></code></a>()</p></td>
 <td><p>Convert this sphere into an ellipsoid</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.toSphere" title="sisl.shape.Sphere.toSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toSphere</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.toSphere" title="sisl.shape.Sphere.toSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toSphere</span></code></a>()</p></td>
 <td><p>Return a copy of it-self</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.volume" title="sisl.shape.Sphere.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.volume" title="sisl.shape.Sphere.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>()</p></td>
 <td><p>Return the volume of the sphere</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.within" title="sisl.shape.Sphere.within"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within</span></code></a>(other, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.within" title="sisl.shape.Sphere.within"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within</span></code></a>(other, *args, **kwargs)</p></td>
 <td><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <em class="xref py py-obj">other</em> is fully within <em class="xref py py-obj">self</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.within_index" title="sisl.shape.Sphere.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a>(other[, tol])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.within_index" title="sisl.shape.Sphere.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a>(other[, tol])</p></td>
 <td><p>Return indices of the points that are within the shape</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.center" title="sisl.shape.Sphere.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.center" title="sisl.shape.Sphere.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></p></td>
 <td><p>The geometric center of the shape</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.radius" title="sisl.shape.Sphere.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Sphere.radius" title="sisl.shape.Sphere.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a></p></td>
 <td><p>Return the radius of the Sphere</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Sphere.to" title="sisl.shape.Sphere.to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code></a></p></td>
+<td><p>A dispatcher for classes, using <em class="xref py py-obj">__get__</em> it converts into <em class="xref py py-obj">ObjectDispatcher</em> upon invocation from an object, or a <em class="xref py py-obj">TypeDispatcher</em> when invoked from a class</p></td>
 </tr>
 </tbody>
 </table>
@@ -339,10 +339,35 @@
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="sisl.shape.Sphere.set_center">
-<code class="sig-name descname">set_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">center</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Sphere.set_center" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the center of the object</p>
+<dl class="py attribute">
+<dt id="sisl.shape.Sphere.to">
+<code class="sig-name descname">to</code><a class="headerlink" href="#sisl.shape.Sphere.to" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dispatcher for classes, using <em class="xref py py-obj">__get__</em> it converts into <em class="xref py py-obj">ObjectDispatcher</em> upon invocation from an object, or a <em class="xref py py-obj">TypeDispatcher</em> when invoked from a class</p>
+<p>This is a class-placeholder allowing a dispatcher to be a class attribute and converted into an
+<em class="xref py py-obj">ObjectDispatcher</em> when invoked from an object.</p>
+<p>If it is called on the class, it will return a <em class="xref py py-obj">TypeDispatcher</em>.</p>
+<p>This class should be an attribute of a class. It heavily relies on the <em class="xref py py-obj">__get__</em> special
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of the attribute in the class</p></li>
+<li><p><strong>dispatchs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – dictionary of dispatch methods</p></li>
+<li><p><strong>obj_getattr</strong> (<em>callable</em><em>, </em><em>optional</em>) – method with 2 arguments, an <code class="docutils literal notranslate"><span class="pre">obj</span></code> and the <code class="docutils literal notranslate"><span class="pre">attr</span></code> which may be used
+to control how the attribute is called.</p></li>
+<li><p><strong>instance_dispatcher</strong> (<em>AbstractDispatcher</em><em>, </em><em>optional</em>) – control how instance dispatchers are handled through <em class="xref py py-obj">__get__</em> method.
+This controls the dispatcher used if called from an instance.</p></li>
+<li><p><strong>type_dispatcher</strong> (<em>AbstractDispatcher</em><em>, </em><em>optional</em>) – control how class dispatchers are handled through <em class="xref py py-obj">__get__</em> method.
+This controls the dispatcher used if called from a class.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">new</span> <span class="o">=</span> <span class="n">ClassDispatcher</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="n">obj_getattr</span><span class="o">=</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above defers any attributes to the contained <em class="xref py py-obj">A.sub</em> attribute.</p>
 </dd></dl>
 
 <dl class="py method">

@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -197,7 +197,7 @@
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">ChainMap</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;AbstractDispatch&quot;</span><span class="p">,</span> <span class="s2">&quot;ObjectDispatcher&quot;</span><span class="p">,</span> <span class="s2">&quot;MethodDispatcher&quot;</span><span class="p">,</span>
@@ -224,6 +224,10 @@
         <span class="c1"># Local dictionary with attributes.</span>
         <span class="c1"># This could in principle contain anything.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span> <span class="o">=</span> <span class="n">attrs</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">renew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a new class with updated attributes &quot;&quot;&quot;</span>
@@ -274,11 +278,21 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dispatchs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">dispatchs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">dispatchs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dispatchs</span><span class="p">,</span> <span class="n">ChainMap</span><span class="p">):</span>
+            <span class="n">dispatchs</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">(</span><span class="n">dispatchs</span><span class="p">)</span>
+        <span class="c1"># we will always use a chainmap to store the dispatches</span>
+        <span class="c1"># We must not *copy*</span>
+        <span class="c1"># It should be the same memory location in case we are</span>
+        <span class="c1"># passing around the dispatch sequences</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span> <span class="o">=</span> <span class="n">dispatchs</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default</span> <span class="o">=</span> <span class="n">default</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
         <span class="c1"># Attributes associated with the dispatcher</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span> <span class="o">=</span> <span class="n">attrs</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object (making a new child for the dispatch lookup) &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="o">.</span><span class="n">new_child</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">renew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a new class with updated attributes &quot;&quot;&quot;</span>
@@ -331,7 +345,7 @@
 <span class="sd">            if true and `key` already exists in the list of dispatchs, then</span>
 <span class="sd">            it will be overwritten, otherwise a `LookupError` is raised.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="o">.</span><span class="n">maps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">LookupError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> already has </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> registered (and overwrite is false)&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">dispatch</span>
         <span class="k">if</span> <span class="n">default</span><span class="p">:</span>
@@ -369,6 +383,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="o">.</span><span class="vm">__func__</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__doc__</span>
         <span class="c1"># Storing the name is required for help on functions</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object (making a new child for the dispatch lookup) &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_method</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="o">.</span><span class="n">new_child</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">renew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a new class with updated attributes &quot;&quot;&quot;</span>
@@ -416,6 +435,12 @@
                 <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj_getattr</span> <span class="o">=</span> <span class="n">obj_getattr</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cls_attr_name</span> <span class="o">=</span> <span class="n">cls_attr_name</span>
+
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object (making a new child for the dispatch lookup) &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="o">.</span><span class="n">new_child</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_cls_attr_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj_getattr</span><span class="p">,</span>
+                              <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">renew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a new class with updated attributes &quot;&quot;&quot;</span>
@@ -474,8 +499,8 @@
         <span class="n">attr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj_getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">attr</span><span class="p">):</span>
             <span class="c1"># This will also ensure that if the user calls immediately after it will use the default</span>
-            <span class="k">return</span> <span class="n">MethodDispatcher</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">dispatchs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">,</span>
-                                    <span class="n">default</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">MethodDispatcher</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">attr</span>
 
 
@@ -545,7 +570,7 @@
 <span class="k">class</span> <span class="nc">ClassDispatcher</span><span class="p">(</span><span class="n">AbstractDispatcher</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A dispatcher for classes, using `__get__` it converts into `ObjectDispatcher` upon invocation from an object, or a `TypeDispatcher` when invoked from a class</span>
 
-<span class="sd">    This is a class-placeholder allowing a dispatecher to be a class attribute and converted into an</span>
+<span class="sd">    This is a class-placeholder allowing a dispatcher to be a class attribute and converted into an</span>
 <span class="sd">    `ObjectDispatcher` when invoked from an object.</span>
 
 <span class="sd">    If it is called on the class, it will return a `TypeDispatcher`.</span>
@@ -597,6 +622,13 @@
                 <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_obj_getattr</span> <span class="o">=</span> <span class="n">obj_getattr</span>
 
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Create a copy of this object (making a new child for the dispatch lookup) &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attr_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="o">.</span><span class="n">new_child</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_obj_getattr</span><span class="p">,</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="o">.</span><span class="n">instance</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                              <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">renew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">attrs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a new class with updated attributes &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_attr_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default</span><span class="p">,</span>
@@ -634,7 +666,7 @@
 
 
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">For use when doing cached dispatechers</span>
+<span class="sd">For use when doing cached dispatchers</span>
 <span class="sd">class CachedClassDispatcher(ClassDispatcher):</span>
 <span class="sd">    __slots__ = (&quot;_obj_getattr&quot;, &quot;_attr_name&quot;)</span>
 

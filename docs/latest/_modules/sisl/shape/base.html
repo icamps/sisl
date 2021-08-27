@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -197,9 +197,10 @@
 <span class="kn">from</span> <span class="nn">sisl._internal</span> <span class="kn">import</span> <span class="n">set_module</span>
 <span class="kn">import</span> <span class="nn">sisl._array</span> <span class="k">as</span> <span class="nn">_a</span>
 <span class="kn">from</span> <span class="nn">sisl.utils.mathematics</span> <span class="kn">import</span> <span class="n">fnorm</span>
+<span class="kn">from</span> <span class="nn">sisl._dispatcher</span> <span class="kn">import</span> <span class="n">AbstractDispatch</span><span class="p">,</span> <span class="n">ClassDispatcher</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="s2">&quot;PureShape&quot;</span><span class="p">,</span> <span class="s2">&quot;NullShape&quot;</span><span class="p">,</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Shape&quot;</span><span class="p">,</span> <span class="s2">&quot;PureShape&quot;</span><span class="p">,</span> <span class="s2">&quot;NullShape&quot;</span><span class="p">,</span> <span class="s2">&quot;ShapeToDispatcher&quot;</span><span class="p">,</span>
            <span class="s2">&quot;CompositeShape&quot;</span><span class="p">,</span> <span class="s2">&quot;OrShape&quot;</span><span class="p">,</span> <span class="s2">&quot;XOrShape&quot;</span><span class="p">,</span> <span class="s2">&quot;AndShape&quot;</span><span class="p">,</span> <span class="s2">&quot;SubShape&quot;</span><span class="p">]</span>
 
 
@@ -254,16 +255,31 @@
         <span class="k">if</span> <span class="n">center</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_center</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">zerosd</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_center</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">center</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_center</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">center</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The geometric center of the shape &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_center</span>
 
+    <span class="nd">@center</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set the geometric center of the shape &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_center</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">center</span>
+
 <div class="viewcode-block" id="Shape.scale"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Shape.html#sisl.shape.Shape.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Return a new Shape with a scaled size &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.scale has not been implemented&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># Define a dispatcher for converting Shapes</span>
+    <span class="c1">#  Shape().to.ellipsoid() will convert to an sisl.shape.Ellipsoid object</span>
+    <span class="n">to</span> <span class="o">=</span> <span class="n">ClassDispatcher</span><span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">,</span>
+                         <span class="n">obj_getattr</span><span class="o">=</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span>
+                         <span class="p">(</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="p">())</span><span class="o">.</span><span class="n">throw</span><span class="p">(</span>
+                             <span class="ne">AttributeError</span><span class="p">((</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">.to does not implement &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                                             <span class="sa">f</span><span class="s2">&quot;dispatcher, are you using it incorrectly?&quot;</span><span class="p">))</span>
+                         <span class="p">)</span>
+    <span class="p">)</span>
 
 <div class="viewcode-block" id="Shape.toSphere"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Shape.html#sisl.shape.Shape.toSphere">[docs]</a>    <span class="k">def</span> <span class="nf">toSphere</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a sphere which is surely encompassing the *full* shape &quot;&quot;&quot;</span>
@@ -329,6 +345,29 @@
 
     <span class="k">def</span> <span class="fm">__xor__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">XOrShape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+
+<span class="c1"># Add dispatcher systems</span>
+<span class="k">class</span> <span class="nc">ShapeToDispatcher</span><span class="p">(</span><span class="n">AbstractDispatch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base dispatcher from class passing from a Shape class &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_ensure_object</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dispatcher on </span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2"> must not be called on the class.&quot;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ToEllipsoidDispatcher</span><span class="p">(</span><span class="n">ShapeToDispatcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">sphere</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">ellipsoid</span><span class="p">()</span>
+<span class="n">Shape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;ellipsoid&quot;</span><span class="p">,</span> <span class="n">ToEllipsoidDispatcher</span><span class="p">)</span>
+<span class="n">Shape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;Ellipsoid&quot;</span><span class="p">,</span> <span class="n">ToEllipsoidDispatcher</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ToCuboidDispatcher</span><span class="p">(</span><span class="n">ShapeToDispatcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">ellipsoid</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">cuboid</span><span class="p">()</span>
+<span class="n">Shape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;cuboid&quot;</span><span class="p">,</span> <span class="n">ToCuboidDispatcher</span><span class="p">)</span>
+<span class="n">Shape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;Cuboid&quot;</span><span class="p">,</span> <span class="n">ToCuboidDispatcher</span><span class="p">)</span>
 
 
 <span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.shape&quot;</span><span class="p">)</span>
@@ -549,6 +588,7 @@
 <span class="sd">    has any meaning.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">to</span> <span class="o">=</span> <span class="n">PureShape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <div class="viewcode-block" id="NullShape.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.NullShape.html#sisl.shape.NullShape.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize a null-shape &quot;&quot;&quot;</span>
@@ -577,6 +617,15 @@
 <div class="viewcode-block" id="NullShape.volume"><a class="viewcode-back" href="../../../api/generated/sisl.shape.NullShape.html#sisl.shape.NullShape.volume">[docs]</a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; The volume of a null shape is exactly 0. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">0.</span></div>
+
+
+<span class="k">class</span> <span class="nc">ToSphereDispatcher</span><span class="p">(</span><span class="n">ShapeToDispatcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.ellipsoid</span> <span class="kn">import</span> <span class="n">Sphere</span>
+        <span class="k">return</span> <span class="n">Sphere</span><span class="p">(</span><span class="mf">1.e-64</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+<span class="n">NullShape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;sphere&quot;</span><span class="p">,</span> <span class="n">ToSphereDispatcher</span><span class="p">)</span>
+<span class="n">NullShape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;Sphere&quot;</span><span class="p">,</span> <span class="n">ToSphereDispatcher</span><span class="p">)</span>
 </pre></div>
 
            </div>

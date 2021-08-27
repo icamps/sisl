@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -320,7 +320,7 @@
 <span class="c1"># We have to do it after loading BaseSile and Geometry</span>
 <span class="c1"># Since __getitem__ always instantiate the class, we have to use the</span>
 <span class="c1"># contained lookup table.</span>
-<span class="n">Geometry</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">BaseSile</span><span class="p">,</span> <span class="n">Geometry</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="s2">&quot;str&quot;</span><span class="p">)]</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">Geometry</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">BaseSile</span><span class="p">,</span> <span class="n">Geometry</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">_dispatchs</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 
 <span class="c1"># Import the default geom structure</span>
 <span class="c1"># This enables:</span>

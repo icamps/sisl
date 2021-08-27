@@ -113,7 +113,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
@@ -283,7 +283,7 @@ are normalized to the entire BZ.</p></li>
 <td><p>Return <em class="xref py py-obj">self</em> with k-averaged quantities</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.MonkhorstPack.asdataarray" title="sisl.physics.MonkhorstPack.asdataarray"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asdataarray</span></code></a>()</p></td>
-<td><p>Return <em class="xref py py-obj">self</em> with <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.18.3.dev1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> returned quantities</p></td>
+<td><p>Return <em class="xref py py-obj">self</em> with <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> returned quantities</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.MonkhorstPack.asgrid" title="sisl.physics.MonkhorstPack.asgrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asgrid</span></code></a>()</p></td>
 <td><p>Return <em class="xref py py-obj">self</em> with Grid quantities</p></td>
@@ -315,8 +315,8 @@ are normalized to the entire BZ.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.MonkhorstPack.iter" title="sisl.physics.MonkhorstPack.iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter</span></code></a>([ret_weight])</p></td>
 <td><p>An iterator for the k-points and (possibly) the weights</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.MonkhorstPack.param_circle" title="sisl.physics.MonkhorstPack.param_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_circle</span></code></a>(sc, N_or_dk, kR, normal, origo)</p></td>
-<td><p>Create a parameterized k-point list where the k-points are generated on a circle around an origo</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.MonkhorstPack.param_circle" title="sisl.physics.MonkhorstPack.param_circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">param_circle</span></code></a>(sc, N_or_dk, kR, normal, origin)</p></td>
+<td><p>Create a parameterized k-point list where the k-points are generated on a circle around an origin</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.MonkhorstPack.parametrize" title="sisl.physics.MonkhorstPack.parametrize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parametrize</span></code></a>(sc, func, N, *args, **kwargs)</p></td>
 <td><p>Generate a new <a class="reference internal" href="sisl.physics.BrillouinZone.html#sisl.physics.BrillouinZone" title="sisl.physics.BrillouinZone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BrillouinZone</span></code></a> object with k-points parameterized via the function <em class="xref py py-obj">func</em> in <em class="xref py py-obj">N</em> separations</p></td>
@@ -405,7 +405,7 @@ and passing <a class="reference internal" href="#sisl.physics.MonkhorstPack.k" t
 <li><p><em class="xref py py-obj">apply.none</em>, specialized method that is mainly useful when wrapping methods</p></li>
 <li><p><em class="xref py py-obj">apply.list</em> same as <em class="xref py py-obj">apply.array</em> but using Python list as return value</p></li>
 <li><p><em class="xref py py-obj">apply.oplist</em> using <code class="xref py py-obj docutils literal notranslate"><span class="pre">sisl.oplist</span></code> allows greater flexibility for mathematical operations element wise</p></li>
-<li><p><em class="xref py py-obj">apply.datarray</em> if <code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code> is available one can retrieve an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.18.3.dev1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> instance</p></li>
+<li><p><em class="xref py py-obj">apply.datarray</em> if <code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code> is available one can retrieve an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> instance</p></li>
 </ul>
 <p>Please see <a class="reference internal" href="../physics.brillouinzone.html#physics-brillouinzone"><span class="std std-ref">Brillouin zone</span></a> for further examples.</p>
 </dd></dl>
@@ -513,13 +513,13 @@ it. Defaults to <code class="docutils literal notranslate"><span class="pre">lam
 <dl class="py method">
 <dt id="sisl.physics.MonkhorstPack.asdataarray">
 <code class="sig-name descname">asdataarray</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.MonkhorstPack.asdataarray" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return <em class="xref py py-obj">self</em> with <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.18.3.dev1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> returned quantities</p>
-<p>This forces the <a class="reference internal" href="#sisl.physics.MonkhorstPack.__call__" title="sisl.physics.MonkhorstPack.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a> routine to return a single <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.18.3.dev1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+<dd><p>Return <em class="xref py py-obj">self</em> with <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> returned quantities</p>
+<p>This forces the <a class="reference internal" href="#sisl.physics.MonkhorstPack.__call__" title="sisl.physics.MonkhorstPack.__call__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code></a> routine to return a single <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 <p class="rubric">Notes</p>
 <p>This method will be deprecated &gt;0.9.9.
 Please use <code class="docutils literal notranslate"><span class="pre">self.apply.dataarray</span></code> instead.</p>
 <p>If you wrap the sub-method to return multiple data-sets, you should use <em class="xref py py-obj">asdataset</em>
-instead which returns a combination of data-arrays (so-called <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.18.3.dev1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p>
+instead which returns a combination of data-arrays (so-called <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.19.1.dev6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>).</p>
 <p>All invocations of sub-methods are added these keyword-only arguments:</p>
 <dl class="simple">
 <dt>eta<span class="classifier">bool, optional</span></dt><dd><p>if true a progress-bar is created, default false.</p>
@@ -869,8 +869,8 @@ object.</p>
 
 <dl class="py method">
 <dt id="sisl.physics.MonkhorstPack.param_circle">
-<em class="property">classmethod </em><code class="sig-name descname">param_circle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sc</span></em>, <em class="sig-param"><span class="n">N_or_dk</span></em>, <em class="sig-param"><span class="n">kR</span></em>, <em class="sig-param"><span class="n">normal</span></em>, <em class="sig-param"><span class="n">origo</span></em>, <em class="sig-param"><span class="n">loop</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.MonkhorstPack.param_circle" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a parameterized k-point list where the k-points are generated on a circle around an origo</p>
+<em class="property">classmethod </em><code class="sig-name descname">param_circle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sc</span></em>, <em class="sig-param"><span class="n">N_or_dk</span></em>, <em class="sig-param"><span class="n">kR</span></em>, <em class="sig-param"><span class="n">normal</span></em>, <em class="sig-param"><span class="n">origin</span></em>, <em class="sig-param"><span class="n">loop</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.MonkhorstPack.param_circle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a parameterized k-point list where the k-points are generated on a circle around an origin</p>
 <p>The generated circle is a perfect circle in the reciprocal space (Cartesian coordinates).
 To generate a perfect circle in units of the reciprocal lattice vectors one can
 generate the circle for a diagonal supercell with side-length <span class="math notranslate nohighlight">\(2\pi\)</span>, see
@@ -885,7 +885,7 @@ If the latter case will use less than 4 points a warning will be raised and
 the number of points increased to 4.</p></li>
 <li><p><strong>kR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – radius of the k-point. In 1/Ang</p></li>
 <li><p><strong>normal</strong> (<em>array_like of float</em>) – normal vector to determine the circle plane</p></li>
-<li><p><strong>origo</strong> (<em>array_like of float</em>) – origo of the circle used to generate the circular parameterization</p></li>
+<li><p><strong>origin</strong> (<em>array_like of float</em>) – origin of the circle used to generate the circular parameterization</p></li>
 <li><p><strong>loop</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether the first and last point are equal</p></li>
 </ul>
 </dd>

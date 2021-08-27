@@ -113,7 +113,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
@@ -249,15 +249,15 @@
 <h1>wavefunction<a class="headerlink" href="#wavefunction" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sisl.physics.electron.wavefunction">
-<code class="sig-prename descclassname">sisl.physics.electron.</code><code class="sig-name descname">wavefunction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">geometry</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spinor</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">spin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.wavefunction" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sisl.physics.electron.</code><code class="sig-name descname">wavefunction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">grid</span></em>, <em class="sig-param"><span class="n">geometry</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">k</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">spinor</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">spin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#wavefunction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.wavefunction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add the wave-function (<em class="xref py py-obj">Orbital.psi</em>) component of each orbital to the grid</p>
 <p>This routine calculates the real-space wave-function components in the
 specified grid.</p>
 <p>This is an <em>in-place</em> operation that <em>adds</em> to the current values in the grid.</p>
 <p>It may be instructive to check that an eigenstate is normalized:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">psi</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">dvolume</span> <span class="o">==</span> <span class="mf">1.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wavefunction</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">grid</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">grid</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="n">grid</span><span class="o">.</span><span class="n">dvolume</span> <span class="o">==</span> <span class="mf">1.</span>
 </pre></div>
 </div>
 <p>Note: To calculate <span class="math notranslate nohighlight">\(\psi(\mathbf r)\)</span> in a unit-cell different from the
@@ -265,17 +265,17 @@ originating geometry, simply pass a grid with a unit-cell smaller than the origi
 supercell.</p>
 <p>The wavefunctions are calculated in real-space via:</p>
 <div class="math notranslate nohighlight">
-\[\psi(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi\rangle_i \exp(-i\mathbf k \mathbf R)\]</div>
+\[\psi(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi\rangle_i \exp(i\mathbf k \mathbf R)\]</div>
 <p>While for non-colinear/spin-orbit calculations the wavefunctions are determined from the
 spinor component (<em class="xref py py-obj">spinor</em>)</p>
 <div class="math notranslate nohighlight">
-\[\psi_{\alpha/\beta}(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi_{\alpha/\beta}\rangle_i \exp(-i\mathbf k \mathbf R)\]</div>
+\[\psi_{\alpha/\beta}(\mathbf r) = \sum_i\phi_i(\mathbf r) |\psi_{\alpha/\beta}\rangle_i \exp(i\mathbf k \mathbf R)\]</div>
 <p>where <code class="docutils literal notranslate"><span class="pre">spinor</span> <span class="pre">in</span> <span class="pre">[0,</span> <span class="pre">1]</span></code> determines <span class="math notranslate nohighlight">\(\alpha\)</span> or <span class="math notranslate nohighlight">\(\beta\)</span>, respectively.</p>
 <p class="rubric">Notes</p>
 <p>Currently this method only works for <em class="xref py py-obj">v</em> being coefficients of the gauge=’R’ method. In case
 you are passing a <em class="xref py py-obj">v</em> with the incorrect gauge you will find a phase-shift according to:</p>
 <div class="math notranslate nohighlight">
-\[\tilde v_j = e^{-i\mathbf k\mathbf r_j} v_j\]</div>
+\[\tilde v_j = e^{i\mathbf k\mathbf r_j} v_j\]</div>
 <p>where <span class="math notranslate nohighlight">\(j\)</span> is the orbital index and <span class="math notranslate nohighlight">\(\mathbf r_j\)</span> is the orbital position.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -199,7 +199,7 @@
 <span class="kn">from</span> <span class="nn">sisl.utils.mathematics</span> <span class="kn">import</span> <span class="n">orthogonalize</span><span class="p">,</span> <span class="n">fnorm</span><span class="p">,</span> <span class="n">fnorm2</span><span class="p">,</span> <span class="n">expand</span>
 <span class="kn">from</span> <span class="nn">sisl._math_small</span> <span class="kn">import</span> <span class="n">product3</span>
 <span class="kn">from</span> <span class="nn">sisl._indices</span> <span class="kn">import</span> <span class="n">indices_in_sphere</span>
-<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PureShape</span>
+<span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">PureShape</span><span class="p">,</span> <span class="n">ShapeToDispatcher</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Ellipsoid&#39;</span><span class="p">,</span> <span class="s1">&#39;Sphere&#39;</span><span class="p">]</span>
@@ -217,7 +217,7 @@
 <span class="sd">       I.e. the first vector is considered a principal axis, then the second vector will</span>
 <span class="sd">       be orthogonalized onto the first, and this is the second principal axis. And so on.</span>
 <span class="sd">    center : (3,), optional</span>
-<span class="sd">       the center of the ellipsoid. Defaults to the origo.</span>
+<span class="sd">       the center of the ellipsoid. Defaults to the origin.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -226,6 +226,8 @@
 <span class="sd">    True</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;_v&#39;</span><span class="p">,</span> <span class="s1">&#39;_iv&#39;</span><span class="p">)</span>
+
+    <span class="n">to</span> <span class="o">=</span> <span class="n">PureShape</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Ellipsoid.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Ellipsoid.html#sisl.shape.Ellipsoid.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
@@ -312,10 +314,6 @@
         <span class="kn">from</span> <span class="nn">.prism4</span> <span class="kn">import</span> <span class="n">Cuboid</span>
         <span class="k">return</span> <span class="n">Cuboid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Ellipsoid.set_center"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Ellipsoid.html#sisl.shape.Ellipsoid.set_center">[docs]</a>    <span class="k">def</span> <span class="nf">set_center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Change the center of the object &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">center</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="Ellipsoid.within_index"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Ellipsoid.html#sisl.shape.Ellipsoid.within_index">[docs]</a>    <span class="k">def</span> <span class="nf">within_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1.e-8</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return indices of the points that are within the shape</span>
 
@@ -343,6 +341,33 @@
         <span class="k">return</span> <span class="n">fnorm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v</span><span class="p">)</span>
 
 
+<span class="k">class</span> <span class="nc">EllipsoidToEllipsoid</span><span class="p">(</span><span class="n">ShapeToDispatcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">Ellipsoid</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;ellipsoid&quot;</span><span class="p">,</span> <span class="n">EllipsoidToEllipsoid</span><span class="p">)</span>
+<span class="n">Ellipsoid</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;Ellipsoid&quot;</span><span class="p">,</span> <span class="n">EllipsoidToEllipsoid</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">EllipsoidToSphere</span><span class="p">(</span><span class="n">ShapeToDispatcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
+        <span class="k">return</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">shape</span><span class="o">.</span><span class="n">center</span><span class="p">)</span>
+
+<span class="n">Ellipsoid</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;sphere&quot;</span><span class="p">,</span> <span class="n">EllipsoidToSphere</span><span class="p">)</span>
+<span class="n">Ellipsoid</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;Sphere&quot;</span><span class="p">,</span> <span class="n">EllipsoidToSphere</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">EllipsoidToCuboid</span><span class="p">(</span><span class="n">ShapeToDispatcher</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">.prism4</span> <span class="kn">import</span> <span class="n">Cuboid</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span>
+        <span class="k">return</span> <span class="n">Cuboid</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">_v</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">center</span><span class="p">)</span>
+
+<span class="n">Ellipsoid</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;cuboid&quot;</span><span class="p">,</span> <span class="n">EllipsoidToCuboid</span><span class="p">)</span>
+<span class="n">Ellipsoid</span><span class="o">.</span><span class="n">to</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s2">&quot;Cuboid&quot;</span><span class="p">,</span> <span class="n">EllipsoidToCuboid</span><span class="p">)</span>
+
+
 <span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.shape&quot;</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">Ellipsoid</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; 3D Sphere</span>
@@ -352,6 +377,7 @@
 <span class="sd">    r : float</span>
 <span class="sd">       radius of the sphere</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
 <div class="viewcode-block" id="Sphere.__init__"><a class="viewcode-back" href="../../../api/generated/sisl.shape.Sphere.html#sisl.shape.Sphere.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">radius</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>

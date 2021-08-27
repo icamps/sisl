@@ -113,7 +113,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
@@ -251,7 +251,7 @@
 oriented ellipsoid. If the vectors are non-orthogonal they will be orthogonalized.
 I.e. the first vector is considered a principal axis, then the second vector will
 be orthogonalized onto the first, and this is the second principal axis. And so on.</p></li>
-<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the ellipsoid. Defaults to the origo.</p></li>
+<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the ellipsoid. Defaults to the origin.</p></li>
 </ul>
 </dd>
 </dl>
@@ -277,32 +277,32 @@ be orthogonalized onto the first, and this is the second principal axis. And so 
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.scale" title="sisl.shape.Ellipsoid.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(scale)</p></td>
 <td><p>Return a new shape with a larger corresponding to <a class="reference internal" href="#sisl.shape.Ellipsoid.scale" title="sisl.shape.Ellipsoid.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.set_center" title="sisl.shape.Ellipsoid.set_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_center</span></code></a>(center)</p></td>
-<td><p>Change the center of the object</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.toCuboid" title="sisl.shape.Ellipsoid.toCuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toCuboid</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.toCuboid" title="sisl.shape.Ellipsoid.toCuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toCuboid</span></code></a>()</p></td>
 <td><p>Return a cuboid with side lengths equal to the diameter of each ellipsoid vectors</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.toEllipsoid" title="sisl.shape.Ellipsoid.toEllipsoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toEllipsoid</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.toEllipsoid" title="sisl.shape.Ellipsoid.toEllipsoid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toEllipsoid</span></code></a>()</p></td>
 <td><p>Return an ellipsoid that encompass this shape (a copy)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.toSphere" title="sisl.shape.Ellipsoid.toSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toSphere</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.toSphere" title="sisl.shape.Ellipsoid.toSphere"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toSphere</span></code></a>()</p></td>
 <td><p>Return a sphere with a radius equal to the largest radial vector</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.volume" title="sisl.shape.Ellipsoid.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.volume" title="sisl.shape.Ellipsoid.volume"><code class="xref py py-obj docutils literal notranslate"><span class="pre">volume</span></code></a>()</p></td>
 <td><p>Return the volume of the shape</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.within" title="sisl.shape.Ellipsoid.within"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within</span></code></a>(other, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.within" title="sisl.shape.Ellipsoid.within"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within</span></code></a>(other, *args, **kwargs)</p></td>
 <td><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if <em class="xref py py-obj">other</em> is fully within <em class="xref py py-obj">self</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.within_index" title="sisl.shape.Ellipsoid.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a>(other[, tol])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.within_index" title="sisl.shape.Ellipsoid.within_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">within_index</span></code></a>(other[, tol])</p></td>
 <td><p>Return indices of the points that are within the shape</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.center" title="sisl.shape.Ellipsoid.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.center" title="sisl.shape.Ellipsoid.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a></p></td>
 <td><p>The geometric center of the shape</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.radius" title="sisl.shape.Ellipsoid.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.radius" title="sisl.shape.Ellipsoid.radius"><code class="xref py py-obj docutils literal notranslate"><span class="pre">radius</span></code></a></p></td>
 <td><p>Return the radius of the Ellipsoid</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Ellipsoid.to" title="sisl.shape.Ellipsoid.to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code></a></p></td>
+<td><p>A dispatcher for classes, using <em class="xref py py-obj">__get__</em> it converts into <em class="xref py py-obj">ObjectDispatcher</em> upon invocation from an object, or a <em class="xref py py-obj">TypeDispatcher</em> when invoked from a class</p></td>
 </tr>
 </tbody>
 </table>
@@ -351,10 +351,35 @@ be orthogonalized onto the first, and this is the second principal axis. And so 
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="sisl.shape.Ellipsoid.set_center">
-<code class="sig-name descname">set_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">center</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/ellipsoid.html#Ellipsoid.set_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Ellipsoid.set_center" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the center of the object</p>
+<dl class="py attribute">
+<dt id="sisl.shape.Ellipsoid.to">
+<code class="sig-name descname">to</code><a class="headerlink" href="#sisl.shape.Ellipsoid.to" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dispatcher for classes, using <em class="xref py py-obj">__get__</em> it converts into <em class="xref py py-obj">ObjectDispatcher</em> upon invocation from an object, or a <em class="xref py py-obj">TypeDispatcher</em> when invoked from a class</p>
+<p>This is a class-placeholder allowing a dispatcher to be a class attribute and converted into an
+<em class="xref py py-obj">ObjectDispatcher</em> when invoked from an object.</p>
+<p>If it is called on the class, it will return a <em class="xref py py-obj">TypeDispatcher</em>.</p>
+<p>This class should be an attribute of a class. It heavily relies on the <em class="xref py py-obj">__get__</em> special
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of the attribute in the class</p></li>
+<li><p><strong>dispatchs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – dictionary of dispatch methods</p></li>
+<li><p><strong>obj_getattr</strong> (<em>callable</em><em>, </em><em>optional</em>) – method with 2 arguments, an <code class="docutils literal notranslate"><span class="pre">obj</span></code> and the <code class="docutils literal notranslate"><span class="pre">attr</span></code> which may be used
+to control how the attribute is called.</p></li>
+<li><p><strong>instance_dispatcher</strong> (<em>AbstractDispatcher</em><em>, </em><em>optional</em>) – control how instance dispatchers are handled through <em class="xref py py-obj">__get__</em> method.
+This controls the dispatcher used if called from an instance.</p></li>
+<li><p><strong>type_dispatcher</strong> (<em>AbstractDispatcher</em><em>, </em><em>optional</em>) – control how class dispatchers are handled through <em class="xref py py-obj">__get__</em> method.
+This controls the dispatcher used if called from a class.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">new</span> <span class="o">=</span> <span class="n">ClassDispatcher</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="n">obj_getattr</span><span class="o">=</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above defers any attributes to the contained <em class="xref py py-obj">A.sub</em> attribute.</p>
 </dd></dl>
 
 <dl class="py method">

@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -3434,6 +3434,8 @@
 </li>
       <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_colinear">is_colinear() (sisl.physics.Spin property)</a>
 </li>
+      <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_diagonal">is_diagonal() (sisl.physics.Spin property)</a>
+</li>
       <li><a href="api/generated/sisl.constant.PhysicalConstant.html#sisl.constant.PhysicalConstant.is_integer">is_integer() (sisl.constant.PhysicalConstant method)</a>
 </li>
       <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_noncolinear">is_noncolinear() (sisl.physics.Spin property)</a>
@@ -3446,10 +3448,10 @@
         <li><a href="api/generated/sisl.SuperCell.html#sisl.SuperCell.is_orthogonal">(sisl.SuperCell method)</a>
 </li>
       </ul></li>
-      <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_polarized">is_polarized() (sisl.physics.Spin property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_polarized">is_polarized() (sisl.physics.Spin property)</a>
+</li>
       <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_spinorbit">is_spinorbit() (sisl.physics.Spin property)</a>
 </li>
       <li><a href="api/generated/sisl.physics.Spin.html#sisl.physics.Spin.is_unpolarized">is_unpolarized() (sisl.physics.Spin property)</a>
@@ -4557,14 +4559,22 @@
       </ul></li>
       <li><a href="api/io/generated/sisl.io.scaleup.orboccSileScaleUp.html#sisl.io.scaleup.orboccSileScaleUp">orboccSileScaleUp (class in sisl.io.scaleup)</a>
 </li>
+      <li><a href="api/generated/sisl.Geometry.html#sisl.Geometry.origin">origin() (sisl.Geometry property)</a>
+
+      <ul>
+        <li><a href="api/generated/sisl.Grid.html#sisl.Grid.origin">(sisl.Grid property)</a>
+</li>
+        <li><a href="api/generated/sisl.shape.Cube.html#sisl.shape.Cube.origin">(sisl.shape.Cube property)</a>
+</li>
+        <li><a href="api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.origin">(sisl.shape.Cuboid property)</a>
+</li>
+        <li><a href="api/generated/sisl.SuperCell.html#sisl.SuperCell.origin">(sisl.SuperCell property)</a>
+</li>
+      </ul></li>
       <li><a href="api/generated/sisl.Geometry.html#sisl.Geometry.origo">origo() (sisl.Geometry property)</a>
 
       <ul>
         <li><a href="api/generated/sisl.Grid.html#sisl.Grid.origo">(sisl.Grid property)</a>
-</li>
-        <li><a href="api/generated/sisl.shape.Cube.html#sisl.shape.Cube.origo">(sisl.shape.Cube property)</a>
-</li>
-        <li><a href="api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.origo">(sisl.shape.Cuboid property)</a>
 </li>
         <li><a href="api/generated/sisl.SuperCell.html#sisl.SuperCell.origo">(sisl.SuperCell property)</a>
 </li>
@@ -5843,16 +5853,6 @@
 </li>
       <li><a href="api/generated/sisl.Grid.html#sisl.Grid.set_boundary_condition">set_boundary_condition() (sisl.Grid method)</a>
 </li>
-      <li><a href="api/generated/sisl.shape.Cube.html#sisl.shape.Cube.set_center">set_center() (sisl.shape.Cube method)</a>
-
-      <ul>
-        <li><a href="api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.set_center">(sisl.shape.Cuboid method)</a>
-</li>
-        <li><a href="api/generated/sisl.shape.Ellipsoid.html#sisl.shape.Ellipsoid.set_center">(sisl.shape.Ellipsoid method)</a>
-</li>
-        <li><a href="api/generated/sisl.shape.Sphere.html#sisl.shape.Sphere.set_center">(sisl.shape.Sphere method)</a>
-</li>
-      </ul></li>
       <li><a href="api/io/generated/sisl.io.gulp.gotSileGULP.html#sisl.io.gulp.gotSileGULP.set_dyn_key">set_dyn_key() (sisl.io.gulp.gotSileGULP method)</a>
 </li>
       <li><a href="api/io/generated/sisl.io.gulp.gotSileGULP.html#sisl.io.gulp.gotSileGULP.set_dynamical_matrix_key">set_dynamical_matrix_key() (sisl.io.gulp.gotSileGULP method)</a>
@@ -5897,12 +5897,6 @@
 
       <ul>
         <li><a href="api/generated/sisl.physics.RealSpaceSI.html#sisl.physics.RealSpaceSI.set_options">(sisl.physics.RealSpaceSI method)</a>
-</li>
-      </ul></li>
-      <li><a href="api/generated/sisl.shape.Cube.html#sisl.shape.Cube.set_origo">set_origo() (sisl.shape.Cube method)</a>
-
-      <ul>
-        <li><a href="api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.set_origo">(sisl.shape.Cuboid method)</a>
 </li>
       </ul></li>
       <li><a href="api/generated/sisl.physics.BandStructure.html#sisl.physics.BandStructure.set_parent">set_parent() (sisl.physics.BandStructure method)</a>
@@ -6121,8 +6115,6 @@
         <li><a href="api/io/scaleup.html#module-sisl.io.scaleup">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sisl.io.siesta
 
@@ -6137,6 +6129,8 @@
         <li><a href="api/io/siesta.html#module-sisl.io.tbtrans">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     sisl.io.vasp
 
@@ -6623,7 +6617,21 @@
 </li>
       </ul></li>
       <li><a href="api/generated/sisl.Geometry.html#sisl.Geometry.to">to (sisl.Geometry attribute)</a>
+
+      <ul>
+        <li><a href="api/generated/sisl.shape.Cube.html#sisl.shape.Cube.to">(sisl.shape.Cube attribute)</a>
 </li>
+        <li><a href="api/generated/sisl.shape.Cuboid.html#sisl.shape.Cuboid.to">(sisl.shape.Cuboid attribute)</a>
+</li>
+        <li><a href="api/generated/sisl.shape.Ellipsoid.html#sisl.shape.Ellipsoid.to">(sisl.shape.Ellipsoid attribute)</a>
+</li>
+        <li><a href="api/generated/sisl.shape.NullShape.html#sisl.shape.NullShape.to">(sisl.shape.NullShape attribute)</a>
+</li>
+        <li><a href="api/generated/sisl.shape.Shape.html#sisl.shape.Shape.to">(sisl.shape.Shape attribute)</a>
+</li>
+        <li><a href="api/generated/sisl.shape.Sphere.html#sisl.shape.Sphere.to">(sisl.shape.Sphere attribute)</a>
+</li>
+      </ul></li>
       <li><a href="api/generated/sisl.Geometry.html#sisl.Geometry.toASE">toASE() (sisl.Geometry method)</a>
 </li>
       <li><a href="api/generated/sisl.SphericalOrbital.html#sisl.SphericalOrbital.toAtomicOrbital">toAtomicOrbital() (sisl.SphericalOrbital method)</a>
@@ -6710,6 +6718,8 @@
         <li><a href="api/generated/sisl.physics.MonkhorstPack.html#sisl.physics.MonkhorstPack.toreduced">(sisl.physics.MonkhorstPack method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/sisl.physics.DensityMatrix.html#sisl.physics.DensityMatrix.toSparseAtom">toSparseAtom() (sisl.physics.DensityMatrix method)</a>
 
       <ul>
@@ -6728,8 +6738,6 @@
         <li><a href="api/generated/sisl.SparseOrbital.html#sisl.SparseOrbital.toSparseAtom">(sisl.SparseOrbital method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/generated/sisl.Atom.html#sisl.Atom.toSphere">toSphere() (sisl.Atom method)</a>
 
       <ul>

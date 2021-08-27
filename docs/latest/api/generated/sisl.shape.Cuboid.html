@@ -113,7 +113,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul class="current">
@@ -241,7 +241,7 @@
 <h1>sisl.shape.Cuboid<a class="headerlink" href="#sisl-shape-cuboid" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="sisl.shape.Cuboid">
-<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cuboid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origo</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cuboid" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">sisl.shape.</code><code class="sig-name descname">Cuboid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origin</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.shape.Cuboid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sisl.shape.PureShape</span></code></p>
 <p>A cuboid/rectangular prism (P4)</p>
 <dl class="field-list simple">
@@ -249,9 +249,9 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em> or </em><em>(</em><em>3</em><em>,</em><em>) or </em><em>(</em><em>3</em><em>, </em><em>3</em><em>)</em>) – vectors describing the cuboid, if only 3 the cuboid will be
 along the Euclidean vectors.</p></li>
-<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the cuboid. Defaults to the origo.
-Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboid.origo" title="sisl.shape.Cuboid.origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origo</span></code></a> is passed.</p></li>
-<li><p><strong>origo</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the offset for the cuboid. The center will be equal to <code class="docutils literal notranslate"><span class="pre">v.sum(0)</span> <span class="pre">+</span> <span class="pre">origo</span></code>.
+<li><p><strong>center</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the center of the cuboid. Defaults to the origin.
+Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboid.origin" title="sisl.shape.Cuboid.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a> is passed.</p></li>
+<li><p><strong>origin</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – the offset for the cuboid. The center will be equal to <code class="docutils literal notranslate"><span class="pre">v.sum(0)</span> <span class="pre">+</span> <span class="pre">origin</span></code>.
 Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboid.center" title="sisl.shape.Cuboid.center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">center</span></code></a> is passed.</p></li>
 </ul>
 </dd>
@@ -280,12 +280,6 @@ Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboi
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.scale" title="sisl.shape.Cuboid.scale"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scale</span></code></a>(scale)</p></td>
 <td><p>Scale the cuboid box size (center is retained)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.set_center" title="sisl.shape.Cuboid.set_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_center</span></code></a>(center)</p></td>
-<td><p>Re-setting the center can sometimes be necessary</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.set_origo" title="sisl.shape.Cuboid.set_origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_origo</span></code></a>(origo)</p></td>
-<td><p>Re-setting the origo can sometimes be necessary</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.toCuboid" title="sisl.shape.Cuboid.toCuboid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toCuboid</span></code></a>()</p></td>
 <td><p>Return a copy of itself</p></td>
 </tr>
@@ -310,14 +304,17 @@ Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboi
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.edge_length" title="sisl.shape.Cuboid.edge_length"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_length</span></code></a></p></td>
 <td><p>The lengths of each of the vector that defines the cuboid</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.origo" title="sisl.shape.Cuboid.origo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origo</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.origin" title="sisl.shape.Cuboid.origin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">origin</span></code></a></p></td>
 <td><p>Return the origin of the Cuboid (lower-left corner)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.shape.Cuboid.to" title="sisl.shape.Cuboid.to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to</span></code></a></p></td>
+<td><p>A dispatcher for classes, using <em class="xref py py-obj">__get__</em> it converts into <em class="xref py py-obj">ObjectDispatcher</em> upon invocation from an object, or a <em class="xref py py-obj">TypeDispatcher</em> when invoked from a class</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt id="sisl.shape.Cuboid.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origo</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cuboid.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cuboid.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em>, <em class="sig-param"><span class="n">center</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">origin</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cuboid.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cuboid.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
@@ -350,8 +347,8 @@ Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboi
 </dd></dl>
 
 <dl class="py method">
-<dt id="sisl.shape.Cuboid.origo">
-<em class="property">property </em><code class="sig-name descname">origo</code><a class="headerlink" href="#sisl.shape.Cuboid.origo" title="Permalink to this definition">¶</a></dt>
+<dt id="sisl.shape.Cuboid.origin">
+<em class="property">property </em><code class="sig-name descname">origin</code><a class="headerlink" href="#sisl.shape.Cuboid.origin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the origin of the Cuboid (lower-left corner)</p>
 </dd></dl>
 
@@ -366,16 +363,35 @@ Not allowed as argument if <a class="reference internal" href="#sisl.shape.Cuboi
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="sisl.shape.Cuboid.set_center">
-<code class="sig-name descname">set_center</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">center</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cuboid.set_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cuboid.set_center" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-setting the center can sometimes be necessary</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="sisl.shape.Cuboid.set_origo">
-<code class="sig-name descname">set_origo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">origo</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/shape/prism4.html#Cuboid.set_origo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.shape.Cuboid.set_origo" title="Permalink to this definition">¶</a></dt>
-<dd><p>Re-setting the origo can sometimes be necessary</p>
+<dl class="py attribute">
+<dt id="sisl.shape.Cuboid.to">
+<code class="sig-name descname">to</code><a class="headerlink" href="#sisl.shape.Cuboid.to" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dispatcher for classes, using <em class="xref py py-obj">__get__</em> it converts into <em class="xref py py-obj">ObjectDispatcher</em> upon invocation from an object, or a <em class="xref py py-obj">TypeDispatcher</em> when invoked from a class</p>
+<p>This is a class-placeholder allowing a dispatcher to be a class attribute and converted into an
+<em class="xref py py-obj">ObjectDispatcher</em> when invoked from an object.</p>
+<p>If it is called on the class, it will return a <em class="xref py py-obj">TypeDispatcher</em>.</p>
+<p>This class should be an attribute of a class. It heavily relies on the <em class="xref py py-obj">__get__</em> special
+method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – name of the attribute in the class</p></li>
+<li><p><strong>dispatchs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>, </em><em>optional</em>) – dictionary of dispatch methods</p></li>
+<li><p><strong>obj_getattr</strong> (<em>callable</em><em>, </em><em>optional</em>) – method with 2 arguments, an <code class="docutils literal notranslate"><span class="pre">obj</span></code> and the <code class="docutils literal notranslate"><span class="pre">attr</span></code> which may be used
+to control how the attribute is called.</p></li>
+<li><p><strong>instance_dispatcher</strong> (<em>AbstractDispatcher</em><em>, </em><em>optional</em>) – control how instance dispatchers are handled through <em class="xref py py-obj">__get__</em> method.
+This controls the dispatcher used if called from an instance.</p></li>
+<li><p><strong>type_dispatcher</strong> (<em>AbstractDispatcher</em><em>, </em><em>optional</em>) – control how class dispatchers are handled through <em class="xref py py-obj">__get__</em> method.
+This controls the dispatcher used if called from a class.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+<span class="gp">... </span>  <span class="n">new</span> <span class="o">=</span> <span class="n">ClassDispatcher</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">,</span> <span class="n">obj_getattr</span><span class="o">=</span><span class="k">lambda</span> <span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above defers any attributes to the contained <em class="xref py py-obj">A.sub</em> attribute.</p>
 </dd></dl>
 
 <dl class="py method">

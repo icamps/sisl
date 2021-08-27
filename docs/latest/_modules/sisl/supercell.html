@@ -111,7 +111,7 @@
 <p class="caption"><span class="caption-text">Visualization</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../visualization/ase/index.html">ASE</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../visualization/plotly/index.html">Plotly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../visualization/viz_module/index.html">The <code class="docutils literal notranslate"><span class="pre">sisl.viz</span></code> module</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Reference documentation</span></p>
 <ul>
@@ -201,6 +201,7 @@
 <span class="kn">from</span> <span class="nn">._internal</span> <span class="kn">import</span> <span class="n">set_module</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_plot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_array</span> <span class="k">as</span> <span class="n">_a</span>
+<span class="kn">from</span> <span class="nn">.messages</span> <span class="kn">import</span> <span class="n">deprecate_method</span>
 <span class="kn">from</span> <span class="nn">.utils.mathematics</span> <span class="kn">import</span> <span class="n">fnorm</span>
 <span class="kn">from</span> <span class="nn">.shape.prism4</span> <span class="kn">import</span> <span class="n">Cuboid</span>
 <span class="kn">from</span> <span class="nn">.quaternion</span> <span class="kn">import</span> <span class="n">Quaternion</span>
@@ -229,14 +230,14 @@
 <span class="sd">       is returned from `tocell`.</span>
 <span class="sd">    nsc : array_like of int</span>
 <span class="sd">       number of supercells along each latticevector</span>
-<span class="sd">    origo : (3,) of float</span>
-<span class="sd">       the origo of the supercell.</span>
+<span class="sd">    origin : (3,) of float, optional</span>
+<span class="sd">       the origin of the supercell.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># We limit the scope of this SuperCell object.</span>
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">,</span> <span class="s1">&#39;_origo&#39;</span><span class="p">,</span> <span class="s1">&#39;volume&#39;</span><span class="p">,</span> <span class="s1">&#39;nsc&#39;</span><span class="p">,</span> <span class="s1">&#39;n_s&#39;</span><span class="p">,</span> <span class="s1">&#39;_sc_off&#39;</span><span class="p">,</span> <span class="s1">&#39;_isc_off&#39;</span><span class="p">)</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;cell&#39;</span><span class="p">,</span> <span class="s1">&#39;_origin&#39;</span><span class="p">,</span> <span class="s1">&#39;volume&#39;</span><span class="p">,</span> <span class="s1">&#39;nsc&#39;</span><span class="p">,</span> <span class="s1">&#39;n_s&#39;</span><span class="p">,</span> <span class="s1">&#39;_sc_off&#39;</span><span class="p">,</span> <span class="s1">&#39;_isc_off&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SuperCell.__init__"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">nsc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SuperCell.__init__"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">nsc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">nsc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">nsc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
@@ -245,12 +246,12 @@
         <span class="c1"># actual cell coordinates</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tocell</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">origo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_origo</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">zerosd</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">zerosd</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_origo</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayd</span><span class="p">(</span><span class="n">origo</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_origo</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Origo *must* be 3 numbers.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayd</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Origin *must* be 3 numbers.&quot;</span><span class="p">)</span>
 
         <span class="c1"># Set the volume</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_vol</span><span class="p">()</span>
@@ -265,21 +266,33 @@
         <span class="k">return</span> <span class="n">fnorm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Origin for the cell &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span>
+
+    <span class="nd">@origin</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set origin for the cell &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">origin</span>
+
+    <span class="nd">@property</span>
+    <span class="nd">@deprecate_method</span><span class="p">(</span><span class="s2">&quot;use .origin instead&quot;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">origo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Origo for the cell &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_origo</span>
+        <span class="sd">&quot;&quot;&quot; Origin for the cell &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span>
 
     <span class="nd">@origo</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">origo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origo</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Set origo &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_origo</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">origo</span>
+    <span class="nd">@deprecate_method</span><span class="p">(</span><span class="s2">&quot;use .origin instead&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">origo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set origin &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_origin</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">origin</span>
 
 <div class="viewcode-block" id="SuperCell.area"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Calculate the area spanned by the two axis `ax0` and `ax1` &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">cross3</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">ax0</span><span class="p">,</span> <span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">ax1</span><span class="p">,</span> <span class="p">:])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">**</span> <span class="mf">0.5</span></div>
 
 <div class="viewcode-block" id="SuperCell.toCuboid"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.toCuboid">[docs]</a>    <span class="k">def</span> <span class="nf">toCuboid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orthogonal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; A cuboid with vectors as this unit-cell and center with respect to its origo</span>
+        <span class="sd">&quot;&quot;&quot; A cuboid with vectors as this unit-cell and center with respect to its origin</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -287,7 +300,7 @@
 <span class="sd">           if true the cuboid has orthogonal sides such that the entire cell is contained</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">orthogonal</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Cuboid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Cuboid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">find_min_max</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">,</span> <span class="n">new</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
                 <span class="n">cmin</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">cmin</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">new</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
@@ -298,7 +311,7 @@
         <span class="n">find_min_max</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
         <span class="n">find_min_max</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
         <span class="n">find_min_max</span><span class="p">(</span><span class="n">cmin</span><span class="p">,</span> <span class="n">cmax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">Cuboid</span><span class="p">(</span><span class="n">cmax</span> <span class="o">-</span> <span class="n">cmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Cuboid</span><span class="p">(</span><span class="n">cmax</span> <span class="o">-</span> <span class="n">cmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">center</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SuperCell.parameters"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.parameters">[docs]</a>    <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rad</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Cell parameters of this cell in 3 lengths and 3 angles</span>
@@ -473,22 +486,22 @@
         <span class="sd">&quot;&quot;&quot; Iterate the supercells and the indices of the supercells &quot;&quot;&quot;</span>
         <span class="k">yield from</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sc_off</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SuperCell.copy"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SuperCell.copy"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cell</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; A deepcopy of the object</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        cell : array_like</span>
 <span class="sd">           the new cell parameters</span>
-<span class="sd">        origo : array_like</span>
-<span class="sd">           the new origo</span>
+<span class="sd">        origin : array_like</span>
+<span class="sd">           the new origin</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">origo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">origo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">),</span> <span class="n">nsc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">),</span> <span class="n">origo</span><span class="o">=</span><span class="n">origo</span><span class="p">)</span>
+            <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">),</span> <span class="n">nsc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cell</span><span class="p">),</span> <span class="n">nsc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">),</span> <span class="n">origo</span><span class="o">=</span><span class="n">origo</span><span class="p">)</span>
+            <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">cell</span><span class="p">),</span> <span class="n">nsc</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span>
         <span class="c1"># Ensure that the correct super-cell information gets carried through</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">sc_off</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_off</span><span class="p">):</span>
             <span class="n">copy</span><span class="o">.</span><span class="n">sc_off</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_off</span>
@@ -577,9 +590,9 @@
         <span class="c1"># There _can_ be errors when sc_off isn&#39;t created by sisl</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">),</span>
                               <span class="n">nsc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span>
-                              <span class="n">origo</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">))</span></div>
+                              <span class="n">origin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="SuperCell.plane"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.plane">[docs]</a>    <span class="k">def</span> <span class="nf">plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="SuperCell.plane"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.plane">[docs]</a>    <span class="k">def</span> <span class="nf">plane</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Query point and plane-normal for the plane spanning `ax1` and `ax2`</span>
 
 <span class="sd">        Parameters</span>
@@ -588,8 +601,8 @@
 <span class="sd">           the first axis vector</span>
 <span class="sd">        ax2 : int</span>
 <span class="sd">           the second axis vector</span>
-<span class="sd">        origo : bool, optional</span>
-<span class="sd">           whether the plane intersects the origo or the opposite corner of the</span>
+<span class="sd">        origin : bool, optional</span>
+<span class="sd">           whether the plane intersects the origin or the opposite corner of the</span>
 <span class="sd">           unit-cell.</span>
 
 <span class="sd">        Returns</span>
@@ -646,7 +659,7 @@
         <span class="k">if</span> <span class="n">dot3</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">up</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
 
-        <span class="k">if</span> <span class="n">origo</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">origin</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">_a</span><span class="o">.</span><span class="n">zerosd</span><span class="p">([</span><span class="mi">3</span><span class="p">])</span>
         <span class="c1"># We have to reverse the normal vector</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">up</span></div>
@@ -763,9 +776,9 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SuperCell</span><span class="p">):</span>
             <span class="n">other</span> <span class="o">=</span> <span class="n">SuperCell</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">cell</span>
-        <span class="n">origo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origo</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">origo</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">origin</span>
         <span class="n">nsc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">nsc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nsc</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nsc</span><span class="o">=</span><span class="n">nsc</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="n">origo</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nsc</span><span class="o">=</span><span class="n">nsc</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
@@ -846,7 +859,7 @@
 <div class="viewcode-block" id="SuperCell.scale"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.scale">[docs]</a>    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Scale lattice vectors</span>
 
-<span class="sd">        Does not scale `origo`.</span>
+<span class="sd">        Does not scale `origin`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -871,7 +884,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">cell</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
         <span class="n">nsc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">)</span>
-        <span class="n">origo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="p">)</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
         <span class="n">cell</span><span class="p">[</span><span class="n">axis</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*=</span> <span class="n">reps</span>
         <span class="c1"># Only reduce the size if it is larger than 5</span>
         <span class="k">if</span> <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">reps</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
@@ -879,7 +892,7 @@
             <span class="n">h_nsc</span> <span class="o">=</span> <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
             <span class="c1"># The new number of supercells will then be</span>
             <span class="n">nsc</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">h_nsc</span> <span class="o">/</span> <span class="n">reps</span><span class="p">)))</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nsc</span><span class="o">=</span><span class="n">nsc</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="n">origo</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">nsc</span><span class="o">=</span><span class="n">nsc</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SuperCell.repeat"><a class="viewcode-back" href="../../api/generated/sisl.SuperCell.html#sisl.SuperCell.repeat">[docs]</a>    <span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reps</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Extend the unit-cell `reps` times along the `axis` lattice vector</span>
@@ -1111,14 +1124,14 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        tol : float, optional</span>
-<span class="sd">            tolerance value for the cell vectors and origo</span>
+<span class="sd">            tolerance value for the cell vectors and origin</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">SuperCell</span><span class="p">,</span> <span class="n">SuperCellChild</span><span class="p">)):</span>
             <span class="k">return</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">tol</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">]:</span>
             <span class="n">same</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
         <span class="n">same</span> <span class="o">=</span> <span class="n">same</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">nsc</span><span class="p">)</span>
-        <span class="n">same</span> <span class="o">=</span> <span class="n">same</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">origo</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+        <span class="n">same</span> <span class="o">=</span> <span class="n">same</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">same</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1142,11 +1155,11 @@
     <span class="c1"># Create pickling routines</span>
     <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Returns the state of this object &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="s1">&#39;nsc&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">,</span> <span class="s1">&#39;sc_off&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_off</span><span class="p">,</span> <span class="s1">&#39;origo&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">origo</span><span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;cell&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">,</span> <span class="s1">&#39;nsc&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsc</span><span class="p">,</span> <span class="s1">&#39;sc_off&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc_off</span><span class="p">,</span> <span class="s1">&#39;origin&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Re-create the state of this object &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;nsc&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;origo&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;cell&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;nsc&#39;</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sc_off</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;sc_off&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__plot__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1180,7 +1193,7 @@
         <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_axes</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="o">**</span><span class="n">d</span><span class="p">)</span>
 
         <span class="c1"># Create vector objects</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origo</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
         <span class="n">v</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axis</span><span class="p">:</span>
             <span class="n">v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">o</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="n">o</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">axis</span><span class="p">])))</span>
@@ -1283,8 +1296,13 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">rcell</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the inherent `SuperCell` objects `origin` &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">origin</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">origo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Returns the inherent `SuperCell` objects `origo` &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot; Returns the inherent `SuperCell` objects `origin` &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">origo</span>
 
     <span class="nd">@property</span>
