@@ -2229,7 +2229,8 @@ class SparseOrbital(_SparseGeometry):
 
         Raises
         ------
-        ValueError if the two geometries are not compatible for either coordinate, orbital or supercell errors
+        ValueError
+            if the two geometries are not compatible for either coordinate, orbital or supercell errors
 
         Returns
         -------
@@ -2432,12 +2433,13 @@ class SparseOrbital(_SparseGeometry):
     def replace(self, atoms, other, other_atoms=None, eps=0.005, scale=1.):
         r""" Replace `atoms` in `self` with `other_atoms` in `other` and retain couplings between them
 
-        This method tries to replace a subset of atoms in `self` with
+        This method replaces a subset of atoms in `self` with
         another sparse geometry retaining any couplings between them.
-        The algorithm checks whether the coupling atoms are have the same number of
+        The algorithm checks whether the coupling atoms have the same number of
         orbitals. Meaning that atoms in the overlapping region should have the same
         connections and number of orbitals per atom.
-        It will _not_ check whether the orbitals or atoms _are_ the same.
+        It will _not_ check whether the orbitals or atoms _are_ the same, nor the order
+        of the orbitals.
 
         Examples
         --------
@@ -2454,7 +2456,7 @@ class SparseOrbital(_SparseGeometry):
         >>> big2 = big.replace(np.arange(big.na), minimal, scale=(2, 0))
         >>> big2 = (big2 + big2.transpose()) * 0.5
 
-        To only retain couplings from the ```minial`` sparse matrix:
+        To only retain couplings from the ``minimal`` sparse matrix:
 
         >>> big2 = big.replace(np.arange(big.na), minimal, scale=(0, 2))
         >>> big2 = (big2 + big2.transpose()) * 0.5
@@ -2481,7 +2483,7 @@ class SparseOrbital(_SparseGeometry):
             to select a subset of atoms in `other` that are taken out.
             Defaults to all atoms.
         eps : float, optional
-            tolerance that all coordinates *must* be within to allow a replacement.
+            coordinate tolerance to allow a replacement.
             It is important that this value is smaller than half the distance between
             the two closests atoms such that there is no ambiguity in selecting
             equivalent atoms.
@@ -2504,8 +2506,16 @@ class SparseOrbital(_SparseGeometry):
 
         Raises
         ------
-        ValueError if the two geometries are not compatible for either coordinate, orbital or supercell errors
-        AssertionError if the two geometries are not compatible for either coordinate, orbital or supercell errors
+        ValueError
+           if the two geometries are not compatible for either coordinate, orbital or supercell errors
+        AssertionError
+           if the two geometries are not compatible for either coordinate, orbital or supercell errors
+
+
+        Warns
+        -----
+        SislWarning
+           in case the overlapping atoms are not comprising the same atomic specie. In some cases this may not be a problem. However, care must be taken by the user if this warning is issued.
 
         Returns
         -------
@@ -2589,21 +2599,78 @@ class SparseOrbital(_SparseGeometry):
         # This is where `eps` comes into play since we have to ensure that the
         # connecting regions are within some given tolerance.
 
-        # 1. Create the `self.geometry` order of atoms
         def create_geometry(geom, atoms):
             """ Create the supercell geometry with coordinates as given """
             xyz = geom.axyz(atoms)
             uc_atoms = geom.sc2uc(atoms)
             return Geometry(xyz, atoms=geom.atoms[uc_atoms])
 
-        # we can only ensure the orbitals that connect *out* have the same count
-        # For supercell connections hopping *IN* might be different due to the supercell
-        assert len(s_info.orb_connect.sc.OUT) == len(o_info.orb_connect.sc.OUT)
+        # We know that the *IN* connections are in the primary unit-cell
+        # so we don't need to handle supercell information
+        # Atoms *inside* the replacement region that couples out
+        sgeom_in = sgeom.sub(s_info.atom_connect.uc.IN)
+        ogeom_in = ogeom.sub(o_info.atom_connect.uc.IN)
+        soverlap_in, ooverlap_in = sgeom_in.overlap(ogeom_in, eps=eps,
+                                                    offset=-sgeom_in.xyz.min(0),
+                                                    offset_other=-ogeom_in.xyz.min(0))
+
+        # Not replacement region, i.e. the IN (above) atoms are connecting to
+        # these atoms:
         sgeom_out = create_geometry(sgeom, s_info.atom_connect.sc.OUT)
         ogeom_out = create_geometry(ogeom, o_info.atom_connect.sc.OUT)
         soverlap_out, ooverlap_out = sgeom_out.overlap(ogeom_out, eps=eps,
                                                        offset=-sgeom_out.xyz.min(0),
                                                        offset_other=-ogeom_out.xyz.min(0))
+
+        # trigger for errors
+        err_msg = ""
+
+        # Now we have the different geometries around to handle how the merging
+        # process.
+        # Before proceeding we will check whether the dimensions match.
+        # I.e. checking that the orbitals connecting in/out are the same is important.
+
+        #print("in:")
+        #print(s_info.atom_connect.uc.IN)
+        #print(soverlap_in)
+        #print(o_info.atom_connect.uc.IN)
+        #print(ooverlap_in)
+        if not (len(sgeom_in) == len(soverlap_in) and
+                len(ogeom_in) == len(ooverlap_in)):
+
+            # figure out which atoms are not connecting
+            s_diff = np.setdiff1d(np.arange(s_info.atom_connect.uc.IN.size),
+                                     soverlap_in)
+            o_diff = np.setdiff1d(np.arange(o_info.atom_connect.uc.IN.size),
+                                     ooverlap_in)
+            if len(s_diff) > 0 or len(o_diff) > 0:
+                err_msg = f"""{err_msg}
+
+The number of atoms in the replacement region that connects to the surrounding
+atoms are not the same in 'self' and 'other'.
+This means that the number of connections is not the same. Please ensure this."""
+
+            if len(s_diff) > 0:
+                err_msg = f"""{err_msg}
+
+self: atoms not matched in 'other': {s_info.atom_connect.uc.IN[s_diff]}."""
+            if len(o_diff) > 0:
+                err_msg = f"""{err_msg}
+
+other: atoms not matched in 'self': {o_info.atom_connect.uc.IN[o_diff]}."""
+
+        elif not np.allclose(sgeom_in.orbitals[soverlap_in],
+                             ogeom_in.orbitals[ooverlap_in]):
+            err_msg = f"""{err_msg}
+
+Atoms in the replacement region have different number of orbitals on the atoms
+that lie at the border.
+
+self orbitals:
+   {sgeom_in.orbitals[soverlap_in]}
+other orbitals:
+   {ogeom_in.orbitals[ooverlap_in]}"""
+
         #print("out:")
         #print(s_info.atom_connect.uc.OUT)
         #print(soverlap_out)
@@ -2612,37 +2679,82 @@ class SparseOrbital(_SparseGeometry):
 
         # [so]overlap_out are now in the order of [so]_info.atom_connect.out
         # so we still have to convert them to proper indices if used
-        assert len(sgeom_out) == len(soverlap_out)
-        assert len(ogeom_out) == len(ooverlap_out)
-        # Also ensure we check that the atoms connected to has the same
-        # number of orbitals.
-        assert np.allclose(sgeom_out.orbitals[soverlap_out],
-                           ogeom_out.orbitals[ooverlap_out])
         # We cannot really check the soverlap_out == len(sgeom_out)
         # in case we have a replaced sparse matrix in the middle of another bigger
         # sparse matrix.
+        if not (len(sgeom_out) == len(soverlap_out) and
+                len(ogeom_out) == len(ooverlap_out)):
 
-        # Now do the same overlap checks for the *inside* region
+            # figure out which atoms are not connecting
+            s_diff = np.setdiff1d(np.arange(s_info.atom_connect.sc.OUT.size),
+                                     soverlap_out)
+            o_diff = np.setdiff1d(np.arange(o_info.atom_connect.sc.OUT.size),
+                                     ooverlap_out)
+            if len(s_diff) > 0 or len(o_diff) > 0:
+                err_msg = f"""{err_msg}
 
-        # also check the connections *in* are ok
-        assert len(s_info.orb_connect.sc.IN) == len(o_info.orb_connect.sc.IN)
-        # We know that the *IN* connections are in the primary unit-cell
-        # so we don't need to handle supercell information
-        sgeom_in = sgeom.sub(s_info.atom_connect.uc.IN)
-        ogeom_in = ogeom.sub(o_info.atom_connect.uc.IN)
-        soverlap_in, ooverlap_in = sgeom_in.overlap(ogeom_in, eps=eps,
-                                                    offset=-sgeom_in.xyz.min(0),
-                                                    offset_other=-ogeom_in.xyz.min(0))
-        #print("in:")
-        #print(s_info.atom_connect.uc.IN)
-        #print(soverlap_in)
-        #print(o_info.atom_connect.uc.IN)
-        #print(ooverlap_in)
+Number of atoms connecting to the replacement region are not the same in 'self' and 'other'.
+Please ensure this."""
 
-        assert len(sgeom_in) == len(soverlap_in)
-        assert len(ogeom_in) == len(ooverlap_in)
-        assert np.allclose(sgeom_in.orbitals[soverlap_in],
-                           ogeom_in.orbitals[ooverlap_in])
+            if len(s_diff) > 0:
+                err_msg = f"""{err_msg}
+
+self: atoms (in supercell) connecting to 'atoms' not matched in 'other': {s_info.atom_connect.sc.OUT[s_diff]}."""
+            if len(o_diff) > 0:
+                err_msg = f"""{err_msg}
+
+other: atoms (in supercell) connecting to 'other_atoms' not matched in 'self': {o_info.atom_connect.sc.OUT[o_diff]}."""
+
+        elif not np.allclose(sgeom_out.orbitals[soverlap_out],
+                             ogeom_out.orbitals[ooverlap_out]):
+            err_msg = f"""{err_msg}
+
+Atoms in the connection region have different number of orbitals on the atoms.
+
+self orbitals:
+   {sgeom_out.orbitals[soverlap_out]}
+other orbitals:
+   {ogeom_out.orbitals[ooverlap_out]}"""
+
+        # we can only ensure the orbitals that connect *out* have the same count
+        # For supercell connections hopping *IN* might be different due to the supercell
+        if len(s_info.orb_connect.sc.OUT) != len(o_info.orb_connect.sc.OUT) and not err_msg:
+            err_msg = f"""{err_msg}
+
+Number of orbitals connecting to replacement region is not consistent
+between 'self' and 'other'."""
+
+        if err_msg:
+            raise ValueError(err_msg[1:])
+
+        warn_msg = ""
+        S_ = s_info.atom_connect.uc.IN
+        O_ = o_info.atom_connect.uc.IN
+        for s_, o_ in zip(soverlap_in, ooverlap_in):
+            if sgeom_in.atoms[s_] != ogeom_in.atoms[o_]:
+                warn_msg = f"""{warn_msg}
+Atom 'self[{S_[s_]}]' is not equivalent to 'other[{O_[o_]}]':
+  {sgeom_in.atoms[s_]}  !=  {ogeom_in.atoms[o_]}"""
+
+        if warn_msg:
+            warn(f"""Inequivalent atoms found in replacement region, this may or may not be a problem
+depending on your use case. Please be careful though.{warn_msg}""")
+
+        warn_msg = ""
+        S_ = s_info.atom_connect.sc.OUT
+        O_ = o_info.atom_connect.sc.OUT
+        checked1d = _a.zerosi([self.geometry.na])
+        for s_, o_ in zip(soverlap_out, ooverlap_out):
+            uc_s_ = S_[s_] % self.geometry.na
+            if sgeom_out.atoms[s_] != ogeom_out.atoms[o_] and checked1d[uc_s_] == 0:
+                checked1d[uc_s_] = 1
+                warn_msg = f"""{warn_msg}
+Atom 'self[{S_[s_]}]' is not equivalent to 'other[{O_[o_]}]':
+  {sgeom_out.atoms[s_]}  !=  {ogeom_out.atoms[o_]}"""
+
+        if warn_msg:
+            warn(f"""Inequivalent atoms found in connection region, this may or may not be a problem
+depending on your use case. Note indices in the following are supercell indices. Please be careful though.{warn_msg}""")
 
         # clean-up to make it clear that we are not going to use them.
         del sgeom_out, ogeom_out
@@ -2670,6 +2782,7 @@ class SparseOrbital(_SparseGeometry):
         col = scsr.col
         D = scsr._D
         # helper function
+
         def a2o(geom, atoms, sc=True):
             if sc:
                 return geom.ouc2sc(geom.a2o(atoms, all=True))
@@ -2679,14 +2792,11 @@ class SparseOrbital(_SparseGeometry):
         # Delete the *old* values
         # To ensure that inserting will not leave *empty* values
         # we first reduce arrays so that the ptr array is not needed
-        idx = array_arange(scsr.ptr[:-1], n=scsr.ncol)
+        ncol = delete(ncol, s_info.orbitals)
+        ptr = delete(scsr.ptr, s_info.orbitals)
+        idx = array_arange(ptr[:-1], n=ncol)
         col = col[idx]
         D = D[idx]
-        # Now we don't need the pointer any more
-        ncol = delete(ncol, s_info.orbitals)
-        idx = array_arange(scsr.ptr[s_info.orbitals], n=scsr.ncol[s_info.orbitals])
-        col = delete(col, idx)
-        D = delete(D, idx, axis=0)
 
         # Do the same reduction for the inserted values
         ocsr = other._csr
@@ -2716,6 +2826,7 @@ class SparseOrbital(_SparseGeometry):
         # 4: couplings from *inside* to *outside* (scaled)
         convert = [[], []]
         conc = np.concatenate
+
         def assert_unique(old, new):
             old = conc(old)
             new = conc(new)

@@ -7,15 +7,22 @@ from ...templates import GeometryBackend
 
 class PlotlyGeometryBackend(PlotlyBackend, GeometryBackend):
 
+    _layout_defaults = {
+        'xaxis_showgrid': False,
+        'xaxis_zeroline': False,
+        'yaxis_showgrid': False,
+        'yaxis_zeroline': False,
+    }
+
     def draw_1D(self, backend_info, **kwargs):
         super().draw_1D(backend_info, **kwargs)
 
-        self.update_layout(**{f"{k}_title": v for k,v in backend_info["axes_titles"].items()})
+        self.update_layout(**{f"{k}_title": v for k, v in backend_info["axes_titles"].items()})
 
     def draw_2D(self, backend_info, **kwargs):
         super().draw_2D(backend_info, **kwargs)
 
-        self.update_layout(**{f"{k}_title": v for k,v in backend_info["axes_titles"].items()})
+        self.update_layout(**{f"{k}_title": v for k, v in backend_info["axes_titles"].items()})
 
         self.layout.yaxis.scaleanchor = "x"
         self.layout.yaxis.scaleratio = 1
@@ -27,10 +34,9 @@ class PlotlyGeometryBackend(PlotlyBackend, GeometryBackend):
 
         self.layout.scene.aspectmode = 'data'
 
-    def _draw_bonds_3D(self, *args, line={}, show_markers=False, bonds_labels=None, x_labels=None, y_labels=None, z_labels=None, **kwargs):
-        if show_markers:
-            kwargs["mode"] = "lines+markers"
-
+    def _draw_bonds_3D(self, *args, line={}, bonds_labels=None, x_labels=None, y_labels=None, z_labels=None, **kwargs):
+        if "hoverinfo" not in kwargs:
+            kwargs["hoverinfo"] = None
         super()._draw_bonds_3D(*args, line=line, **kwargs)
 
         if bonds_labels:
@@ -65,7 +71,7 @@ class PlotlyGeometryBackend(PlotlyBackend, GeometryBackend):
         kwargs["showlegend"] = showlegend
         super()._draw_single_bond_3D(*args, **kwargs)
 
-    def _draw_cell_3D_axes(self, cell, geometry):
-        return super()._draw_cell_3D_axes(cell, geometry, mode="lines+markers")
+    def _draw_cell_3D_axes(self, cell, geometry, **kwargs):
+        return super()._draw_cell_3D_axes(cell, geometry, mode="lines+markers", **kwargs)
 
 GeometryPlot.backends.register("plotly", PlotlyGeometryBackend)

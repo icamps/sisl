@@ -5,12 +5,13 @@ import numpy as np
 from numpy import einsum, exp
 from numpy import ndarray, bool_
 
-from sisl._internal import set_module
+from sisl._internal import set_module, singledispatchmethod
+from sisl.linalg import eigh_destroy
 import sisl._array as _a
 from sisl.messages import warn
 
 
-__all__ = ['Coefficient', 'State', 'StateC']
+__all__ = ['degenerate_decouple', 'Coefficient', 'State', 'StateC']
 
 _abs = np.absolute
 _phase = np.angle
@@ -26,6 +27,38 @@ _pi2 = np.pi * 2
 
 def _inner(v1, v2):
     return _dot(_conj(v1), v2)
+
+
+@set_module("sisl.physics")
+def degenerate_decouple(state, M):
+    r""" Return `vec` decoupled via matrix `M`
+
+    The decoupling algorithm is this recursive algorithm starting from :math:`i=0`:
+
+    .. math::
+
+       \mathbf p &= \mathbf V^\dagger \mathbf M_i \mathbf V
+       \\
+       \mathbf p \mathbf u &= \boldsymbol \lambda \mathbf u
+       \\
+       \mathbf V &= \mathbf u^T \mathbf V
+
+    Parameters
+    ----------
+    state : numpy.ndarray or State
+       states to be decoupled on matrices `M`
+       The states must have C-ordering, i.e. ``[0, ...]`` is the first
+       state.
+    M : numpy.ndarray
+       matrix to project to before disentangling the states
+    """
+    if isinstance(state, State):
+        state.state = degenerate_decouple(state.state, M)
+    else:
+        # since M may be a sparse matrix, we cannot use __matmul__
+        p = _conj(state) @ M.dot(state.T)
+        state = eigh_destroy(p)[1].T @ state
+    return state
 
 
 class _FakeMatrix:
@@ -58,13 +91,19 @@ class ParentContainer:
         self.parent = parent
         self.info = info
 
+    @singledispatchmethod
     def _sanitize_index(self, idx):
         r""" Ensure indices are transferred to acceptable integers """
-        if isinstance(idx, ndarray) and idx.dtype == bool_:
+        if idx is None:
+            # in case __len__ is not defined, this will fail...
+            return np.arange(len(self))
+        return _a.asarrayl(idx)
+
+    @_sanitize_index.register(ndarray)
+    def _(self, idx):
+        if idx.dtype == bool_:
             return np.flatnonzero(idx)
-        elif isinstance(idx, (list, tuple)) and isinstance(idx[0], bool):
-            return np.flatnonzero(idx)
-        return _a.asarrayi(idx).ravel()
+        return idx
 
 
 @set_module("sisl.physics")
@@ -177,6 +216,22 @@ class Coefficient(ParentContainer):
         sub = self.__class__(self.c[idx].copy(), self.parent)
         sub.info = self.info
         return sub
+
+    def remove(self, idx):
+        """ Return a new coefficient without the specified coefficients
+
+        Parameters
+        ----------
+        idx : int or array_like
+            indices that are removed in the returned object
+
+        Returns
+        -------
+        Coefficient
+            a new coefficient without containing the requested elements
+        """
+        idx = np.delete(np.arange(len(self)), self._sanitize_index(idx))
+        return self.sub(idx)
 
     def __getitem__(self, key):
         """ Return a new coefficient object with only one associated coefficient
@@ -304,6 +359,22 @@ class State(ParentContainer):
         sub = self.__class__(self.state[idx].copy(), self.parent)
         sub.info = self.info
         return sub
+
+    def remove(self, idx):
+        """ Return a new state without the specified vectors
+
+        Parameters
+        ----------
+        idx : int or array_like
+            indices that are removed in the returned object
+
+        Returns
+        -------
+        State
+            a new state without containing the requested elements
+        """
+        idx = np.delete(np.arange(len(self)), self._sanitize_index(idx))
+        return self.sub(idx)
 
     def translate(self, isc):
         r""" Translate the vectors to a new unit-cell position
@@ -542,7 +613,8 @@ class State(ParentContainer):
 
         Raises
         ------
-        ValueError : if the number of state coefficients are different for the bra and ket
+        ValueError
+            if the number of state coefficients are different for the bra and ket
 
         Returns
         -------
@@ -910,7 +982,7 @@ class StateC(State):
         """
         if idx is None:
             return einsum('k,ki,kj->ij', self.c, self.state, _conj(self.state))
-        idx = self._sanitize_index(idx)
+        idx = self._sanitize_index(idx).ravel()
         return einsum('k,ki,kj->ij', self.c[idx], self.state[idx], _conj(self.state[idx]))
 
     def sort(self, ascending=True):
@@ -970,10 +1042,26 @@ class StateC(State):
         StateC
             a new object with a subset of the states
         """
-        idx = self._sanitize_index(idx)
+        idx = self._sanitize_index(idx).ravel()
         sub = self.__class__(self.state[idx, ...], self.c[idx], self.parent)
         sub.info = self.info
         return sub
+
+    def remove(self, idx):
+        """ Return a new state without the specified indices
+
+        Parameters
+        ----------
+        idx : int or array_like
+            indices that are removed in the returned object
+
+        Returns
+        -------
+        StateC
+            a new state without containing the requested elements
+        """
+        idx = np.delete(np.arange(len(self)), self._sanitize_index(idx))
+        return self.sub(idx)
 
     def asState(self):
         s = State(self.state.copy(), self.parent)

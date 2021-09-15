@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+from sisl.messages import warn
 import numpy as np
 
 from ..backend import Backend
@@ -60,8 +61,19 @@ class GeometryBackend(Backend):
         drawing_func(backend_info)
 
     def draw_1D(self, backend_info, **kwargs):
-        # Add the atoms trace
-        self._draw_atoms_2D_scatter(**backend_info["atoms_props"])
+        # Add the atoms
+        if len(backend_info["atoms_props"]["xy"]) > 0:
+            self._draw_atoms_2D_scatter(**{k: v for k, v in backend_info["atoms_props"].items() if k != "arrow"})
+        # Now draw the arrows
+        for arrow_spec in backend_info["arrows"]:
+            is_arrow = ~np.isnan(arrow_spec["data"]).any(axis=1)
+            arrow_data = np.array([arrow_spec["data"][:, 0], np.zeros_like(arrow_spec["data"][:, 0])]).T
+            self.draw_arrows(
+                xy=backend_info["atoms_props"]["xy"][is_arrow], dxy=arrow_data[is_arrow]*arrow_spec["scale"],
+                arrowhead_angle=arrow_spec["arrowhead_angle"], arrowhead_scale=arrow_spec["arrowhead_scale"],
+                line={k: arrow_spec.get(k) for k in ("color", "width", "dash")},
+                name=arrow_spec["name"]
+            )
 
     def draw_2D(self, backend_info, **kwargs):
         geometry = backend_info["geometry"]
@@ -81,22 +93,33 @@ class GeometryBackend(Backend):
 
             self._draw_bonds_2D(**bonds_kwargs, points_per_bond=backend_info["points_per_bond"])
 
-        # Add the atoms trace
-        self._draw_atoms_2D_scatter(**backend_info["atoms_props"])
+        # Add the atoms scatter
+        if len(backend_info["atoms_props"]["xy"]) > 0:
+            self._draw_atoms_2D_scatter(**{k: v for k, v in backend_info["atoms_props"].items() if k != "arrow"})
+        # Now draw the arrows from the atoms
+        for arrow_spec in backend_info["arrows"]:
+            is_arrow = ~np.isnan(arrow_spec["data"]).any(axis=1)
+            self.draw_arrows(
+                xy=backend_info["atoms_props"]["xy"][is_arrow], dxy=arrow_spec["data"][is_arrow]*arrow_spec["scale"],
+                arrowhead_angle=arrow_spec["arrowhead_angle"], arrowhead_scale=arrow_spec["arrowhead_scale"],
+                line={k: arrow_spec.get(k) for k in ("color", "width", "dash")},
+                name=arrow_spec["name"]
+            )
 
         # And finally draw the unit cell
         show_cell = backend_info["show_cell"]
         cell = geometry.cell
         if show_cell == "axes":
-            self._draw_cell_2D_axes(geometry=geometry, cell=cell, xaxis=xaxis, yaxis=yaxis)
+            self._draw_cell_2D_axes(geometry=geometry, cell=cell, xaxis=xaxis, yaxis=yaxis, line=backend_info["cell_style"])
         elif show_cell == "box":
             self._draw_cell_2D_box(
-                geometry=geometry, cell=cell,
-                xaxis=xaxis, yaxis=yaxis
+                    geometry=geometry, cell=cell,
+                    xaxis=xaxis, yaxis=yaxis,
+                    line=backend_info["cell_style"]
                 )
 
-    def _draw_atoms_2D_scatter(self, xy, color="gray", size=10, name='atoms', marker_colorscale=None, **kwargs):
-        self.draw_scatter(xy[0], xy[1], name=name, marker={'size': size, 'color': color, 'colorscale': marker_colorscale}, **kwargs)
+    def _draw_atoms_2D_scatter(self, xy, color="gray", size=10, name='atoms', marker_colorscale=None, opacity=None, **kwargs):
+        self.draw_scatter(xy[:, 0], xy[:, 1], name=name, marker={'size': size, 'color': color, 'colorscale': marker_colorscale, "opacity": opacity}, **kwargs)
 
     def _draw_bonds_2D(self, xys, points_per_bond=5, force_bonds_as_points=False,
         bonds_color='#cccccc', bonds_size=3, bonds_name=None, name="bonds", **kwargs):
@@ -155,7 +178,7 @@ class GeometryBackend(Backend):
     def _draw_bonds_2D_multi_color_size(self, x, y, color, size, name, text, coloraxis="coloraxis", colorscale=None, **kwargs):
         self.draw_scatter(x, y, name=name, marker={"color": color, "size": size, "coloraxis": coloraxis, "colorscale": colorscale}, text=text, **kwargs)
 
-    def _draw_cell_2D_axes(self, geometry, cell, xaxis="x", yaxis="y"):
+    def _draw_cell_2D_axes(self, geometry, cell, xaxis="x", yaxis="y", **kwargs):
         cell_xy = GeometryPlot._projected_2Dcoords(geometry, xyz=cell, xaxis=xaxis, yaxis=yaxis)
         origo_xy = GeometryPlot._projected_2Dcoords(geometry, xyz=geometry.origin, xaxis=xaxis, yaxis=yaxis)
 
@@ -163,17 +186,17 @@ class GeometryBackend(Backend):
             x = np.array([0, vec[0]]) + origo_xy[0]
             y = np.array([0, vec[1]]) + origo_xy[1]
             name = f'Axis {i}'
-            self._draw_axis_2D(x, y, name=name)
+            self._draw_axis_2D(x, y, name=name, **kwargs)
 
-    def _draw_axis_2D(self, x, y, name):
-        self.draw_line(x, y, name=name)
+    def _draw_axis_2D(self, x, y, name, **kwargs):
+        self.draw_line(x, y, name=name, **kwargs)
 
-    def _draw_cell_2D_box(self, cell, geometry, xaxis="x", yaxis="y", color=None, **kwargs):
+    def _draw_cell_2D_box(self, cell, geometry, xaxis="x", yaxis="y", **kwargs):
 
         cell_corners = GeometryPlot._get_cell_corners(cell) + geometry.origin
         x, y = GeometryPlot._projected_2Dcoords(geometry, xyz=cell_corners, xaxis=xaxis, yaxis=yaxis).T
 
-        self.draw_line(x, y, line={"color": color}, name="Unit cell", **kwargs)
+        self.draw_line(x, y, name="Unit cell", **kwargs)
 
     def draw_3D(self, backend_info):
 
@@ -192,7 +215,7 @@ class GeometryBackend(Backend):
                         break
 
             if different_bond_sizes:
-                for bond_props in backend_info["bonds_props"]:
+                for bond_props in bonds_props:
                     self._draw_single_bond_3D(**bond_props)
             else:
                 bonds_kwargs = {}
@@ -201,85 +224,69 @@ class GeometryBackend(Backend):
                         v = bonds_props[0][k]
                     else:
                         v = [x[k] for x in bonds_props]
-                    bonds_kwargs[f"bonds_{k}"] = v
+                    bonds_kwargs[k] = v
 
-                self._bonds_3D_scatter(geometry, backend_info["bonds"], **bonds_kwargs)
+                draw_bonds_kwargs = self._get_draw_bonds_3D_kwargs(**bonds_kwargs)
+                self._draw_bonds_3D(**draw_bonds_kwargs)
 
         # Now draw the atoms
-        for atom_props in backend_info["atoms_props"]:
-            self._draw_single_atom_3D(**atom_props)
+        for i, _ in enumerate(backend_info["atoms_props"]["xyz"]):
+            self._draw_single_atom_3D(**{k: v[i] for k, v in backend_info["atoms_props"].items()})
+        # Draw the arrows
+        for arrow_spec in backend_info["arrows"]:
+            is_arrow = ~np.isnan(arrow_spec["data"]).any(axis=1)
+            try:
+                self.draw_arrows3D(
+                    xyz=backend_info["atoms_props"]["xyz"][is_arrow], dxyz=arrow_spec["data"][is_arrow]*arrow_spec["scale"],
+                    arrowhead_angle=arrow_spec["arrowhead_angle"], arrowhead_scale=arrow_spec["arrowhead_scale"],
+                    line={k: arrow_spec.get(k) for k in ("color", "width", "dash")},
+                    name=arrow_spec["name"]
+                )
+            except NotImplementedError as e:
+                # If the arrows can not be drawn in 3D, we will just warn the user and not draw them
+                warn(str(e))
+                break
 
         # And finally draw the unit cell
         show_cell = backend_info["show_cell"]
         cell = geometry.cell
         if show_cell == "axes":
-            self._draw_cell_3D_axes(cell=cell, geometry=geometry)
+            self._draw_cell_3D_axes(cell=cell, geometry=geometry, line=backend_info["cell_style"])
         elif show_cell == "box":
-            self._draw_cell_3D_box(cell=cell, geometry=geometry)
+            self._draw_cell_3D_box(cell=cell, geometry=geometry, line=backend_info["cell_style"])
 
-    def _bonds_3D_scatter(self, geometry, bonds, bonds_xyz1, bonds_xyz2, bonds_r=10, bonds_color='gray', bonds_name=None,
-        atoms=False, atoms_color="blue", atoms_size=None, name=None, coloraxis='coloraxis', **kwargs):
-        """This method is capable of plotting all the geometry in one 3d trace."""
-        bonds_labels=bonds_name
-        # If only bonds are in this trace, we will name it "bonds".
-        if not name:
-            name = 'Bonds and atoms' if atoms else 'Bonds'
-
-        # Check if we need to build the markers_properties from atoms_* arguments
-        if atoms and isinstance(atoms_color, Iterable) and not isinstance(atoms_color, str):
-            build_marker_color = True
-            atoms_color = np.array(atoms_color)
-            marker_color = []
-        else:
-            build_marker_color = False
-            marker_color = atoms_color
-
-        if atoms and isinstance(atoms_size, Iterable):
-            build_marker_size = True
-            atoms_size = np.array(atoms_size)
-            marker_size = []
-        else:
-            build_marker_size = False
-            marker_size = atoms_size
+    def _get_draw_bonds_3D_kwargs(self, xyz1, xyz2, r=10, color='gray', name=None,
+        line_name=None, coloraxis='coloraxis', **kwargs):
+        """Generates the arguments for the bond drawing function"""
+        xyz1 = np.array(xyz1)
+        bonds_labels = name
+        if not line_name:
+            line_name = 'Bonds'
 
         # Bond color
-        if isinstance(bonds_color, Iterable) and not isinstance(bonds_color, str):
-            build_line_color = True
-            bonds_color = np.array(bonds_color)
-            line_color = []
+        if isinstance(color, Iterable) and not isinstance(color, str):
+            line_color = np.repeat(color, 3)
+            line_color[2::3] = 0
         else:
-            build_line_color = False
-            line_color = bonds_color
+            line_color = color
 
-        x = []; y = []; z = []
-
-        for i, bond in enumerate(bonds):
-
-            x = [*x, bonds_xyz1[i][0], bonds_xyz2[i][0], None]
-            y = [*y, bonds_xyz1[i][1], bonds_xyz2[i][1], None]
-            z = [*z, bonds_xyz1[i][2], bonds_xyz2[i][2], None]
-
-            if build_marker_color:
-                marker_color = [*marker_color, *atoms_color[bond], "white"]
-            if build_marker_size:
-                marker_size = [*marker_size, *atoms_size[bond], 0]
-            if build_line_color:
-                line_color = [*line_color, bonds_color[i], bonds_color[i], 0]
+        bonds_xyz = np.full((3*xyz1.shape[0], 3), np.nan)
+        bonds_xyz[0::3] = xyz1
+        bonds_xyz[1::3] = xyz2
+        x, y, z = bonds_xyz.T
 
         x_labels, y_labels, z_labels = None, None, None
         if bonds_labels:
-            x_labels, y_labels, z_labels = np.array([geometry[bond].mean(axis=0) for bond in bonds]).T
+            x_labels, y_labels, z_labels = ((xyz1 + xyz2) / 2).T
 
-        self._draw_bonds_3D(
-            x, y, z, name=name,
-            line={'width': bonds_r, 'color': line_color, 'coloraxis': coloraxis},
-            marker={'size': marker_size, 'color': marker_color},
-            show_markers=atoms,
+        return dict(
+            x=x, y=y, z=z, name=line_name,
+            line={'width': r, 'color': line_color, 'coloraxis': coloraxis},
             bonds_labels=bonds_labels, x_labels=x_labels, y_labels=y_labels, z_labels=z_labels,
             **kwargs
         )
 
-    def _draw_bonds_3D(self, x, y, z, name=None, line={}, marker={}, show_markers=False, bonds_labels=None, x_labels=None, y_labels=None, z_labels=None, **kwargs):
+    def _draw_bonds_3D(self, x, y, z, name=None, line={}, marker={}, bonds_labels=None, x_labels=None, y_labels=None, z_labels=None, **kwargs):
         """Draws all bonds in a single line in 3D
 
         This method should be overwritten to implement:
@@ -307,9 +314,9 @@ class GeometryBackend(Backend):
                 **kwargs
             )
 
-    def _draw_cell_3D_box(self, cell, geometry, color=None, width=2, **kwargs):
+    def _draw_cell_3D_box(self, cell, geometry, **kwargs):
         x, y, z = (GeometryPlot._get_cell_corners(cell) + geometry.origin).T
 
-        self.draw_line3D(x, y, z, line={'color': color, 'width': width}, name="Unit cell", **kwargs)
+        self.draw_line3D(x, y, z, name="Unit cell", **kwargs)
 
 GeometryPlot.backends.register_template(GeometryBackend)

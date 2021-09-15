@@ -63,13 +63,13 @@ from sisl.oplist import oplist
 from sisl._math_small import xyz_to_spherical_cos_phi
 import sisl._array as _a
 from sisl.linalg import svd_destroy, eigvals_destroy
-from sisl.linalg import eigh, eigh_destroy, det_destroy
+from sisl.linalg import eigh, det_destroy
 from sisl.messages import info, warn, SislError, progressbar
 from sisl._help import dtype_complex_to_real, dtype_real_to_complex
 from .distribution import get_distribution
 from .spin import Spin
 from .sparse import SparseOrbitalBZSpin
-from .state import Coefficient, State, StateC, _FakeMatrix
+from .state import degenerate_decouple, Coefficient, State, StateC, _FakeMatrix
 
 
 __all__ = ['DOS', 'PDOS']
@@ -81,46 +81,6 @@ __all__ += ['conductivity']
 __all__ += ['wavefunction']
 __all__ += ['CoefficientElectron', 'StateElectron', 'StateCElectron']
 __all__ += ['EigenvalueElectron', 'EigenvectorElectron', 'EigenstateElectron']
-
-
-def _decouple_eigh(state, *M, sum=True):
-    r""" Return eigenvectors and sort according to the first absolute entry
-
-    This should make returned values consistent where small numerical noises
-    may swap two degenerate states.
-
-    The decoupling algorithm is this recursive algorithm starting from :math:`i=0`:
-
-    .. math::
-
-       \mathbf p &= \mathbf V^\dagger \mathbf M_i \mathbf V
-       \\
-       \mathbf p \mathbf u &= \boldsymbol \lambda \mathbf u
-       \\
-       \mathbf V &= \mathbf u^T \mathbf V
-
-    Parameters
-    ----------
-    state : numpy.ndarray
-       states to be decoupled on matrices `M`
-       The states must have C-ordering, i.e. ``[0, ...]`` is the first
-       state.
-    *M : list of matrices
-       the matrices to project to before disentangling the states
-    sum : bool, optional
-       whether the list `M` is summed before disentanglement. If false,
-       they are done recursively.
-    """
-    if sum:
-        m = 0
-        for mm in M:
-            m = m + mm
-        M = [m]
-    for m in M:
-        # since m may be a sparse matrix, we cannot use __matmul__
-        p = conj(state) @ m.dot(state.T)
-        state = eigh_destroy(p)[1].T @ state
-    return state
 
 
 @set_module("sisl.physics.electron")
@@ -481,7 +441,7 @@ def spin_squared(state_alpha, state_beta, S=None):
 
 
 @set_module("sisl.physics.electron")
-def velocity(state, dHk, energy=None, dSk=None, degenerate=None, project=False):
+def velocity(state, dHk, energy=None, dSk=None, degenerate=None, degenerate_dir=(1, 1, 1), project=False):
     r""" Calculate the velocity of a set of states
 
     These are calculated using the analytic expression (:math:`\alpha` corresponding to the Cartesian directions):
@@ -517,7 +477,9 @@ def velocity(state, dHk, energy=None, dSk=None, degenerate=None, project=False):
        Same derivative as `dHk`
     degenerate : list of array_like, optional
        a list containing the indices of degenerate states. In that case a prior diagonalization
-       is required to decouple them. This is done 3 times along each of the Cartesian directions.
+       is required to decouple them. See `degenerate_dir` for the sum of directions.
+    degenerate_dir : (3,), optional
+       a direction used for degenerate decoupling. The decoupling based on the velocity along this direction
     project : bool, optional
        whether the velocities will be returned projected per orbital
 
@@ -529,11 +491,11 @@ def velocity(state, dHk, energy=None, dSk=None, degenerate=None, project=False):
         if `project` is true, velocities per state with final dimension ``(state.shape[0], state.shape[1], 3)``, the velocity unit is Ang/ps. Units *may* change in future releases.
     """
     if state.ndim == 1:
-        return velocity(state.reshape(1, -1), dHk, energy, dSk, degenerate, project)[0]
+        return velocity(state.reshape(1, -1), dHk, energy, dSk, degenerate, degenerate_dir, project)[0]
 
     if dSk is None:
-        return _velocity_ortho(state, dHk, degenerate, project)
-    return _velocity_non_ortho(state, dHk, energy, dSk, degenerate, project)
+        return _velocity_ortho(state, dHk, degenerate, degenerate_dir, project)
+    return _velocity_non_ortho(state, dHk, energy, dSk, degenerate, degenerate_dir, project)
 
 
 # dHk is in [Ang eV]
@@ -541,10 +503,13 @@ def velocity(state, dHk, energy=None, dSk=None, degenerate=None, project=False):
 _velocity_const = 1 / constant.hbar('eV ps')
 
 
-def _velocity_non_ortho(state, dHk, energy, dSk, degenerate, project):
+def _velocity_non_ortho(state, dHk, energy, dSk, degenerate, degenerate_dir, project):
     r""" For states in a non-orthogonal basis """
     # Decouple the degenerate states
     if not degenerate is None:
+        degenerate_dir = _a.asarrayd(degenerate_dir)
+        degenerate_dir /= (degenerate_dir ** 2).sum() ** 0.5
+        deg_dHk = sum(d*dh for d, dh in zip(degenerate_dir, dHk))
         for deg in degenerate:
             # Set the average energy
             e = np.average(energy[deg])
@@ -553,7 +518,8 @@ def _velocity_non_ortho(state, dHk, energy, dSk, degenerate, project):
             # Now diagonalize to find the contributions from individual states
             # then re-construct the seperated degenerate states
             # Since we do this for all directions we should decouple them all
-            state[deg] = _decouple_eigh(state[deg], *[dh - e * ds for dh, ds in zip(dHk, dSk)])
+            state[deg] = degenerate_decouple(state[deg], deg_dHk - sum(d * e * ds for d, ds in zip(degenerate_dir, dSk)))
+        del deg_dHk
 
     if project:
         v = np.empty([state.shape[0], state.shape[1], 3], dtype=dtype_complex_to_real(state.dtype))
@@ -577,15 +543,19 @@ def _velocity_non_ortho(state, dHk, energy, dSk, degenerate, project):
     return v * _velocity_const
 
 
-def _velocity_ortho(state, dHk, degenerate, project):
+def _velocity_ortho(state, dHk, degenerate, degenerate_dir, project):
     r""" For states in an orthogonal basis """
     # Decouple the degenerate states
     if not degenerate is None:
+        degenerate_dir = _a.asarrayd(degenerate_dir)
+        degenerate_dir /= (degenerate_dir ** 2).sum() ** 0.5
+        deg_dHk = sum(d*dh for d, dh in zip(degenerate_dir, dHk))
         for deg in degenerate:
             # Now diagonalize to find the contributions from individual states
             # then re-construct the seperated degenerate states
             # Since we do this for all directions we should decouple them all
-            state[deg] = _decouple_eigh(state[deg], *dHk)
+            state[deg] = degenerate_decouple(state[deg], deg_dHk)
+        del deg_dHk
 
     cs = conj(state)
     if project:
@@ -606,7 +576,7 @@ def _velocity_ortho(state, dHk, degenerate, project):
 
 
 @set_module("sisl.physics.electron")
-def velocity_matrix(state, dHk, energy=None, dSk=None, degenerate=None):
+def velocity_matrix(state, dHk, energy=None, dSk=None, degenerate=None, degenerate_dir=(1, 1, 1)):
     r""" Calculate the velocity matrix of a set of states
 
     These are calculated using the analytic expression (:math:`\alpha` corresponding to the Cartesian directions):
@@ -641,7 +611,10 @@ def velocity_matrix(state, dHk, energy=None, dSk=None, degenerate=None):
        Same derivative as `dHk`
     degenerate : list of array_like, optional
        a list containing the indices of degenerate states. In that case a prior diagonalization
-       is required to decouple them. This is done 3 times along each of the Cartesian directions.
+       is required to decouple them. See `degenerate_dir` for details.
+    degenerate_dir : (3,), optional
+       a direction used for degenerate decoupling. The decoupling based on the velocity along this direction
+
 
     See Also
     --------
@@ -653,15 +626,15 @@ def velocity_matrix(state, dHk, energy=None, dSk=None, degenerate=None):
         velocity matrixstate with final dimension ``(state.shape[0], state.shape[0], 3)``, the velocity unit is Ang/ps. Units *may* change in future releases.
     """
     if state.ndim == 1:
-        return velocity_matrix(state.reshape(1, -1), dHk, energy, dSk, degenerate)
+        return velocity_matrix(state.reshape(1, -1), dHk, energy, dSk, degenerate, degenerate_dir)
 
     dtype = find_common_type([state.dtype, dHk[0].dtype, dtype_real_to_complex(state.dtype)], [])
     if dSk is None:
-        return _velocity_matrix_ortho(state, dHk, degenerate, dtype)
-    return _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, dtype)
+        return _velocity_matrix_ortho(state, dHk, degenerate, degenerate_dir, dtype)
+    return _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, degenerate_dir, dtype)
 
 
-def _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, dtype):
+def _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, degenerate_dir, dtype):
     r""" For states in a non-orthogonal basis """
 
     # All matrix elements along the 3 directions
@@ -670,6 +643,9 @@ def _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, dtype):
 
     # Decouple the degenerate states
     if not degenerate is None:
+        degenerate_dir = _a.asarrayd(degenerate_dir)
+        degenerate_dir /= (degenerate_dir ** 2).sum() ** 0.5
+        deg_dHk = sum(d*dh for d, dh in zip(degenerate_dir, dHk))
         for deg in degenerate:
             # Set the average energy
             e = np.average(energy[deg])
@@ -678,7 +654,8 @@ def _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, dtype):
             # Now diagonalize to find the contributions from individual states
             # then re-construct the seperated degenerate states
             # Since we do this for all directions we should decouple them all
-            state[deg] = _decouple_eigh(state[deg], *[dh - e * ds for dh, ds in zip(dHk, dSk)])
+            state[deg] = degenerate_decouple(state[deg], deg_dHk - sum(d * e * ds for d, ds in zip(degenerate_dir, dSk)))
+        del deg_dHk
 
     # Since they depend on the state energies and dSk we have to loop them individually.
     cs = conj(state)
@@ -693,7 +670,7 @@ def _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, dtype):
     return v * _velocity_const
 
 
-def _velocity_matrix_ortho(state, dHk, degenerate, dtype):
+def _velocity_matrix_ortho(state, dHk, degenerate, degenerate_dir, dtype):
     r""" For states in an orthogonal basis """
 
     # All matrix elements along the 3 directions
@@ -702,11 +679,15 @@ def _velocity_matrix_ortho(state, dHk, degenerate, dtype):
 
     # Decouple the degenerate states
     if not degenerate is None:
+        degenerate_dir = _a.asarrayd(degenerate_dir)
+        degenerate_dir /= (degenerate_dir ** 2).sum() ** 0.5
+        deg_dHk = sum(d*dh for d, dh in zip(degenerate_dir, dHk))
         for deg in degenerate:
             # Now diagonalize to find the contributions from individual states
             # then re-construct the seperated degenerate states
             # Since we do this for all directions we should decouple them all
-            state[deg] = _decouple_eigh(state[deg], *dHk)
+            state[deg] = degenerate_decouple(state[deg], deg_dHk)
+        del deg_dHk
 
     cs = conj(state)
     for s in range(n):
@@ -718,7 +699,7 @@ def _velocity_matrix_ortho(state, dHk, degenerate, dtype):
 
 
 @set_module("sisl.physics.electron")
-def berry_curvature(state, energy, dHk, dSk=None, degenerate=None, complex=False):
+def berry_curvature(state, energy, dHk, dSk=None, degenerate=None, degenerate_dir=(1, 1, 1), complex=False):
     r""" Calculate the Berry curvature matrix for a set of states (using Kubo)
 
     The Berry curvature is calculated using the following expression
@@ -752,7 +733,9 @@ def berry_curvature(state, energy, dHk, dSk=None, degenerate=None, complex=False
        NOTE: Using non-orthogonal basis sets are not tested.
     degenerate : list of array_like, optional
        a list containing the indices of degenerate states. In that case a prior diagonalization
-       is required to decouple them. This is done 3 times along each of the Cartesian directions.
+       is required to decouple them.
+    degenerate_dir : (3,), optional
+       along which direction degenerate states are decoupled.
     complex : logical, optional
        whether the returned quantity is complex valued (i.e. not *only* the imaginary part is returned)
 
@@ -772,7 +755,7 @@ def berry_curvature(state, energy, dHk, dSk=None, degenerate=None, complex=False
         Berry flux with final dimension ``(state.shape[0], 3, 3)`` (complex if `complex` is True).
     """
     if state.ndim == 1:
-        return berry_curvature(state.reshape(1, -1), energy, dHk, dSk, degenerate, complex)[0]
+        return berry_curvature(state.reshape(1, -1), energy, dHk, dSk, degenerate, degenerate_dir, complex)[0]
 
     if degenerate is None:
         # Fix following routine
@@ -780,9 +763,9 @@ def berry_curvature(state, energy, dHk, dSk=None, degenerate=None, complex=False
 
     dtype = find_common_type([state.dtype, dHk[0].dtype, dtype_real_to_complex(state.dtype)], [])
     if dSk is None:
-        v_matrix = _velocity_matrix_ortho(state, dHk, degenerate, dtype)
+        v_matrix = _velocity_matrix_ortho(state, dHk, degenerate, degenerate_dir, dtype)
     else:
-        v_matrix = _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, dtype)
+        v_matrix = _velocity_matrix_non_ortho(state, dHk, energy, dSk, degenerate, degenerate_dir, dtype)
         warn("berry_curvature calculation for non-orthogonal basis sets are not tested! Do not expect this to be correct!")
     if complex:
         return _berry_curvature(v_matrix, energy, degenerate)
@@ -826,7 +809,7 @@ def _berry_curvature(v_M, energy, degenerate):
 
 
 @set_module("sisl.physics.electron")
-def conductivity(bz, distribution='fermi-dirac', method='ahc', complex=False):
+def conductivity(bz, distribution='fermi-dirac', method='ahc', degenerate_dir=(1, 1, 1), complex=False):
     r""" Electronic conductivity for a given `BrillouinZone` integral
 
     Currently the *only* implemented method is the anomalous Hall conductivity (AHC)
@@ -846,6 +829,8 @@ def conductivity(bz, distribution='fermi-dirac', method='ahc', complex=False):
         distribution used to find occupations
     method : {'ahc'}
        'ahc' calculates the anomalous Hall conductivity
+    degenerate_dir : (3,), optional
+       along which direction degenerate states are decoupled.
     complex : logical, optional
        whether the returned quantity is complex valued
 
@@ -865,7 +850,7 @@ def conductivity(bz, distribution='fermi-dirac', method='ahc', complex=False):
     if method == 'ahc':
         def _ahc(es):
             occ = distribution(es.eig)
-            bc = es.berry_curvature(complex=complex)
+            bc = es.berry_curvature(degenerate_dir=degenerate_dir, complex=complex)
             return einsum('i,ijl->jl', occ, bc)
 
         cond = - bz.apply.average.eigenstate(wrap=_ahc) / constant.hbar('eV ps')
@@ -966,7 +951,7 @@ def _inv_eff_mass_tensor_non_ortho(state, ddHk, energy, ddSk, degenerate, as_mat
             # Now diagonalize to find the contributions from individual states
             # then re-construct the seperated degenerate states
             # We only do this along the double derivative directions
-            state[deg] = _decouple_eigh(state[deg], *[ddh - e * dds for ddh, dds in zip(ddHk, ddSk)])
+            state[deg] = degenerate_decouple(state[deg], sum(ddh - e * dds for ddh, dds in zip(ddHk, ddSk)))
 
     # Since they depend on the state energies and ddSk we have to loop them individually.
     for s, e in enumerate(energy):
@@ -1005,7 +990,7 @@ def _inv_eff_mass_tensor_ortho(state, ddHk, degenerate, as_matrix):
             # Now diagonalize to find the contributions from individual states
             # then re-construct the seperated degenerate states
             # We only do this along the double derivative directions
-            state[deg] = _decouple_eigh(state[deg], *ddHk)
+            state[deg] = degenerate_decouple(state[deg], sum(ddHk))
 
     for i in range(6):
         M[:, i] = einsum('ij,ji->i', conj(state), ddHk[i].dot(state.T)).real
@@ -1689,7 +1674,7 @@ class StateCElectron(_electron_State, StateC):
     r""" A state describing a physical quantity related to electrons, with associated coefficients of the state """
     __slots__ = []
 
-    def velocity(self, eps=1e-4, project=False):
+    def velocity(self, eps=1e-4, degenerate_dir=(1, 1, 1), project=False):
         r""" Calculate velocity for the states
 
         This routine calls `~sisl.physics.electron.velocity` with appropriate arguments
@@ -1705,6 +1690,8 @@ class StateCElectron(_electron_State, StateC):
         ----------
         eps : float, optional
            precision used to find degenerate states.
+        degenerate_dir: (3,), optional
+           which direction is used to decouple the degenerate states.
         project : bool, optional
            whether to return projected velocities (per orbital), see `velocity` for details
 
@@ -1730,9 +1717,10 @@ class StateCElectron(_electron_State, StateC):
             deg = self.degenerate(eps)
         except:
             raise SislError(f"{self.__class__.__name__}.velocity requires the parent to have a spin associated.")
-        return velocity(self.state, self.parent.dHk(**opt), self.c, dSk, degenerate=deg, project=project)
+        return velocity(self.state, self.parent.dHk(**opt), self.c, dSk,
+                        degenerate=deg, degenerate_dir=degenerate_dir, project=project)
 
-    def velocity_matrix(self, eps=1e-4):
+    def velocity_matrix(self, eps=1e-4, degenerate_dir=(1, 1, 1)):
         r""" Calculate velocity matrix for the states
 
         This routine calls `~sisl.physics.electron.velocity_matrix` with appropriate arguments
@@ -1748,6 +1736,8 @@ class StateCElectron(_electron_State, StateC):
         ----------
         eps : float, optional
            precision used to find degenerate states.
+        degenerate_dir: (3,), optional
+           which direction is used to decouple the degenerate states.
         """
         try:
             opt = {'k': self.info.get('k', (0, 0, 0)), "dtype": self.dtype}
@@ -1767,9 +1757,10 @@ class StateCElectron(_electron_State, StateC):
             deg = self.degenerate(eps)
         except:
             raise SislError(f"{self.__class__.__name__}.velocity_matrix requires the parent to have a spin associated.")
-        return velocity_matrix(self.state, self.parent.dHk(**opt), self.c, dSk, degenerate=deg)
+        return velocity_matrix(self.state, self.parent.dHk(**opt), self.c, dSk,
+                               degenerate=deg, degenerate_dir=degenerate_dir)
 
-    def berry_curvature(self, complex=False, eps=1e-4):
+    def berry_curvature(self, complex=False, eps=1e-4, degenerate_dir=(1, 1, 1)):
         r""" Calculate Berry curvature for the states
 
         This routine calls `~sisl.physics.electron.berry_curvature` with appropriate arguments
@@ -1786,6 +1777,8 @@ class StateCElectron(_electron_State, StateC):
            whether the returned quantity is complex valued
         eps : float, optional
            precision used to find degenerate states.
+        degenerate_dir: (3,), optional
+           which direction is used to decouple the degenerate states.
         """
         try:
             opt = {'k': self.info.get('k', (0, 0, 0)), "dtype": self.dtype}
@@ -1805,7 +1798,7 @@ class StateCElectron(_electron_State, StateC):
             deg = self.degenerate(eps)
         except:
             raise SislError(f"{self.__class__.__name__}.berry_curvature requires the parent to have a spin associated.")
-        return berry_curvature(self.state, self.c, self.parent.dHk(**opt), dSk, degenerate=deg, complex=complex)
+        return berry_curvature(self.state, self.c, self.parent.dHk(**opt), dSk, degenerate=deg, degenerate_dir=degenerate_dir, complex=complex)
 
     def inv_eff_mass_tensor(self, as_matrix=False, eps=1e-3):
         r""" Calculate inverse effective mass tensor for the states

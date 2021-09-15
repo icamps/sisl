@@ -81,16 +81,27 @@ class BondLengthMap(GeometryPlot):
         This also has an impact on bonds (see the `bind_bonds_to_ats` and
         `show_atoms` parameters).             If set to None, all atoms are
         displayed
-    atoms_color: array-like, optional
-        A list containing the color for each atom.
-    atoms_size: array-like, optional
-        A list containing the size for each atom.
+    atoms_style: array-like of dict, optional
+        Customize the style of the atoms by passing style specifications.
+        Each style specification can have an "atoms" key to select the atoms
+        for which             that style should be used. If an atom fits into
+        more than one selector, the last             specification is used.
+        Each item is a dict. Structure of the expected dicts:{
+        'atoms':          'color':          'size':          'opacity':
+        'vertices': In a 3D representation, the number of vertices that each
+        atom sphere is composed of. }
+    arrows: array-like of dict, optional
+        Add arrows centered at the atoms to display some vector property.
+        You can add as many arrows as you want, each with different styles.
+        Each item is a dict. Structure of the expected dicts:{
+        'atoms':          'data':          'scale':          'color':
+        'width':          'name':          'arrowhead_scale':
+        'arrowhead_angle':  }
+    atoms_scale: float, optional
+        A scaling factor for atom sizes. This is a very quick way to rescale.
     atoms_colorscale: str, optional
         The colorscale to use to map values to colors for the atoms.
         Only used if atoms_color is provided and is an array of values.
-    atoms_vertices: int, optional
-        In a 3D representation, the number of vertices that each atom sphere
-        is composed of.
     bind_bonds_to_ats: bool, optional
         whether only the bonds that belong to an atom that is present should
         be displayed.             If False, all bonds are displayed
@@ -103,6 +114,9 @@ class BondLengthMap(GeometryPlot):
         Number of points that fill a bond in 2D in case each bond has a
         different color or different size. More points will make it look
         more like a line but will slow plot rendering down.
+    cell_style: array-like of dict, optional
+        The style of the unit cell lines   Each item is a dict. Structure of
+        the expected dicts:{         'color':          'width':  }
     root_fdf: fdfSileSiesta, optional
         Path to the fdf file that is the 'parent' of the results.
     results_path: str, optional
@@ -256,12 +270,13 @@ class BondLengthMap(GeometryPlot):
 
         is_strain_ref = self.relaxed_geom is not None
 
+        self._tiled_geometry = self.geometry
         for ax, reps in enumerate(nsc):
-            self.geometry = self.geometry.tile(reps, ax)
+            self._tiled_geometry = self._tiled_geometry.tile(reps, ax)
             if is_strain_ref:
                 self.relaxed_geom = self.relaxed_geom.tile(reps, ax)
 
-        self.geom_bonds = self.find_all_bonds(self.geometry)
+        self.geom_bonds = self.find_all_bonds(self._tiled_geometry)
 
         if is_strain_ref:
             self.relaxed_bonds = self.find_all_bonds(self.relaxed_geom)
@@ -273,18 +288,16 @@ class BondLengthMap(GeometryPlot):
         Receives a bond and sets its color to the bond length for the 3D case
         """
         if show_strain:
-            color = self._bond_strain(self.relaxed_geom, self.geometry, bond)
+            color = self._bond_strain(self.relaxed_geom, self._tiled_geometry, bond)
             name = f'Strain: {color:.3f}'
         else:
-            color = self._bond_length(self.geometry, bond)
+            color = self._bond_length(self._tiled_geometry, bond)
             name = f'{color:.3f} Ang'
 
         self.colors.append(color)
 
         return {
-            "xyz1": self.geometry[bond[0]],
-            "xyz2": self.geometry[bond[1]],
-            "r": 15,
+            **self._default_wrap_bond3D(bond),
             "color": color,
             "name": name
         }
@@ -294,10 +307,10 @@ class BondLengthMap(GeometryPlot):
         Receives a bond and sets its color to the bond length for the 2D case
         """
         if show_strain:
-            color = self._bond_strain(self.relaxed_geom, self.geometry, bond)
+            color = self._bond_strain(self.relaxed_geom, self._tiled_geometry, bond)
             name = f'Strain: {color:.3f}'
         else:
-            color = self._bond_length(self.geometry, bond)
+            color = self._bond_length(self._tiled_geometry, bond)
             name = f'{color:.3f} Ang'
 
         self.colors.append(color)
@@ -358,12 +371,10 @@ class BondLengthMap(GeometryPlot):
         for_backend = super()._set_data(
             kwargs3d={
                 "wrap_bond": partial(self._wrap_bond3D, show_strain=show_strain),
-                "cheap_bonds": True,
                 **kwargs3d
             },
             kwargs2d={
                 "wrap_bond": partial(self._wrap_bond2D, show_strain=show_strain),
-                "bonds_together": True,
                 "points_per_bond": points_per_bond,
                 **kwargs2d
             },
