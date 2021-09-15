@@ -274,7 +274,7 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.asState" title="sisl.physics.electron.StateCElectron.asState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asState</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.berry_curvature" title="sisl.physics.electron.StateCElectron.berry_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">berry_curvature</span></code></a>([complex, eps])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.berry_curvature" title="sisl.physics.electron.StateCElectron.berry_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">berry_curvature</span></code></a>([complex, eps, degenerate_dir])</p></td>
 <td><p>Calculate Berry curvature for the states</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.change_gauge" title="sisl.physics.electron.StateCElectron.change_gauge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_gauge</span></code></a>(gauge)</p></td>
@@ -310,52 +310,55 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.phase" title="sisl.physics.electron.StateCElectron.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, return_indices])</p></td>
 <td><p>Calculate the Euler angle (phase) for the elements of the state, in the range <span class="math notranslate nohighlight">\(]-\pi;\pi]\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.rotate" title="sisl.physics.electron.StateCElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.remove" title="sisl.physics.electron.StateCElectron.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
+<td><p>Return a new state without the specified indices</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.rotate" title="sisl.physics.electron.StateCElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
 <td><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.sort" title="sisl.physics.electron.StateCElectron.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([ascending])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.sort" title="sisl.physics.electron.StateCElectron.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([ascending])</p></td>
 <td><p>Sort and return a new <code class="xref py py-obj docutils literal notranslate"><span class="pre">StateC</span></code> by sorting the coefficients (default to ascending)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.spin_moment" title="sisl.physics.electron.StateCElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.spin_moment" title="sisl.physics.electron.StateCElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
 <td><p>Calculate spin moment from the states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.sub" title="sisl.physics.electron.StateCElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.sub" title="sisl.physics.electron.StateCElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
 <td><p>Return a new state with only the specified states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.tile" title="sisl.physics.electron.StateCElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.tile" title="sisl.physics.electron.StateCElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
 <td><p>Tile the state vectors for a new supercell</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.translate" title="sisl.physics.electron.StateCElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.translate" title="sisl.physics.electron.StateCElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
 <td><p>Translate the vectors to a new unit-cell position</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.velocity" title="sisl.physics.electron.StateCElectron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([eps, project])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.velocity" title="sisl.physics.electron.StateCElectron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([eps, degenerate_dir, project])</p></td>
 <td><p>Calculate velocity for the states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.velocity_matrix" title="sisl.physics.electron.StateCElectron.velocity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_matrix</span></code></a>([eps])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.velocity_matrix" title="sisl.physics.electron.StateCElectron.velocity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_matrix</span></code></a>([eps, degenerate_dir])</p></td>
 <td><p>Calculate velocity matrix for the states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.wavefunction" title="sisl.physics.electron.StateCElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.wavefunction" title="sisl.physics.electron.StateCElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
 <td><p>Expand the coefficients as the wavefunction on <em class="xref py py-obj">grid</em> <em>as-is</em></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.c" title="sisl.physics.electron.StateCElectron.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.c" title="sisl.physics.electron.StateCElectron.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.dkind" title="sisl.physics.electron.StateCElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.dkind" title="sisl.physics.electron.StateCElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
 <td><p>The data-type of the state (in str)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.dtype" title="sisl.physics.electron.StateCElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.dtype" title="sisl.physics.electron.StateCElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data-type for the state</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.info" title="sisl.physics.electron.StateCElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.info" title="sisl.physics.electron.StateCElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.parent" title="sisl.physics.electron.StateCElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.parent" title="sisl.physics.electron.StateCElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.shape" title="sisl.physics.electron.StateCElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.shape" title="sisl.physics.electron.StateCElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Returns the shape of the state</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.state" title="sisl.physics.electron.StateCElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateCElectron.state" title="sisl.physics.electron.StateCElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -456,7 +459,7 @@ copied or not</p></li>
 
 <dl class="py method">
 <dt id="sisl.physics.electron.StateCElectron.berry_curvature">
-<code class="sig-name descname">berry_curvature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">complex</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.0001</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#StateCElectron.berry_curvature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.StateCElectron.berry_curvature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">berry_curvature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">complex</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.0001</span></em>, <em class="sig-param"><span class="n">degenerate_dir</span><span class="o">=</span><span class="default_value">(1, 1, 1)</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#StateCElectron.berry_curvature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.StateCElectron.berry_curvature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Berry curvature for the states</p>
 <p>This routine calls <a class="reference internal" href="sisl.physics.electron.berry_curvature.html#sisl.physics.electron.berry_curvature" title="sisl.physics.electron.berry_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">berry_curvature</span></code></a> with appropriate arguments
 and returns the Berry curvature for the states.</p>
@@ -468,6 +471,7 @@ to the energies of the states.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>complex</strong> (<em>logical</em><em>, </em><em>optional</em>) – whether the returned quantity is complex valued</p></li>
 <li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – precision used to find degenerate states.</p></li>
+<li><p><strong>degenerate_dir</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – which direction is used to decouple the degenerate states.</p></li>
 </ul>
 </dd>
 </dl>
@@ -693,6 +697,23 @@ for all, all phases are calculated</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="sisl.physics.electron.StateCElectron.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateCElectron.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new state without the specified indices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em>) – indices that are removed in the returned object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new state without containing the requested elements</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="sisl.physics.StateC.html#sisl.physics.StateC" title="sisl.physics.StateC">StateC</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="sisl.physics.electron.StateCElectron.rotate">
 <code class="sig-name descname">rotate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phi</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">individual</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateCElectron.rotate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p>
@@ -814,7 +835,7 @@ selects the corresponding state vector</p>
 
 <dl class="py method">
 <dt id="sisl.physics.electron.StateCElectron.velocity">
-<code class="sig-name descname">velocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.0001</span></em>, <em class="sig-param"><span class="n">project</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#StateCElectron.velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.StateCElectron.velocity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">velocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.0001</span></em>, <em class="sig-param"><span class="n">degenerate_dir</span><span class="o">=</span><span class="default_value">(1, 1, 1)</span></em>, <em class="sig-param"><span class="n">project</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#StateCElectron.velocity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.StateCElectron.velocity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate velocity for the states</p>
 <p>This routine calls <a class="reference internal" href="sisl.physics.electron.velocity.html#sisl.physics.electron.velocity" title="sisl.physics.electron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a> with appropriate arguments
 and returns the velocity for the states. I.e. for non-orthogonal basis the overlap
@@ -826,6 +847,7 @@ to the energies of the states.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – precision used to find degenerate states.</p></li>
+<li><p><strong>degenerate_dir</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – which direction is used to decouple the degenerate states.</p></li>
 <li><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to return projected velocities (per orbital), see <a class="reference internal" href="sisl.physics.electron.velocity.html#sisl.physics.electron.velocity" title="sisl.physics.electron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a> for details</p></li>
 </ul>
 </dd>
@@ -841,7 +863,7 @@ to the energies of the states.</p>
 
 <dl class="py method">
 <dt id="sisl.physics.electron.StateCElectron.velocity_matrix">
-<code class="sig-name descname">velocity_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.0001</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#StateCElectron.velocity_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.StateCElectron.velocity_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">velocity_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.0001</span></em>, <em class="sig-param"><span class="n">degenerate_dir</span><span class="o">=</span><span class="default_value">(1, 1, 1)</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#StateCElectron.velocity_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.StateCElectron.velocity_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate velocity matrix for the states</p>
 <p>This routine calls <a class="reference internal" href="sisl.physics.electron.velocity_matrix.html#sisl.physics.electron.velocity_matrix" title="sisl.physics.electron.velocity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_matrix</span></code></a> with appropriate arguments
 and returns the velocity for the states. I.e. for non-orthogonal basis the overlap
@@ -851,7 +873,10 @@ to the energies of the states.</p>
 <p>See <a class="reference internal" href="sisl.physics.electron.velocity_matrix.html#sisl.physics.electron.velocity_matrix" title="sisl.physics.electron.velocity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_matrix</span></code></a> for details.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – precision used to find degenerate states.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – precision used to find degenerate states.</p></li>
+<li><p><strong>degenerate_dir</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – which direction is used to decouple the degenerate states.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>

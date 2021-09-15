@@ -792,7 +792,7 @@ in <em class="xref py py-obj">other</em>.</p></li>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>ValueError if the two geometries are not compatible for either coordinate</strong><strong>, </strong><strong>orbital</strong><strong> or </strong><strong>supercell errors</strong> – </p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – if the two geometries are not compatible for either coordinate, orbital or supercell errors</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a new instance with two sparse matrices joined and appended together</p>
@@ -1590,12 +1590,13 @@ to the new supercell by repeating them in blocks like the coordinates.</p>
 <dt id="sisl.physics.Hamiltonian.replace">
 <code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">atoms</span></em>, <em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">other_atoms</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">0.005</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.Hamiltonian.replace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace <em class="xref py py-obj">atoms</em> in <em class="xref py py-obj">self</em> with <em class="xref py py-obj">other_atoms</em> in <em class="xref py py-obj">other</em> and retain couplings between them</p>
-<p>This method tries to replace a subset of atoms in <em class="xref py py-obj">self</em> with
+<p>This method replaces a subset of atoms in <em class="xref py py-obj">self</em> with
 another sparse geometry retaining any couplings between them.
-The algorithm checks whether the coupling atoms are have the same number of
+The algorithm checks whether the coupling atoms have the same number of
 orbitals. Meaning that atoms in the overlapping region should have the same
 connections and number of orbitals per atom.
-It will _not_ check whether the orbitals or atoms _are_ the same.</p>
+It will _not_ check whether the orbitals or atoms _are_ the same, nor the order
+of the orbitals.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">minimal</span> <span class="o">=</span> <span class="n">SparseOrbital</span><span class="p">(</span><span class="o">....</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">big</span> <span class="o">=</span> <span class="n">minimal</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -1611,7 +1612,7 @@ and is effectively copying couplings from <code class="docutils literal notransl
 <span class="gp">&gt;&gt;&gt; </span><span class="n">big2</span> <span class="o">=</span> <span class="p">(</span><span class="n">big2</span> <span class="o">+</span> <span class="n">big2</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span> <span class="o">*</span> <span class="mf">0.5</span>
 </pre></div>
 </div>
-<p>To only retain couplings from the <code class="docutils literal notranslate"><span class="pre">`minial</span></code> sparse matrix:</p>
+<p>To only retain couplings from the <code class="docutils literal notranslate"><span class="pre">minimal</span></code> sparse matrix:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">big2</span> <span class="o">=</span> <span class="n">big</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">big</span><span class="o">.</span><span class="n">na</span><span class="p">),</span> <span class="n">minimal</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">big2</span> <span class="o">=</span> <span class="p">(</span><span class="n">big2</span> <span class="o">+</span> <span class="n">big2</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span> <span class="o">*</span> <span class="mf">0.5</span>
 </pre></div>
@@ -1633,7 +1634,7 @@ So algorithms using atomic indices should be careful.</p>
 sparse matrix and combined with <em class="xref py py-obj">self</em> to create a new sparse matrix</p></li>
 <li><p><strong>other_atoms</strong> (<em>array_like</em><em>, </em><em>optional</em>) – to select a subset of atoms in <em class="xref py py-obj">other</em> that are taken out.
 Defaults to all atoms.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – tolerance that all coordinates <em>must</em> be within to allow a replacement.
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – coordinate tolerance to allow a replacement.
 It is important that this value is smaller than half the distance between
 the two closests atoms such that there is no ambiguity in selecting
 equivalent atoms.</p></li>
@@ -1666,15 +1667,18 @@ in <em class="xref py py-obj">other</em>.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ValueError if the two geometries are not compatible for either coordinate</strong><strong>, </strong><strong>orbital</strong><strong> or </strong><strong>supercell errors</strong> – </p></li>
-<li><p><strong>AssertionError if the two geometries are not compatible for either coordinate</strong><strong>, </strong><strong>orbital</strong><strong> or </strong><strong>supercell errors</strong> – </p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – if the two geometries are not compatible for either coordinate, orbital or supercell errors</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#AssertionError" title="(in Python v3.9)"><strong>AssertionError</strong></a> – if the two geometries are not compatible for either coordinate, orbital or supercell errors</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a new instance with two sparse matrices merged together by removing and adding</p>
+<dt class="field-even">Warns</dt>
+<dd class="field-even"><p><strong>SislWarning</strong> – in case the overlapping atoms are not comprising the same atomic specie. In some cases this may not be a problem. However, care must be taken by the user if this warning is issued.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)">object</a></p>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a new instance with two sparse matrices merged together by removing and adding</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)">object</a></p>
 </dd>
 </dl>
 </dd></dl>

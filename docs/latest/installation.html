@@ -329,7 +329,7 @@ and setting the environment variable <em class="xref py py-obj">SISL_FILES_TESTS
 <div class="section" id="development-version">
 <h2>Development version<a class="headerlink" href="#development-version" title="Permalink to this headline">¶</a></h2>
 <p>To install the development version using <code class="code docutils literal notranslate"><span class="pre">pip</span></code> you may use the URL command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install git+https://github.com/zerothi/sisl.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3 -m pip install -U git+https://github.com/zerothi/sisl.git
 </pre></div>
 </div>
 <p>Otherwise follow the manual installation by cloning the <a class="reference external" href="http://github.com/zerothi/sisl/">git repository</a>.
@@ -338,10 +338,11 @@ options to <code class="code docutils literal notranslate"><span class="pre">set
 the Intel compilers you should do:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone git+https://github.com/zerothi/sisl.git
 <span class="nb">cd</span> sisl
-python3 -m pip install --global-option<span class="o">=</span><span class="s2">&quot;build&quot;</span> --global-option<span class="o">=</span><span class="s2">&quot;--compiler=intelem&quot;</span> --global-option<span class="o">=</span><span class="s2">&quot;--fcompiler=intelem&quot;</span> .
+python3 -m pip install -U --global-option<span class="o">=</span><span class="s2">&quot;build&quot;</span> --global-option<span class="o">=</span><span class="s2">&quot;--compiler=intelem&quot;</span> --global-option<span class="o">=</span><span class="s2">&quot;--fcompiler=intelem&quot;</span> .
 </pre></div>
 </div>
 <p>which will pass the correct options to the build system.</p>
+<p>The <em class="xref py py-obj">-U</em> flag ensures that prior installations are overwritten.</p>
 </div>
 </div>
 

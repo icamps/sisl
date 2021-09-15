@@ -539,7 +539,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError : if specifying periodic one one boundary, so must the opposite side.</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            if specifying periodic one one boundary, so must the opposite side.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">boundary</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">boundary</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
@@ -1187,7 +1188,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError: if the grids are not compatible (different shapes)</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            if the grids are not compatible (different shapes)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Grid</span><span class="p">):</span>
             <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compatible_copy</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s1">&#39;they cannot be added&#39;</span><span class="p">)</span>
@@ -1202,7 +1204,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError: if the grids are not compatible (different shapes)</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            if the grids are not compatible (different shapes)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Grid</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_compatibility</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s1">&#39;they cannot be added&#39;</span><span class="p">)</span>
@@ -1216,7 +1219,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError: if the grids are not compatible (different shapes)</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            if the grids are not compatible (different shapes)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Grid</span><span class="p">):</span>
             <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compatible_copy</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s1">&#39;they cannot be subtracted&#39;</span><span class="p">)</span>
@@ -1231,7 +1235,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError: if the grids are not compatible (different shapes)</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            if the grids are not compatible (different shapes)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Grid</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_check_compatibility</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s1">&#39;they cannot be subtracted&#39;</span><span class="p">)</span>
@@ -1331,7 +1336,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError : if any of the passed indices are below 0 or above the number of elements per axis</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            if any of the passed indices are below 0 or above the number of elements per axis</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayi</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[:])</span>

@@ -249,7 +249,7 @@
 <h1>berry_curvature<a class="headerlink" href="#berry-curvature" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
 <dt id="sisl.physics.electron.berry_curvature">
-<code class="sig-prename descclassname">sisl.physics.electron.</code><code class="sig-name descname">berry_curvature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">energy</span></em>, <em class="sig-param"><span class="n">dHk</span></em>, <em class="sig-param"><span class="n">dSk</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">degenerate</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">complex</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#berry_curvature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.berry_curvature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">sisl.physics.electron.</code><code class="sig-name descname">berry_curvature</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state</span></em>, <em class="sig-param"><span class="n">energy</span></em>, <em class="sig-param"><span class="n">dHk</span></em>, <em class="sig-param"><span class="n">dSk</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">degenerate</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">degenerate_dir</span><span class="o">=</span><span class="default_value">(1, 1, 1)</span></em>, <em class="sig-param"><span class="n">complex</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#berry_curvature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.berry_curvature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Berry curvature matrix for a set of states (using Kubo)</p>
 <p>The Berry curvature is calculated using the following expression
 (<span class="math notranslate nohighlight">\(\alpha\)</span>, <span class="math notranslate nohighlight">\(\beta\)</span> corresponding to Cartesian directions):</p>
@@ -273,7 +273,8 @@ list of the Hamiltonian derivative along the 3 Cartesian directions.</p></li>
 Same derivative as <em class="xref py py-obj">dHk</em>.
 NOTE: Using non-orthogonal basis sets are not tested.</p></li>
 <li><p><strong>degenerate</strong> (<em>list of array_like</em><em>, </em><em>optional</em>) – a list containing the indices of degenerate states. In that case a prior diagonalization
-is required to decouple them. This is done 3 times along each of the Cartesian directions.</p></li>
+is required to decouple them.</p></li>
+<li><p><strong>degenerate_dir</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – along which direction degenerate states are decoupled.</p></li>
 <li><p><strong>complex</strong> (<em>logical</em><em>, </em><em>optional</em>) – whether the returned quantity is complex valued (i.e. not <em>only</em> the imaginary part is returned)</p></li>
 </ul>
 </dd>

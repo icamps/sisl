@@ -308,49 +308,52 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.phase" title="sisl.physics.phonon.EigenmodePhonon.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, return_indices])</p></td>
 <td><p>Calculate the Euler angle (phase) for the elements of the state, in the range <span class="math notranslate nohighlight">\(]-\pi;\pi]\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.rotate" title="sisl.physics.phonon.EigenmodePhonon.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.remove" title="sisl.physics.phonon.EigenmodePhonon.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
+<td><p>Return a new state without the specified indices</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.rotate" title="sisl.physics.phonon.EigenmodePhonon.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
 <td><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.sort" title="sisl.physics.phonon.EigenmodePhonon.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([ascending])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.sort" title="sisl.physics.phonon.EigenmodePhonon.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([ascending])</p></td>
 <td><p>Sort and return a new <code class="xref py py-obj docutils literal notranslate"><span class="pre">StateC</span></code> by sorting the coefficients (default to ascending)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.sub" title="sisl.physics.phonon.EigenmodePhonon.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.sub" title="sisl.physics.phonon.EigenmodePhonon.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
 <td><p>Return a new state with only the specified states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.tile" title="sisl.physics.phonon.EigenmodePhonon.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.tile" title="sisl.physics.phonon.EigenmodePhonon.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
 <td><p>Tile the state vectors for a new supercell</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.translate" title="sisl.physics.phonon.EigenmodePhonon.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.translate" title="sisl.physics.phonon.EigenmodePhonon.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
 <td><p>Translate the vectors to a new unit-cell position</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.velocity" title="sisl.physics.phonon.EigenmodePhonon.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([eps, project])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.velocity" title="sisl.physics.phonon.EigenmodePhonon.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([eps, degenerate_dir, project])</p></td>
 <td><p>Calculate velocity for the modes</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.c" title="sisl.physics.phonon.EigenmodePhonon.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.c" title="sisl.physics.phonon.EigenmodePhonon.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.dkind" title="sisl.physics.phonon.EigenmodePhonon.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.dkind" title="sisl.physics.phonon.EigenmodePhonon.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
 <td><p>The data-type of the state (in str)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.dtype" title="sisl.physics.phonon.EigenmodePhonon.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.dtype" title="sisl.physics.phonon.EigenmodePhonon.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data-type for the state</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.hw" title="sisl.physics.phonon.EigenmodePhonon.hw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hw</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.hw" title="sisl.physics.phonon.EigenmodePhonon.hw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hw</span></code></a></p></td>
 <td><p>Eigenmode values in units of <span class="math notranslate nohighlight">\(\hbar \omega\)</span> [eV]</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.info" title="sisl.physics.phonon.EigenmodePhonon.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.info" title="sisl.physics.phonon.EigenmodePhonon.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.mode" title="sisl.physics.phonon.EigenmodePhonon.mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.mode" title="sisl.physics.phonon.EigenmodePhonon.mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mode</span></code></a></p></td>
 <td><p>Eigenmodes (states)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.parent" title="sisl.physics.phonon.EigenmodePhonon.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.parent" title="sisl.physics.phonon.EigenmodePhonon.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.shape" title="sisl.physics.phonon.EigenmodePhonon.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.shape" title="sisl.physics.phonon.EigenmodePhonon.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Returns the shape of the state</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.state" title="sisl.physics.phonon.EigenmodePhonon.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.phonon.EigenmodePhonon.state" title="sisl.physics.phonon.EigenmodePhonon.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -541,13 +544,15 @@ product with itself. The object itself will always be the bra <span class="math 
 </dl>
 <p class="rubric">Notes</p>
 <p>This does <em>not</em> take into account a possible overlap matrix when non-orthogonal basis sets are used.</p>
-<p>:raises ValueError : if the number of state coefficients are different for the bra and ket:</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a matrix with the sum of inner state products</p>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – if the number of state coefficients are different for the bra and ket</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a matrix with the sum of inner state products</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -684,6 +689,23 @@ for all, all phases are calculated</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="sisl.physics.phonon.EigenmodePhonon.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.phonon.EigenmodePhonon.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new state without the specified indices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em>) – indices that are removed in the returned object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new state without containing the requested elements</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="sisl.physics.StateC.html#sisl.physics.StateC" title="sisl.physics.StateC">StateC</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="sisl.physics.phonon.EigenmodePhonon.rotate">
 <code class="sig-name descname">rotate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phi</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">individual</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.phonon.EigenmodePhonon.rotate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p>
@@ -791,7 +813,7 @@ selects the corresponding state vector</p>
 
 <dl class="py method">
 <dt id="sisl.physics.phonon.EigenmodePhonon.velocity">
-<code class="sig-name descname">velocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-07</span></em>, <em class="sig-param"><span class="n">project</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.phonon.EigenmodePhonon.velocity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">velocity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eps</span><span class="o">=</span><span class="default_value">1e-07</span></em>, <em class="sig-param"><span class="n">degenerate_dir</span><span class="o">=</span><span class="default_value">(1, 1, 1)</span></em>, <em class="sig-param"><span class="n">project</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.phonon.EigenmodePhonon.velocity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate velocity for the modes</p>
 <p>This routine calls <a class="reference internal" href="sisl.physics.phonon.velocity.html#sisl.physics.phonon.velocity" title="sisl.physics.phonon.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a> with appropriate arguments
 and returns the velocity for the modes.</p>
@@ -806,7 +828,8 @@ This is because of the velocity un-folding for degenerate modes. I.e. calling
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>, </em><em>optional</em>) – precision used to find degenerate modes.</p></li>
-<li><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – </p></li>
+<li><p><strong>degenerate_dir</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – which direction is used to decouple the degenerate states.</p></li>
+<li><p><strong>project</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – whether to return projected velocities (per direction), see <a class="reference internal" href="sisl.physics.phonon.velocity.html#sisl.physics.phonon.velocity" title="sisl.physics.phonon.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a> for details</p></li>
 </ul>
 </dd>
 </dl>

@@ -579,7 +579,6 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">ns</span><span class="o">.</span><span class="n">_data_header</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PDOS[1/eV]</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-
         <span class="n">p</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--atom&#39;</span><span class="p">,</span> <span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">AtomRange</span><span class="p">,</span>
                        <span class="n">help</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Limit orbital resolved PDOS to a sub-set of atoms/orbitals: &quot;1-2[3,4]&quot; will yield the 1st and 2nd atom and their 3rd and fourth orbital. Multiple comma-separated specifications are allowed. Note that some shells does not allow [] as text-input (due to expansion), {, [ or * are allowed orbital delimiters. Each invocation will create a new column/line in output&quot;&quot;&quot;</span><span class="p">)</span>
 

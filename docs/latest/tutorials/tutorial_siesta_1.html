@@ -482,31 +482,16 @@ Download IPython notebook <a href="https://raw.githubusercontent.com/zerothi/sis
 <h2>Creating the geometry<a class="headerlink" href="#Creating-the-geometry" title="Permalink to this headline">¶</a></h2>
 <p>Our system of interest will be the <span class="math notranslate nohighlight">\(\mathrm H_2\mathrm O\)</span> system. The first task will be to create the molecule geometry. This is done using lists of atomic coordinates and atomic species. Additionally one needs to define the supercell (or if you prefer: unit-cell) where the molecule resides in. Siesta is a periodic DFT code and thus all directions are periodic. I.e. when simulating molecules it is vital to have a large vacuum gap between periodic images. In this case we use a supercell of
 side-lengths <span class="math notranslate nohighlight">\(10\mathrm{Ang}\)</span>.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">h2o</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.</span><span class="p">]],</span>
                <span class="p">[</span><span class="n">Atom</span><span class="p">(</span><span class="s1">&#39;O&#39;</span><span class="p">),</span> <span class="n">Atom</span><span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="n">Atom</span><span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">)],</span>
-               <span class="n">sc</span><span class="o">=</span><span class="n">SuperCell</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">origo</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">))</span>
+               <span class="n">sc</span><span class="o">=</span><span class="n">SuperCell</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-23381898b92e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> h2o = Geometry([[0, 0, 0], [0.8, 0.6, 0], [-0.8, 0.6, 0.]],
-<span class="ansi-green-intense-fg ansi-bold">      2</span>                <span class="ansi-blue-fg">[</span>Atom<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;O&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> Atom<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;H&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> Atom<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;H&#39;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">----&gt; 3</span><span class="ansi-red-fg">                sc=SuperCell(10, origo=[-5] * 3))
-</span>
-<span class="ansi-red-fg">TypeError</span>: __init__() got an unexpected keyword argument &#39;origo&#39;
-</pre></div></div>
 </div>
 <p>The input are the 1) xyz coordinates, 2) the atomic species and 3) the supercell that is attached.</p>
 <p>By printing the object one gets basic information regarding the geometry, such as 1) number of atoms, 2) species of atoms, 3) number of orbitals, 4) orbitals associated with each atom and 5) number of supercells.</p>
@@ -524,12 +509,22 @@ side-lengths <span class="math notranslate nohighlight">\(10\mathrm{Ang}\)</span
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-3-8069fd2ae70d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>print<span class="ansi-blue-fg">(</span>h2o<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;h2o&#39; is not defined
+Geometry{na: 3, no: 3,
+ Atoms{species: 2,
+  Atom{O, Z: 8, mass(au): 15.99940, maxR: -1.00000,
+   Orbital{R: -1.00000, q0: 0.0}
+  }: 1,
+  Atom{H, Z: 1, mass(au): 1.00794, maxR: -1.00000,
+   Orbital{R: -1.00000, q0: 0.0}
+  }: 2,
+ },
+ maxR: -1.00000,
+ SuperCell{nsc: [1 1 1],
+  A=[10.000, 0.000, 0.000],
+  B=[0.000, 10.000, 0.000],
+  C=[0.000, 0.000, 10.000],
+ }
+}
 </pre></div></div>
 </div>
 <div class="line-block">
@@ -546,21 +541,24 @@ side-lengths <span class="math notranslate nohighlight">\(10\mathrm{Ang}\)</span
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;AxesSubplot:xlabel=&#39;Ang&#39;, ylabel=&#39;Ang&#39;&gt;
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-4-d3fe0073e29e&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>plot<span class="ansi-blue-fg">(</span>h2o<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;h2o&#39; is not defined
-</pre></div></div>
+<img alt="../_images/tutorials_tutorial_siesta_1_6_1.png" src="../_images/tutorials_tutorial_siesta_1_6_1.png" />
+</div>
 </div>
 <p>Now we need to create the input fdf file for Siesta:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
@@ -577,21 +575,6 @@ side-lengths <span class="math notranslate nohighlight">\(10\mathrm{Ang}\)</span
 <span class="n">h2o</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;STRUCT.fdf&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-5-07abd13025dd&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      8</span> SaveRho true
-<span class="ansi-green-intense-fg ansi-bold">      9</span> &#34;&#34;&#34;)
-<span class="ansi-green-fg">---&gt; 10</span><span class="ansi-red-fg"> </span>h2o<span class="ansi-blue-fg">.</span>write<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#39;STRUCT.fdf&#39;</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">NameError</span>: name &#39;h2o&#39; is not defined
-</pre></div></div>
 </div>
 <div class="line-block">
 <div class="line">The first block of code simply writes a text-file with the required input, the last line of code tells the geometry (<code class="docutils literal notranslate"><span class="pre">h2o</span></code>) to write its information to the file <code class="docutils literal notranslate"><span class="pre">STRUCT.fdf</span></code>.</div>
@@ -735,8 +718,8 @@ single-<span class="math notranslate nohighlight">\(\zeta\)</span> calculation <
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">es</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">eigenstate</span><span class="p">()</span>
 
-<span class="c1"># We specify an origo to center the molecule in the grid</span>
-<span class="n">h2o</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">origo</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+<span class="c1"># We specify an origin to center the molecule in the grid</span>
+<span class="n">h2o</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">]</span>
 
 <span class="c1"># Reduce the contained eigenstates to only the HOMO and LUMO</span>
 <span class="c1"># Find the index of the smallest positive eigenvalue</span>

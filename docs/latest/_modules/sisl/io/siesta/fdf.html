@@ -827,7 +827,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        SislWarning if none of the files can be read</span>
+<span class="sd">        SislWarning</span>
+<span class="sd">            if none of the files can be read</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">order</span> <span class="o">=</span> <span class="n">_listify_str</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;order&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;nc&#39;</span><span class="p">,</span> <span class="s1">&#39;ORB_INDX&#39;</span><span class="p">]))</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
@@ -1139,6 +1140,11 @@
 <span class="sd">        hermitian: bool, optional</span>
 <span class="sd">            if true (default), the returned dynamical matrix will be hermitian</span>
 
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This is highly untested and may result in errorneous matrices.</span>
+<span class="sd">        Please report back to developers about problems and suggestions.</span>
+
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        dynamic_matrix : DynamicalMatrix</span>
@@ -1150,6 +1156,7 @@
             <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">track</span><span class="p">:</span>
                     <span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="si">}</span><span class="s2">(read_dynamical_matrix) found in file=</span><span class="si">{</span><span class="n">f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="si">}</span><span class="s2">.read_dynamical_matrix is experimental, untested!&quot;</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">v</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 

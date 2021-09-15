@@ -230,7 +230,7 @@
         <span class="k">if</span> <span class="n">velocity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">velocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">geometry</span><span class="o">.</span><span class="n">na</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">geometry</span><span class="o">.</span><span class="n">xyz</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">velocity</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.write_geometry requires the input&#39;</span>
+            <span class="k">raise</span> <span class="n">SislError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s1">.write_geometry requires the input&#39;</span>
                             <span class="s1">&#39;velocity to have equal length to the input geometry.&#39;</span><span class="p">)</span>
 
         <span class="c1"># Write unit-cell</span>

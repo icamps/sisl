@@ -1260,7 +1260,8 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        ValueError : if the number of orbitals removed is too large or some indices are outside the allowed range</span>
+<span class="sd">        ValueError</span>
+<span class="sd">           if the number of orbitals removed is too large or some indices are outside the allowed range</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">orbitals</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayi</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">orbitals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">no</span><span class="p">:</span>
@@ -2080,8 +2081,10 @@
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
-<span class="sd">        KeyError : if `atom_from` does not exist in the list of atoms</span>
-<span class="sd">        UserWarning : if the atoms does not have the same number of orbitals.</span>
+<span class="sd">        KeyError</span>
+<span class="sd">           if `atom_from` does not exist in the list of atoms</span>
+<span class="sd">        UserWarning</span>
+<span class="sd">           if the atoms does not have the same number of orbitals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atom_from</span><span class="p">,</span> <span class="n">Atom</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">.replace_atom requires input arguments to &#39;</span>

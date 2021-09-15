@@ -521,11 +521,16 @@ forced to 0.</p></li>
 <li><p><strong>hermitian</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – if true (default), the returned dynamical matrix will be hermitian</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>dynamic_matrix</strong> – the dynamical matrix</p>
+</dl>
+<p class="rubric">Notes</p>
+<p>This is highly untested and may result in errorneous matrices.
+Please report back to developers about problems and suggestions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>dynamic_matrix</strong> – the dynamical matrix</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../generated/sisl.physics.DynamicalMatrix.html#sisl.physics.DynamicalMatrix" title="sisl.physics.DynamicalMatrix">DynamicalMatrix</a></p>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="../../generated/sisl.physics.DynamicalMatrix.html#sisl.physics.DynamicalMatrix" title="sisl.physics.DynamicalMatrix">DynamicalMatrix</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -701,7 +706,7 @@ If <em class="xref py py-obj">order</em> is present <em class="xref py py-obj">o
 <dd><p>Read supercell size using any method available</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><strong>SislWarning if none of the files can be read</strong> – </p>
+<dd class="field-odd"><p><strong>SislWarning</strong> – if none of the files can be read</p>
 </dd>
 </dl>
 </dd></dl>

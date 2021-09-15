@@ -296,40 +296,43 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.phase" title="sisl.physics.electron.EigenvectorElectron.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, return_indices])</p></td>
 <td><p>Calculate the Euler angle (phase) for the elements of the state, in the range <span class="math notranslate nohighlight">\(]-\pi;\pi]\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.rotate" title="sisl.physics.electron.EigenvectorElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.remove" title="sisl.physics.electron.EigenvectorElectron.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
+<td><p>Return a new state without the specified vectors</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.rotate" title="sisl.physics.electron.EigenvectorElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
 <td><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.spin_moment" title="sisl.physics.electron.EigenvectorElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.spin_moment" title="sisl.physics.electron.EigenvectorElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
 <td><p>Calculate spin moment from the states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.sub" title="sisl.physics.electron.EigenvectorElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.sub" title="sisl.physics.electron.EigenvectorElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
 <td><p>Return a new state with only the specified states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.tile" title="sisl.physics.electron.EigenvectorElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.tile" title="sisl.physics.electron.EigenvectorElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
 <td><p>Tile the state vectors for a new supercell</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.translate" title="sisl.physics.electron.EigenvectorElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.translate" title="sisl.physics.electron.EigenvectorElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
 <td><p>Translate the vectors to a new unit-cell position</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.wavefunction" title="sisl.physics.electron.EigenvectorElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.wavefunction" title="sisl.physics.electron.EigenvectorElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
 <td><p>Expand the coefficients as the wavefunction on <em class="xref py py-obj">grid</em> <em>as-is</em></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.dkind" title="sisl.physics.electron.EigenvectorElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.dkind" title="sisl.physics.electron.EigenvectorElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
 <td><p>The data-type of the state (in str)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.dtype" title="sisl.physics.electron.EigenvectorElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.dtype" title="sisl.physics.electron.EigenvectorElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data-type for the state</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.info" title="sisl.physics.electron.EigenvectorElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.info" title="sisl.physics.electron.EigenvectorElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.parent" title="sisl.physics.electron.EigenvectorElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.parent" title="sisl.physics.electron.EigenvectorElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.shape" title="sisl.physics.electron.EigenvectorElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.shape" title="sisl.physics.electron.EigenvectorElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Returns the shape of the state</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.state" title="sisl.physics.electron.EigenvectorElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenvectorElectron.state" title="sisl.physics.electron.EigenvectorElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -591,6 +594,23 @@ product with itself. The object itself will always be the bra <span class="math 
 for all, all phases are calculated</p></li>
 <li><p><strong>return_indices</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – return indices for the elements used when <code class="docutils literal notranslate"><span class="pre">method=='max'</span></code></p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.physics.electron.EigenvectorElectron.remove">
+<code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">idx</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.EigenvectorElectron.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new state without the specified vectors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em> or </em><em>array_like</em>) – indices that are removed in the returned object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a new state without containing the requested elements</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="sisl.physics.State.html#sisl.physics.State" title="sisl.physics.State">State</a></p>
 </dd>
 </dl>
 </dd></dl>
