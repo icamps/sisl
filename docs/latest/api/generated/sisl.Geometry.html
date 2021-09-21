@@ -418,8 +418,8 @@ on how to add more conversion methods.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.Geometry.maxR" title="sisl.Geometry.maxR"><code class="xref py py-obj docutils literal notranslate"><span class="pre">maxR</span></code></a>([all])</p></td>
 <td><p>Maximum orbital range of the atoms</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Geometry.mirror" title="sisl.Geometry.mirror"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mirror</span></code></a>(method[, atoms])</p></td>
-<td><p>Mirrors the atomic coordinates about the plane</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.Geometry.mirror" title="sisl.Geometry.mirror"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mirror</span></code></a>(method[, atoms, point])</p></td>
+<td><p>Mirrors the atomic coordinates about a plane given by its normal vector</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.Geometry.move" title="sisl.Geometry.move"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move</span></code></a>(v[, atoms, cell])</p></td>
 <td><p>Translates the geometry by <em class="xref py py-obj">v</em></p></td>
@@ -1471,8 +1471,8 @@ is the index of the specie</p>
 
 <dl class="py method">
 <dt id="sisl.Geometry.mirror">
-<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span></em>, <em class="sig-param"><span class="n">atoms</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/geometry.html#Geometry.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.Geometry.mirror" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mirrors the atomic coordinates about the plane</p>
+<code class="sig-name descname">mirror</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span></em>, <em class="sig-param"><span class="n">atoms</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">point</span><span class="o">=</span><span class="default_value">(0, 0, 0)</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/geometry.html#Geometry.mirror"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.Geometry.mirror" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mirrors the atomic coordinates about a plane given by its normal vector</p>
 <p>This will typically move the atomic coordinates outside of the unit-cell.
 This method should be used with care.</p>
 <dl class="field-list simple">
@@ -1482,11 +1482,23 @@ This method should be used with care.</p>
 plane (<code class="docutils literal notranslate"><span class="pre">xy</span></code>, <code class="docutils literal notranslate"><span class="pre">xz</span></code>, <code class="docutils literal notranslate"><span class="pre">yz</span></code>) or about user defined vectors (<code class="docutils literal notranslate"><span class="pre">v</span></code>).
 A vector may also be specified by <code class="docutils literal notranslate"><span class="pre">'ab'</span></code> which is the vector normal
 to the plane spanned by the first and second lattice vector.
-or user defined vector (<em class="xref py py-obj">v</em>)</p></li>
+or user defined vector (<em class="xref py py-obj">v</em>) which is defining a plane.</p></li>
 <li><p><strong>atoms</strong> (<em>array_like</em><em>, </em><em>optional</em>) – only mirror a subset of atoms</p></li>
+<li><p><strong>point</strong> (<em>(</em><em>3</em><em>,</em><em>)</em><em>, </em><em>optional</em>) – mirror coordinates around the plane that intersects the <em>method</em> vector
+and this point</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">geom</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">graphene</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">mirror</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">[0.  -1.42]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">mirror</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="mf">1.42</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out</span><span class="o">.</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">[1.42  0.]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">

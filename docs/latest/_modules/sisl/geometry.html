@@ -2827,8 +2827,8 @@
             <span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">:]</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">reverse</span><span class="p">(</span><span class="n">atoms</span><span class="p">),</span> <span class="n">sc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
 
-<div class="viewcode-block" id="Geometry.mirror"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.mirror">[docs]</a>    <span class="k">def</span> <span class="nf">mirror</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Mirrors the atomic coordinates about the plane</span>
+<div class="viewcode-block" id="Geometry.mirror"><a class="viewcode-back" href="../../api/generated/sisl.Geometry.html#sisl.Geometry.mirror">[docs]</a>    <span class="k">def</span> <span class="nf">mirror</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">point</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Mirrors the atomic coordinates about a plane given by its normal vector</span>
 
 <span class="sd">        This will typically move the atomic coordinates outside of the unit-cell.</span>
 <span class="sd">        This method should be used with care.</span>
@@ -2840,21 +2840,34 @@
 <span class="sd">           plane (``xy``, ``xz``, ``yz``) or about user defined vectors (``v``).</span>
 <span class="sd">           A vector may also be specified by ``&#39;ab&#39;`` which is the vector normal</span>
 <span class="sd">           to the plane spanned by the first and second lattice vector.</span>
-<span class="sd">           or user defined vector (`v`)</span>
+<span class="sd">           or user defined vector (`v`) which is defining a plane.</span>
 <span class="sd">        atoms : array_like, optional</span>
 <span class="sd">           only mirror a subset of atoms</span>
+<span class="sd">        point: (3,), optional</span>
+<span class="sd">           mirror coordinates around the plane that intersects the *method* vector</span>
+<span class="sd">           and this point</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; geom = geom.graphene()</span>
+<span class="sd">        &gt;&gt;&gt; out = geom.mirror(&#39;x&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; out.xyz[:, 0]</span>
+<span class="sd">        [0.  -1.42]</span>
+<span class="sd">        &gt;&gt;&gt; out = geom.mirror(&#39;x&#39;, point=(1.42/2, 0, 0))</span>
+<span class="sd">        &gt;&gt;&gt; out.xyz[:, 0]</span>
+<span class="sd">        [1.42  0.]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sanitize_atoms</span><span class="p">(</span><span class="n">atoms</span><span class="p">)</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
 
-        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
-            <span class="k">if</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">]:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;yz&#39;</span><span class="p">]:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;xz&#39;</span><span class="p">]:</span>
-                <span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">):</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayd</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;yz&#39;</span><span class="p">):</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayd</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;xz&#39;</span><span class="p">):</span>
+                <span class="n">method</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">arrayd</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span>
                 <span class="n">method</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cell</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span>
@@ -2870,20 +2883,19 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.mirror unrecognized &#39;method&#39; value&quot;</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="c1"># it has to be an array of length 3</span>
-            <span class="c1"># Mirror about a user defined vector</span>
-            <span class="n">method</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">method</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">method</span> <span class="o">/=</span> <span class="n">fnorm</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+        <span class="c1"># it has to be an array of length 3</span>
+        <span class="c1"># Mirror about a user defined vector</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="n">_a</span><span class="o">.</span><span class="n">asarrayd</span><span class="p">(</span><span class="n">method</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">method</span> <span class="o">/=</span> <span class="n">fnorm</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
 
-            <span class="c1"># project onto vector</span>
-            <span class="n">vp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">method</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+        <span class="c1"># project onto vector</span>
+        <span class="n">vp</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">point</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">method</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
 
-            <span class="c1"># convert coordinates</span>
-            <span class="c1"># first subtract the projection, then its mirror position</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-=</span> <span class="n">vp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">method</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">g</span><span class="o">.</span><span class="n">atoms</span><span class="p">,</span> <span class="n">sc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sc</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span></div>
+        <span class="c1"># convert coordinates</span>
+        <span class="c1"># first subtract the projection, then its mirror position</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="n">atoms</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-=</span> <span class="n">vp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">method</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">g</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fxyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

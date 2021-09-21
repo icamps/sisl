@@ -243,7 +243,7 @@ one would do:</p>
 <span class="n">H</span> <span class="o">=</span> <span class="n">sisl</span><span class="o">.</span><span class="n">get_sile</span><span class="p">(</span><span class="s1">&#39;RUN.fdf&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read_hamiltonian</span><span class="p">()</span>
 <span class="n">mp</span> <span class="o">=</span> <span class="n">sisl</span><span class="o">.</span><span class="n">MonkhorstPack</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">13</span><span class="p">])</span>
 <span class="n">E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
-<span class="n">DOS</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">asaverage</span><span class="p">()</span><span class="o">.</span><span class="n">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+<span class="n">DOS</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">apply</span><span class="o">.</span><span class="n">average</span><span class="o">.</span><span class="n">DOS</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">DOS</span><span class="p">)</span>
 </pre></div>
@@ -265,14 +265,13 @@ of places to search/ask for answers:</p>
 <li><p>Workshop examples showing different uses, see <a class="reference external" href="https://github.com/zerothi/ts-tbt-sisl-tutorial">workshop</a></p></li>
 <li><p>Ask questions on its use on the Github <a class="reference external" href="http://github.com/zerothi/sisl/issues">issue page</a></p></li>
 <li><p>Ask questions on <a class="reference external" href="https://discord.gg/5XnFXFdkv2">Discord</a></p></li>
-<li><p>Ask questions on <a class="reference external" href="https://gitter.im/sisl-tool/Lobby">Gitter</a></p></li>
 </ul>
 <p>If sisl was used to produce scientific contributions, please use this <a class="reference external" href="http://dx.doi.org/10.5281/zenodo.597181">DOI</a> for citation.
 We recommend to specify the version of sisl in combination of this citation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>@misc<span class="o">{</span>zerothi_sisl,
   <span class="nv">author</span>       <span class="o">=</span> <span class="o">{</span>Papior, Nick<span class="o">}</span>,
   <span class="nv">title</span>        <span class="o">=</span> <span class="o">{</span>sisl: v&lt;fill-version&gt;<span class="o">}</span>,
-  <span class="nv">year</span>         <span class="o">=</span> <span class="o">{</span><span class="m">2020</span><span class="o">}</span>,
+  <span class="nv">year</span>         <span class="o">=</span> <span class="o">{</span><span class="m">2021</span><span class="o">}</span>,
   <span class="nv">doi</span>          <span class="o">=</span> <span class="o">{</span><span class="m">10</span>.5281/zenodo.597181<span class="o">}</span>,
   <span class="nv">url</span>          <span class="o">=</span> <span class="o">{</span>https://doi.org/10.5281/zenodo.597181<span class="o">}</span>
 <span class="o">}</span>
