@@ -781,47 +781,6 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_write_block</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_write</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%e</span><span class="s1">ndblock</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_SpGeom_replace_geom</span><span class="p">(</span><span class="n">spgeom</span><span class="p">,</span> <span class="n">geometry</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Replace all atoms in spgeom with the atom in geometry while retaining the number of orbitals</span>
-
-<span class="sd">        Currently we need some way of figuring out whether the number of atoms and orbitals are</span>
-<span class="sd">        consistent.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        spgeom : SparseGeometry</span>
-<span class="sd">           the sparse object with attached geometry</span>
-<span class="sd">        geometry : Geometry</span>
-<span class="sd">           geometry to grab atoms from</span>
-<span class="sd">        full_replace : bool, optional</span>
-<span class="sd">           whether the full geometry may be replaced in case ``spgeom.na != geometry.na &amp;&amp; spgeom.no == geometry.no``.</span>
-<span class="sd">           This is required when `spgeom` does not contain information about atoms.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">spgeom</span><span class="o">.</span><span class="n">na</span> <span class="o">!=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">na</span> <span class="ow">and</span> <span class="n">spgeom</span><span class="o">.</span><span class="n">no</span> <span class="o">==</span> <span class="n">geometry</span><span class="o">.</span><span class="n">no</span><span class="p">:</span>
-            <span class="c1"># In this case we cannot compare individiual atoms # of orbitals.</span>
-            <span class="c1"># I.e. we suspect the incoming geometry to be correct.</span>
-            <span class="n">spgeom</span><span class="o">.</span><span class="n">_geometry</span> <span class="o">=</span> <span class="n">geometry</span>
-            <span class="k">return</span> <span class="kc">True</span>
-
-        <span class="k">elif</span> <span class="n">spgeom</span><span class="o">.</span><span class="n">na</span> <span class="o">!=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">na</span><span class="p">:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="s1">&#39;cannot replace geometry due to insufficient information regarding number of &#39;</span>
-                 <span class="s1">&#39;atoms and orbitals, ensuring correct geometry failed...&#39;</span><span class="p">)</span>
-
-        <span class="n">no_no</span> <span class="o">=</span> <span class="n">spgeom</span><span class="o">.</span><span class="n">no</span> <span class="o">==</span> <span class="n">geometry</span><span class="o">.</span><span class="n">no</span>
-        <span class="c1"># Loop and make sure the number of orbitals is consistent</span>
-        <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="n">Sa</span> <span class="o">=</span> <span class="n">spgeom</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-            <span class="k">if</span> <span class="n">Sa</span><span class="o">.</span><span class="n">no</span> <span class="o">!=</span> <span class="n">a</span><span class="o">.</span><span class="n">no</span><span class="p">:</span>
-                <span class="c1"># Make sure the atom we replace with retains the same information</span>
-                <span class="c1"># *except* the number of orbitals.</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">Sa</span><span class="o">.</span><span class="n">orbital</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">a</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
-            <span class="n">spgeom</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">atoms</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-            <span class="n">spgeom</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">reduce</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">no_no</span>
-
 <div class="viewcode-block" id="fdfSileSiesta.read_supercell_nsc"><a class="viewcode-back" href="../../../../api/io/generated/sisl.io.siesta.fdfSileSiesta.html#sisl.io.siesta.fdfSileSiesta.read_supercell_nsc">[docs]</a>    <span class="k">def</span> <span class="nf">read_supercell_nsc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Read supercell size using any method available</span>
 

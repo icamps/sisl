@@ -263,10 +263,10 @@
 <td><p>Retrieve the overlap matrix corresponding to the originating parent structure.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.align_norm" title="sisl.physics.electron.StateElectron.align_norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_norm</span></code></a>(other[, ret_index])</p></td>
-<td><p>Align <em class="xref py py-obj">other.state</em> with the site-norms for this state, a copy of <em class="xref py py-obj">other</em> is returned with re-ordered states</p></td>
+<td><p>Align <em class="xref py py-obj">self</em> with the site-norms of <em class="xref py py-obj">other</em>, a copy may optionally be returned</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.align_phase" title="sisl.physics.electron.StateElectron.align_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_phase</span></code></a>(other[, copy])</p></td>
-<td><p>Align <em class="xref py py-obj">other.state</em> with the phases for this state, a copy of <em class="xref py py-obj">other</em> is returned with rotated elements</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.align_phase" title="sisl.physics.electron.StateElectron.align_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_phase</span></code></a>(other[, inplace, ret_index])</p></td>
+<td><p>Align <em class="xref py py-obj">self</em> with the phases for <em class="xref py py-obj">other</em>, a copy may be returned</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.change_gauge" title="sisl.physics.electron.StateElectron.change_gauge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_gauge</span></code></a>(gauge)</p></td>
 <td><p>In-place change of the gauge of the state coefficients</p></td>
@@ -277,61 +277,64 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.inner" title="sisl.physics.electron.StateElectron.inner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner</span></code></a>([ket, matrix, diag])</p></td>
 <td><p>Calculate the inner product by <span class="math notranslate nohighlight">\(\mathbf A_{ij} = \langle\psi_i| \mathbf M |\psi'_j\rangle\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.iter" title="sisl.physics.electron.StateElectron.iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter</span></code></a>([asarray])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.ipr" title="sisl.physics.electron.StateElectron.ipr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipr</span></code></a>([q])</p></td>
+<td><p>Calculate the inverse participation ratio (IPR) for arbitrary <em class="xref py py-obj">q</em> values</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.iter" title="sisl.physics.electron.StateElectron.iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter</span></code></a>([asarray])</p></td>
 <td><p>An iterator looping over the states in this system</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.norm" title="sisl.physics.electron.StateElectron.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.norm" title="sisl.physics.electron.StateElectron.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>()</p></td>
 <td><p>Return a vector with the Euclidean norm of each state <span class="math notranslate nohighlight">\(\sqrt{\langle\psi|\psi\rangle}\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.norm2" title="sisl.physics.electron.StateElectron.norm2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm2</span></code></a>([sum])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.norm2" title="sisl.physics.electron.StateElectron.norm2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm2</span></code></a>([sum])</p></td>
 <td><p>Return a vector with the norm of each state <span class="math notranslate nohighlight">\(\langle\psi|\mathbf S|\psi\rangle\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.normalize" title="sisl.physics.electron.StateElectron.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.normalize" title="sisl.physics.electron.StateElectron.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>()</p></td>
 <td><p>Return a normalized state where each state has <span class="math notranslate nohighlight">\(|\psi|^2=1\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.outer" title="sisl.physics.electron.StateElectron.outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer</span></code></a>([ket])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.outer" title="sisl.physics.electron.StateElectron.outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer</span></code></a>([ket])</p></td>
 <td><p>Return the outer product by <span class="math notranslate nohighlight">\(\sum_i|\psi_i\rangle\langle\psi'_i|\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.phase" title="sisl.physics.electron.StateElectron.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, return_indices])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.phase" title="sisl.physics.electron.StateElectron.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, ret_index])</p></td>
 <td><p>Calculate the Euler angle (phase) for the elements of the state, in the range <span class="math notranslate nohighlight">\(]-\pi;\pi]\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.remove" title="sisl.physics.electron.StateElectron.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.remove" title="sisl.physics.electron.StateElectron.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
 <td><p>Return a new state without the specified vectors</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.rotate" title="sisl.physics.electron.StateElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.rotate" title="sisl.physics.electron.StateElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
 <td><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.spin_moment" title="sisl.physics.electron.StateElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.spin_moment" title="sisl.physics.electron.StateElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
 <td><p>Calculate spin moment from the states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.sub" title="sisl.physics.electron.StateElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.sub" title="sisl.physics.electron.StateElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
 <td><p>Return a new state with only the specified states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.tile" title="sisl.physics.electron.StateElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.tile" title="sisl.physics.electron.StateElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
 <td><p>Tile the state vectors for a new supercell</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.translate" title="sisl.physics.electron.StateElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.translate" title="sisl.physics.electron.StateElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
 <td><p>Translate the vectors to a new unit-cell position</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.wavefunction" title="sisl.physics.electron.StateElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.wavefunction" title="sisl.physics.electron.StateElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
 <td><p>Expand the coefficients as the wavefunction on <em class="xref py py-obj">grid</em> <em>as-is</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.dkind" title="sisl.physics.electron.StateElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.dkind" title="sisl.physics.electron.StateElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
 <td><p>The data-type of the state (in str)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.dtype" title="sisl.physics.electron.StateElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.dtype" title="sisl.physics.electron.StateElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data-type for the state</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.info" title="sisl.physics.electron.StateElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.info" title="sisl.physics.electron.StateElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.parent" title="sisl.physics.electron.StateElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.parent" title="sisl.physics.electron.StateElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.shape" title="sisl.physics.electron.StateElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.shape" title="sisl.physics.electron.StateElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Returns the shape of the state</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.state" title="sisl.physics.electron.StateElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.StateElectron.state" title="sisl.physics.electron.StateElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -364,30 +367,30 @@ matrix, simply do not specify the <em class="xref py py-obj">spin</em> argument.
 <dl class="py method">
 <dt id="sisl.physics.electron.StateElectron.align_norm">
 <code class="sig-name descname">align_norm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateElectron.align_norm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Align <em class="xref py py-obj">other.state</em> with the site-norms for this state, a copy of <em class="xref py py-obj">other</em> is returned with re-ordered states</p>
-<p>To determine the new ordering of <em class="xref py py-obj">other</em> we first calculate the residual norm of the site-norms.</p>
+<dd><p>Align <em class="xref py py-obj">self</em> with the site-norms of <em class="xref py py-obj">other</em>, a copy may optionally be returned</p>
+<p>To determine the new ordering of <em class="xref py py-obj">self</em> first calculate the residual norm of the site-norms.</p>
 <div class="math notranslate nohighlight">
 \[\delta N_{\alpha\beta} = \sum_i \big(\langle \psi^\alpha_i | \psi^\alpha_i\rangle - \langle \psi^\beta_i | \psi^\beta_i\rangle\big)^2\]</div>
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> and <span class="math notranslate nohighlight">\(\beta\)</span> correspond to state indices in <em class="xref py py-obj">self</em> and <em class="xref py py-obj">other</em>, respectively.
-The new states (from <em class="xref py py-obj">other</em>) returned is then ordered such that the index
+The new states (from <em class="xref py py-obj">self</em>) returned is then ordered such that the index
 <span class="math notranslate nohighlight">\(\alpha \equiv \beta'\)</span> where <span class="math notranslate nohighlight">\(\delta N_{\alpha\beta}\)</span> is smallest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>other</strong> (<a class="reference internal" href="sisl.physics.State.html#sisl.physics.State" title="sisl.physics.State"><em>State</em></a>) – the other state to align onto this state</p></li>
+<li><p><strong>other</strong> (<a class="reference internal" href="sisl.physics.State.html#sisl.physics.State" title="sisl.physics.State"><em>State</em></a>) – the other state to align against</p></li>
 <li><p><strong>ret_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – also return indices for the swapped indices</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>other_swap</strong> (<em>State</em>) – A swapped instance of <em class="xref py py-obj">other</em></p></li>
-<li><p><strong>index</strong> (<em>array of int</em>) – the indices that swaps <em class="xref py py-obj">other</em> to be <code class="docutils literal notranslate"><span class="pre">other_swap</span></code>, i.e. <code class="docutils literal notranslate"><span class="pre">other_swap</span> <span class="pre">=</span> <span class="pre">other.sub(index)</span></code></p></li>
+<li><p><strong>self_swap</strong> (<em>State</em>) – A swapped instance of <em class="xref py py-obj">self</em></p></li>
+<li><p><strong>index</strong> (<em>array of int</em>) – the indices that swaps <em class="xref py py-obj">self</em> to be <code class="docutils literal notranslate"><span class="pre">self_swap</span></code>, i.e. <code class="docutils literal notranslate"><span class="pre">self_swap</span> <span class="pre">=</span> <span class="pre">self.sub(index)</span></code></p></li>
 </ul>
 </p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The input state and output state have the same states, but their ordering is not necessarily the same.</p>
+<p>The input state and output state have the same number of states, but their ordering is not necessarily the same.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
@@ -399,15 +402,15 @@ The new states (from <em class="xref py py-obj">other</em>) returned is then ord
 
 <dl class="py method">
 <dt id="sisl.physics.electron.StateElectron.align_phase">
-<code class="sig-name descname">align_phase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">copy</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateElectron.align_phase" title="Permalink to this definition">¶</a></dt>
-<dd><p>Align <em class="xref py py-obj">other.state</em> with the phases for this state, a copy of <em class="xref py py-obj">other</em> is returned with rotated elements</p>
+<code class="sig-name descname">align_phase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateElectron.align_phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Align <em class="xref py py-obj">self</em> with the phases for <em class="xref py py-obj">other</em>, a copy may be returned</p>
 <p>States will be rotated by <span class="math notranslate nohighlight">\(\pi\)</span> provided the phase difference between the states are above <span class="math notranslate nohighlight">\(|\Delta\theta| &gt; \pi/2\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>other</strong> (<a class="reference internal" href="sisl.physics.State.html#sisl.physics.State" title="sisl.physics.State"><em>State</em></a>) – the other state to align onto this state</p></li>
-<li><p><strong>copy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – sometimes no states require rotation, if this is the case this flag determines whether <em class="xref py py-obj">other</em> will be
-copied or not</p></li>
+<li><p><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – rotate the states in-place</p></li>
+<li><p><strong>ret_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – return which indices got swapped</p></li>
 </ul>
 </dd>
 </dl>
@@ -477,6 +480,36 @@ product with itself.</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.physics.electron.StateElectron.ipr">
+<code class="sig-name descname">ipr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">q</span><span class="o">=</span><span class="default_value">2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateElectron.ipr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the inverse participation ratio (IPR) for arbitrary <em class="xref py py-obj">q</em> values</p>
+<p>The inverse participation ratio is defined as</p>
+<div class="math notranslate nohighlight">
+\[I_{q,i} = \frac{\sum_\nu |\psi_{i\nu}|^{2q}}{
+   \big[\sum_\nu |\psi_{i\nu}|^2\big]^q}\]</div>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> is the band index and <span class="math notranslate nohighlight">\(\nu\)</span> is the orbital.
+The order of the IPR is defaulted to <span class="math notranslate nohighlight">\(q=2\)</span>.
+The IPR may be used to distinguish Anderson localization and extended
+states, see <a class="footnote-reference brackets" href="#id2" id="id1">1</a> for details.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>q</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – order parameter for the IPR</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><ol class="upperalpha simple" start="14">
+<li><ol class="upperalpha simple" start="3">
+<li><p>Murphy <em>et.al.</em>, “Generalized inverse participation ratio as a possible measure of localization for interacting systems”, PRB, <em>83</em>, 184206 (2011)</p></li>
+</ol>
+</li>
+</ol>
 </dd>
 </dl>
 </dd></dl>
@@ -584,14 +617,14 @@ product with itself. The object itself will always be the bra <span class="math 
 
 <dl class="py method">
 <dt id="sisl.physics.electron.StateElectron.phase">
-<code class="sig-name descname">phase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'max'</span></em>, <em class="sig-param"><span class="n">return_indices</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateElectron.phase" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">phase</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'max'</span></em>, <em class="sig-param"><span class="n">ret_index</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sisl.physics.electron.StateElectron.phase" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Euler angle (phase) for the elements of the state, in the range <span class="math notranslate nohighlight">\(]-\pi;\pi]\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>method</strong> (<em>{'max'</em><em>, </em><em>'all'}</em>) – for max, the phase for the element which has the largest absolute magnitude is returned,
 for all, all phases are calculated</p></li>
-<li><p><strong>return_indices</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – return indices for the elements used when <code class="docutils literal notranslate"><span class="pre">method=='max'</span></code></p></li>
+<li><p><strong>ret_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>optional</em>) – return indices for the elements used when <code class="docutils literal notranslate"><span class="pre">method=='max'</span></code></p></li>
 </ul>
 </dd>
 </dl>
