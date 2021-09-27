@@ -261,125 +261,155 @@ spin moments (spin texture).</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.DOS" title="sisl.physics.electron.EigenstateElectron.DOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOS</span></code></a>(E[, distribution])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.COHP" title="sisl.physics.electron.EigenstateElectron.COHP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COHP</span></code></a>(E[, distribution])</p></td>
+<td><p>Calculate COHP for provided energies, <em class="xref py py-obj">E</em>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.COOP" title="sisl.physics.electron.EigenstateElectron.COOP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COOP</span></code></a>(E[, distribution])</p></td>
+<td><p>Calculate COOP for provided energies, <em class="xref py py-obj">E</em>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.COP" title="sisl.physics.electron.EigenstateElectron.COP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">COP</span></code></a>(M, E[, distribution])</p></td>
+<td><p>Calculate COP for provided energies, <em class="xref py py-obj">E</em> using matrix <em class="xref py py-obj">M</em></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.DOS" title="sisl.physics.electron.EigenstateElectron.DOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DOS</span></code></a>(E[, distribution])</p></td>
 <td><p>Calculate DOS for provided energies, <em class="xref py py-obj">E</em>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.PDOS" title="sisl.physics.electron.EigenstateElectron.PDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDOS</span></code></a>(E[, distribution])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.PDOS" title="sisl.physics.electron.EigenstateElectron.PDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDOS</span></code></a>(E[, distribution])</p></td>
 <td><p>Calculate PDOS for provided energies, <em class="xref py py-obj">E</em>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.Sk" title="sisl.physics.electron.EigenstateElectron.Sk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sk</span></code></a>([format, spin])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.Sk" title="sisl.physics.electron.EigenstateElectron.Sk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sk</span></code></a>([format, spin])</p></td>
 <td><p>Retrieve the overlap matrix corresponding to the originating parent structure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.align_norm" title="sisl.physics.electron.EigenstateElectron.align_norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_norm</span></code></a>(other[, ret_index])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.align_norm" title="sisl.physics.electron.EigenstateElectron.align_norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_norm</span></code></a>(other[, ret_index])</p></td>
 <td><p>Align <em class="xref py py-obj">self</em> with the site-norms of <em class="xref py py-obj">other</em>, a copy may optionally be returned</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.align_phase" title="sisl.physics.electron.EigenstateElectron.align_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_phase</span></code></a>(other[, inplace, ret_index])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.align_phase" title="sisl.physics.electron.EigenstateElectron.align_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">align_phase</span></code></a>(other[, inplace, ret_index])</p></td>
 <td><p>Align <em class="xref py py-obj">self</em> with the phases for <em class="xref py py-obj">other</em>, a copy may be returned</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.asCoefficient" title="sisl.physics.electron.EigenstateElectron.asCoefficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asCoefficient</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.asCoefficient" title="sisl.physics.electron.EigenstateElectron.asCoefficient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asCoefficient</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.asState" title="sisl.physics.electron.EigenstateElectron.asState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asState</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.asState" title="sisl.physics.electron.EigenstateElectron.asState"><code class="xref py py-obj docutils literal notranslate"><span class="pre">asState</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.berry_curvature" title="sisl.physics.electron.EigenstateElectron.berry_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">berry_curvature</span></code></a>([complex, eps, degenerate_dir])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.berry_curvature" title="sisl.physics.electron.EigenstateElectron.berry_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">berry_curvature</span></code></a>([complex, eps, degenerate_dir])</p></td>
 <td><p>Calculate Berry curvature for the states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.change_gauge" title="sisl.physics.electron.EigenstateElectron.change_gauge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_gauge</span></code></a>(gauge)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.change_gauge" title="sisl.physics.electron.EigenstateElectron.change_gauge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">change_gauge</span></code></a>(gauge)</p></td>
 <td><p>In-place change of the gauge of the state coefficients</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.copy" title="sisl.physics.electron.EigenstateElectron.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.copy" title="sisl.physics.electron.EigenstateElectron.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
 <td><p>Return a copy (only the coefficients and states are copied), <code class="docutils literal notranslate"><span class="pre">parent</span></code> and <code class="docutils literal notranslate"><span class="pre">info</span></code> are passed by reference</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.degenerate" title="sisl.physics.electron.EigenstateElectron.degenerate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degenerate</span></code></a>(eps)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.degenerate" title="sisl.physics.electron.EigenstateElectron.degenerate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degenerate</span></code></a>(eps)</p></td>
 <td><p>Find degenerate coefficients with a specified precision</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.inner" title="sisl.physics.electron.EigenstateElectron.inner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner</span></code></a>([ket, matrix, diag])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.inner" title="sisl.physics.electron.EigenstateElectron.inner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inner</span></code></a>([ket, matrix, diag])</p></td>
 <td><p>Calculate the inner product by <span class="math notranslate nohighlight">\(\mathbf A_{ij} = \langle\psi_i| \mathbf M |\psi'_j\rangle\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.inv_eff_mass_tensor" title="sisl.physics.electron.EigenstateElectron.inv_eff_mass_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inv_eff_mass_tensor</span></code></a>([as_matrix, eps])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.inv_eff_mass_tensor" title="sisl.physics.electron.EigenstateElectron.inv_eff_mass_tensor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inv_eff_mass_tensor</span></code></a>([as_matrix, eps])</p></td>
 <td><p>Calculate inverse effective mass tensor for the states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.ipr" title="sisl.physics.electron.EigenstateElectron.ipr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipr</span></code></a>([q])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.ipr" title="sisl.physics.electron.EigenstateElectron.ipr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipr</span></code></a>([q])</p></td>
 <td><p>Calculate the inverse participation ratio (IPR) for arbitrary <em class="xref py py-obj">q</em> values</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.iter" title="sisl.physics.electron.EigenstateElectron.iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter</span></code></a>([asarray])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.iter" title="sisl.physics.electron.EigenstateElectron.iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">iter</span></code></a>([asarray])</p></td>
 <td><p>An iterator looping over the states in this system</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.norm" title="sisl.physics.electron.EigenstateElectron.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.norm" title="sisl.physics.electron.EigenstateElectron.norm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm</span></code></a>()</p></td>
 <td><p>Return a vector with the Euclidean norm of each state <span class="math notranslate nohighlight">\(\sqrt{\langle\psi|\psi\rangle}\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.norm2" title="sisl.physics.electron.EigenstateElectron.norm2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm2</span></code></a>([sum])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.norm2" title="sisl.physics.electron.EigenstateElectron.norm2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">norm2</span></code></a>([sum])</p></td>
 <td><p>Return a vector with the norm of each state <span class="math notranslate nohighlight">\(\langle\psi|\mathbf S|\psi\rangle\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.normalize" title="sisl.physics.electron.EigenstateElectron.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.normalize" title="sisl.physics.electron.EigenstateElectron.normalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normalize</span></code></a>()</p></td>
 <td><p>Return a normalized state where each state has <span class="math notranslate nohighlight">\(|\psi|^2=1\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.occupation" title="sisl.physics.electron.EigenstateElectron.occupation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">occupation</span></code></a>([distribution])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.occupation" title="sisl.physics.electron.EigenstateElectron.occupation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">occupation</span></code></a>([distribution])</p></td>
 <td><p>Calculate the occupations for the states according to a distribution function</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.outer" title="sisl.physics.electron.EigenstateElectron.outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer</span></code></a>([idx])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.outer" title="sisl.physics.electron.EigenstateElectron.outer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">outer</span></code></a>([idx])</p></td>
 <td><p>Return the outer product for the indices <em class="xref py py-obj">idx</em> (or all if <code class="docutils literal notranslate"><span class="pre">None</span></code>) by <span class="math notranslate nohighlight">\(\sum_i|\psi_i\rangle c_i\langle\psi_i|\)</span></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.phase" title="sisl.physics.electron.EigenstateElectron.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, ret_index])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.phase" title="sisl.physics.electron.EigenstateElectron.phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">phase</span></code></a>([method, ret_index])</p></td>
 <td><p>Calculate the Euler angle (phase) for the elements of the state, in the range <span class="math notranslate nohighlight">\(]-\pi;\pi]\)</span></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.remove" title="sisl.physics.electron.EigenstateElectron.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.remove" title="sisl.physics.electron.EigenstateElectron.remove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code></a>(idx)</p></td>
 <td><p>Return a new state without the specified indices</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.rotate" title="sisl.physics.electron.EigenstateElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.rotate" title="sisl.physics.electron.EigenstateElectron.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>([phi, individual])</p></td>
 <td><p>Rotate all states (in-place) to rotate the largest component to be along the angle <em class="xref py py-obj">phi</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.sort" title="sisl.physics.electron.EigenstateElectron.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([ascending])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.sort" title="sisl.physics.electron.EigenstateElectron.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([ascending])</p></td>
 <td><p>Sort and return a new <code class="xref py py-obj docutils literal notranslate"><span class="pre">StateC</span></code> by sorting the coefficients (default to ascending)</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.spin_moment" title="sisl.physics.electron.EigenstateElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.spin_moment" title="sisl.physics.electron.EigenstateElectron.spin_moment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spin_moment</span></code></a>([project])</p></td>
 <td><p>Calculate spin moment from the states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.sub" title="sisl.physics.electron.EigenstateElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.sub" title="sisl.physics.electron.EigenstateElectron.sub"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sub</span></code></a>(idx)</p></td>
 <td><p>Return a new state with only the specified states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.tile" title="sisl.physics.electron.EigenstateElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.tile" title="sisl.physics.electron.EigenstateElectron.tile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tile</span></code></a>(reps, axis[, normalize, offset])</p></td>
 <td><p>Tile the state vectors for a new supercell</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.translate" title="sisl.physics.electron.EigenstateElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.translate" title="sisl.physics.electron.EigenstateElectron.translate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translate</span></code></a>(isc)</p></td>
 <td><p>Translate the vectors to a new unit-cell position</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.velocity" title="sisl.physics.electron.EigenstateElectron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([eps, degenerate_dir, project])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.velocity" title="sisl.physics.electron.EigenstateElectron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a>([eps, degenerate_dir, project])</p></td>
 <td><p>Calculate velocity for the states</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.velocity_matrix" title="sisl.physics.electron.EigenstateElectron.velocity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_matrix</span></code></a>([eps, degenerate_dir])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.velocity_matrix" title="sisl.physics.electron.EigenstateElectron.velocity_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity_matrix</span></code></a>([eps, degenerate_dir])</p></td>
 <td><p>Calculate velocity matrix for the states</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.wavefunction" title="sisl.physics.electron.EigenstateElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.wavefunction" title="sisl.physics.electron.EigenstateElectron.wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction</span></code></a>(grid[, spinor, eta])</p></td>
 <td><p>Expand the coefficients as the wavefunction on <em class="xref py py-obj">grid</em> <em>as-is</em></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.c" title="sisl.physics.electron.EigenstateElectron.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.c" title="sisl.physics.electron.EigenstateElectron.c"><code class="xref py py-obj docutils literal notranslate"><span class="pre">c</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.dkind" title="sisl.physics.electron.EigenstateElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.dkind" title="sisl.physics.electron.EigenstateElectron.dkind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dkind</span></code></a></p></td>
 <td><p>The data-type of the state (in str)</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.dtype" title="sisl.physics.electron.EigenstateElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.dtype" title="sisl.physics.electron.EigenstateElectron.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data-type for the state</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.eig" title="sisl.physics.electron.EigenstateElectron.eig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eig</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.eig" title="sisl.physics.electron.EigenstateElectron.eig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eig</span></code></a></p></td>
 <td><p>Eigenvalues for each state</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.info" title="sisl.physics.electron.EigenstateElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.info" title="sisl.physics.electron.EigenstateElectron.info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.parent" title="sisl.physics.electron.EigenstateElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.parent" title="sisl.physics.electron.EigenstateElectron.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.shape" title="sisl.physics.electron.EigenstateElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.shape" title="sisl.physics.electron.EigenstateElectron.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Returns the shape of the state</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.state" title="sisl.physics.electron.EigenstateElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#sisl.physics.electron.EigenstateElectron.state" title="sisl.physics.electron.EigenstateElectron.state"><code class="xref py py-obj docutils literal notranslate"><span class="pre">state</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py method">
+<dt id="sisl.physics.electron.EigenstateElectron.COHP">
+<code class="sig-name descname">COHP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">distribution</span><span class="o">=</span><span class="default_value">'gaussian'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#EigenstateElectron.COHP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.EigenstateElectron.COHP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate COHP for provided energies, <em class="xref py py-obj">E</em>.</p>
+<p>This routine calls <code class="xref py py-obj docutils literal notranslate"><span class="pre">COP</span></code> with appropriate arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.physics.electron.EigenstateElectron.COOP">
+<code class="sig-name descname">COOP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">distribution</span><span class="o">=</span><span class="default_value">'gaussian'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#EigenstateElectron.COOP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.EigenstateElectron.COOP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate COOP for provided energies, <em class="xref py py-obj">E</em>.</p>
+<p>This routine calls <code class="xref py py-obj docutils literal notranslate"><span class="pre">COP</span></code> with appropriate arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="sisl.physics.electron.EigenstateElectron.COP">
+<code class="sig-name descname">COP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">M</span></em>, <em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">distribution</span><span class="o">=</span><span class="default_value">'gaussian'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#EigenstateElectron.COP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.EigenstateElectron.COP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate COP for provided energies, <em class="xref py py-obj">E</em> using matrix <em class="xref py py-obj">M</em></p>
+<p>This routine calls <code class="xref py py-obj docutils literal notranslate"><span class="pre">COP</span></code> with appropriate arguments.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="sisl.physics.electron.EigenstateElectron.DOS">
 <code class="sig-name descname">DOS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E</span></em>, <em class="sig-param"><span class="n">distribution</span><span class="o">=</span><span class="default_value">'gaussian'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/sisl/physics/electron.html#EigenstateElectron.DOS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#sisl.physics.electron.EigenstateElectron.DOS" title="Permalink to this definition">¶</a></dt>
@@ -943,7 +973,7 @@ to the energies of the states.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference internal" href="sisl.physics.electron.PDOS.html#sisl.physics.electron.PDOS" title="sisl.physics.electron.PDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PDOS</span></code></a></dt><dd><p>for an explanation of the projections in case of <em class="xref py py-obj">project</em> being True</p>
+<dt><a class="reference internal" href="sisl.physics.electron.velocity.html#sisl.physics.electron.velocity" title="sisl.physics.electron.velocity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">velocity</span></code></a></dt><dd><p>for an explanation of the projections in case of <em class="xref py py-obj">project</em> being True</p>
 </dd>
 </dl>
 </div>

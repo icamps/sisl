@@ -202,6 +202,7 @@
 
 <span class="sd">   DOS</span>
 <span class="sd">   PDOS</span>
+<span class="sd">   COP</span>
 <span class="sd">   velocity</span>
 <span class="sd">   velocity_matrix</span>
 <span class="sd">   berry_phase</span>
@@ -241,6 +242,7 @@
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">pi</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">int32</span><span class="p">,</span> <span class="n">complex128</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">add</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">argsort</span><span class="p">,</span> <span class="n">sort</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">isspmatrix</span>
 
 <span class="kn">from</span> <span class="nn">sisl._internal</span> <span class="kn">import</span> <span class="n">set_module</span>
 <span class="kn">from</span> <span class="nn">sisl</span> <span class="kn">import</span> <span class="n">units</span><span class="p">,</span> <span class="n">constant</span>
@@ -260,7 +262,7 @@
 <span class="kn">from</span> <span class="nn">.state</span> <span class="kn">import</span> <span class="n">degenerate_decouple</span><span class="p">,</span> <span class="n">Coefficient</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">StateC</span><span class="p">,</span> <span class="n">_FakeMatrix</span>
 
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DOS&#39;</span><span class="p">,</span> <span class="s1">&#39;PDOS&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DOS&#39;</span><span class="p">,</span> <span class="s1">&#39;PDOS&#39;</span><span class="p">,</span> <span class="s1">&#39;COP&#39;</span><span class="p">]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">,</span> <span class="s1">&#39;velocity_matrix&#39;</span><span class="p">]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;spin_moment&#39;</span><span class="p">,</span> <span class="s1">&#39;spin_squared&#39;</span><span class="p">]</span>
 <span class="n">__all__</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;inv_eff_mass_tensor&#39;</span><span class="p">]</span>
@@ -296,7 +298,8 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    ~sisl.physics.distribution : a selected set of implemented distribution functions</span>
+<span class="sd">    sisl.physics.distribution : a selected set of implemented distribution functions</span>
+<span class="sd">    COP : calculate COOP or COHP curves</span>
 <span class="sd">    PDOS : projected DOS (same as this, but projected onto each orbital)</span>
 <span class="sd">    spin_moment : spin moment</span>
 
@@ -374,8 +377,9 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    ~sisl.physics.distribution : a selected set of implemented distribution functions</span>
+<span class="sd">    sisl.physics.distribution : a selected set of implemented distribution functions</span>
 <span class="sd">    DOS : total DOS (same as summing over orbitals)</span>
+<span class="sd">    COP : calculate COOP or COHP curves</span>
 <span class="sd">    spin_moment : spin moment</span>
 
 <span class="sd">    Returns</span>
@@ -447,6 +451,83 @@
     <span class="k">return</span> <span class="n">PDOS</span></div>
 
 
+<span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">COP</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">eig</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate the Crystal Orbital Population for a set of energies, `E`, with a distribution function</span>
+
+<span class="sd">    The :math:`\mathrm{COP}(E)` is calculated as:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">       \mathrm{COP}_{\nu,\mu}(E) = \sum_i \psi^*_{i,\nu}\psi_{i,\mu} \mathbf M e^{i\mathbf k\cdot \mathbf R} D(E-\epsilon_i)</span>
+
+<span class="sd">    where :math:`D(\Delta E)` is the distribution function used. Note that the distribution function</span>
+<span class="sd">    used may be a user-defined function. Alternatively a distribution function may</span>
+<span class="sd">    be aquired from `~sisl.physics.distribution`.</span>
+
+<span class="sd">    The COP curves generally refers to COOP or COHP curves.</span>
+<span class="sd">    COOP is the Crystal Orbital Overlap Population with `M` being the overlap matrix.</span>
+<span class="sd">    COHP is the Crystal Orbital Hamiltonian Population with `M` being the Hamiltonian.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    E : array_like</span>
+<span class="sd">       energies to calculate the COP from</span>
+<span class="sd">    eig : array_like</span>
+<span class="sd">       eigenvalues</span>
+<span class="sd">    state : array_like</span>
+<span class="sd">       eigenvectors</span>
+<span class="sd">    M : array_like</span>
+<span class="sd">       matrix used in the COP curve.</span>
+<span class="sd">    distribution : func or str, optional</span>
+<span class="sd">       a function that accepts :math:`E-\epsilon` as argument and calculates the</span>
+<span class="sd">       distribution function.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This is not tested for non-collinear states.</span>
+<span class="sd">    This requires substantial amounts of memory for big systems with lots of energy points.</span>
+
+<span class="sd">    This method is considered experimental and implementation may change in the future.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    sisl.physics.distribution : a selected set of implemented distribution functions</span>
+<span class="sd">    DOS : total DOS</span>
+<span class="sd">    PDOS : projected DOS over all orbitals</span>
+<span class="sd">    spin_moment : spin moment</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ~sisl.oplist.oplist</span>
+<span class="sd">        COP calculated at energies, has dimension ``(len(E), *M.shape)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">distribution</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">distribution</span> <span class="o">=</span> <span class="n">get_distribution</span><span class="p">(</span><span class="n">distribution</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">eig</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">),</span> <span class="s2">&quot;COP: number of eigenvalues and states are not consistent&quot;</span>
+
+    <span class="n">n_s</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">calc_cop</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">n_s</span><span class="p">):</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">state</span><span class="p">),</span> <span class="n">n_s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">real</span>
+
+    <span class="c1"># now calculate the COP curves for the different energies</span>
+    <span class="n">cop</span> <span class="o">=</span> <span class="n">oplist</span><span class="p">([</span><span class="mf">0.</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">isspmatrix</span><span class="p">(</span><span class="n">M</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eig</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+            <span class="c1"># calculate contribution from this state</span>
+            <span class="n">we</span> <span class="o">=</span> <span class="n">distribution</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">calc_cop</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n_s</span><span class="p">)</span>
+            <span class="n">cop</span> <span class="o">+=</span> <span class="p">[</span><span class="n">tmp</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">we</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eig</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+            <span class="n">we</span> <span class="o">=</span> <span class="n">distribution</span><span class="p">(</span><span class="n">E</span> <span class="o">-</span> <span class="n">e</span><span class="p">)</span>
+            <span class="n">cop</span> <span class="o">+=</span> <span class="n">we</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">calc_cop</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n_s</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">cop</span>
+
+
 <div class="viewcode-block" id="spin_moment"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.spin_moment.html#sisl.physics.electron.spin_moment">[docs]</a><span class="nd">@set_module</span><span class="p">(</span><span class="s2">&quot;sisl.physics.electron&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">spin_moment</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">project</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Spin magnetic moment (spin texture) and optionally orbitally resolved moments</span>
@@ -491,6 +572,7 @@
 <span class="sd">    --------</span>
 <span class="sd">    DOS : total DOS</span>
 <span class="sd">    PDOS : projected DOS</span>
+<span class="sd">    COP : calculate COOP or COHP curves</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -811,7 +893,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    numpy.ndarray</span>
-<span class="sd">        velocity matrixstate with final dimension ``(state.shape[0], state.shape[0], 3)``, the velocity unit is Ang/ps. Units *may* change in future releases.</span>
+<span class="sd">        velocity matrix state with final dimension ``(state.shape[0], state.shape[0], 3)``, the velocity unit is Ang/ps. Units *may* change in future releases.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">velocity_matrix</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">dHk</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">dSk</span><span class="p">,</span> <span class="n">degenerate</span><span class="p">,</span> <span class="n">degenerate_dir</span><span class="p">)</span>
@@ -1753,8 +1835,12 @@
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;sc:&#39;</span> <span class="ow">in</span> <span class="nb">format</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">n_s</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">n</span>
 
-        <span class="k">return</span> <span class="n">_FakeMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_FakeMatrix</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">norm2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">sum</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Return a vector with the norm of each state :math:`\langle\psi|\mathbf S|\psi\rangle`</span>
@@ -1885,7 +1971,7 @@
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-<span class="sd">        PDOS : for an explanation of the projections in case of `project` being True</span>
+<span class="sd">        velocity : for an explanation of the projections in case of `project` being True</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">opt</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)),</span> <span class="s2">&quot;dtype&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">}</span>
@@ -2138,7 +2224,32 @@
 
 <span class="sd">        See `~sisl.physics.electron.PDOS` for argument details.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">PDOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sk</span><span class="p">(),</span> <span class="n">distribution</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span></div></div>
+        <span class="k">return</span> <span class="n">PDOS</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sk</span><span class="p">(),</span> <span class="n">distribution</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s2">&quot;spin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="EigenstateElectron.COP"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.COP">[docs]</a>    <span class="k">def</span> <span class="nf">COP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate COP for provided energies, `E` using matrix `M`</span>
+
+<span class="sd">        This routine calls `~sisl.physics.electron.COP` with appropriate arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">COP</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EigenstateElectron.COOP"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.COOP">[docs]</a>    <span class="k">def</span> <span class="nf">COOP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate COOP for provided energies, `E`.</span>
+
+<span class="sd">        This routine calls `~sisl.physics.electron.COP` with appropriate arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get Sk in full format</span>
+        <span class="n">Sk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sk</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;sc:csr&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">COP</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">Sk</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EigenstateElectron.COHP"><a class="viewcode-back" href="../../../api/generated/sisl.physics.electron.EigenstateElectron.html#sisl.physics.electron.EigenstateElectron.COHP">[docs]</a>    <span class="k">def</span> <span class="nf">COHP</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot; Calculate COHP for provided energies, `E`.</span>
+
+<span class="sd">        This routine calls `~sisl.physics.electron.COP` with appropriate arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get Hk in full format</span>
+        <span class="n">Hk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">Hk</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s1">&#39;sc:csr&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">COP</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">Hk</span><span class="p">,</span> <span class="n">distribution</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
