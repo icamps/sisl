@@ -14,6 +14,7 @@ One may also plot real-space wavefunctions.
 
    DOS
    PDOS
+   COP
    velocity
    velocity_matrix
    berry_phase
@@ -53,6 +54,7 @@ from numpy import conj, dot, ogrid, einsum
 from numpy import cos, sin, exp, pi
 from numpy import int32, complex128
 from numpy import add, angle, argsort, sort
+from scipy.sparse import isspmatrix
 
 from sisl._internal import set_module
 from sisl import units, constant
@@ -72,7 +74,7 @@ from .sparse import SparseOrbitalBZSpin
 from .state import degenerate_decouple, Coefficient, State, StateC, _FakeMatrix
 
 
-__all__ = ['DOS', 'PDOS']
+__all__ = ['DOS', 'PDOS', 'COP']
 __all__ += ['velocity', 'velocity_matrix']
 __all__ += ['spin_moment', 'spin_squared']
 __all__ += ['inv_eff_mass_tensor']
@@ -108,7 +110,8 @@ def DOS(E, eig, distribution='gaussian'):
 
     See Also
     --------
-    ~sisl.physics.distribution : a selected set of implemented distribution functions
+    sisl.physics.distribution : a selected set of implemented distribution functions
+    COP : calculate COOP or COHP curves
     PDOS : projected DOS (same as this, but projected onto each orbital)
     spin_moment : spin moment
 
@@ -186,8 +189,9 @@ def PDOS(E, eig, state, S=None, distribution='gaussian', spin=None):
 
     See Also
     --------
-    ~sisl.physics.distribution : a selected set of implemented distribution functions
+    sisl.physics.distribution : a selected set of implemented distribution functions
     DOS : total DOS (same as summing over orbitals)
+    COP : calculate COOP or COHP curves
     spin_moment : spin moment
 
     Returns
@@ -260,6 +264,83 @@ def PDOS(E, eig, state, S=None, distribution='gaussian', spin=None):
 
 
 @set_module("sisl.physics.electron")
+def COP(E, eig, state, M, distribution='gaussian'):
+    r""" Calculate the Crystal Orbital Population for a set of energies, `E`, with a distribution function
+
+    The :math:`\mathrm{COP}(E)` is calculated as:
+
+    .. math::
+       \mathrm{COP}_{\nu,\mu}(E) = \sum_i \psi^*_{i,\nu}\psi_{i,\mu} \mathbf M e^{i\mathbf k\cdot \mathbf R} D(E-\epsilon_i)
+
+    where :math:`D(\Delta E)` is the distribution function used. Note that the distribution function
+    used may be a user-defined function. Alternatively a distribution function may
+    be aquired from `~sisl.physics.distribution`.
+
+    The COP curves generally refers to COOP or COHP curves.
+    COOP is the Crystal Orbital Overlap Population with `M` being the overlap matrix.
+    COHP is the Crystal Orbital Hamiltonian Population with `M` being the Hamiltonian.
+
+    Parameters
+    ----------
+    E : array_like
+       energies to calculate the COP from
+    eig : array_like
+       eigenvalues
+    state : array_like
+       eigenvectors
+    M : array_like
+       matrix used in the COP curve.
+    distribution : func or str, optional
+       a function that accepts :math:`E-\epsilon` as argument and calculates the
+       distribution function.
+
+    Notes
+    -----
+    This is not tested for non-collinear states.
+    This requires substantial amounts of memory for big systems with lots of energy points.
+
+    This method is considered experimental and implementation may change in the future.
+
+    See Also
+    --------
+    sisl.physics.distribution : a selected set of implemented distribution functions
+    DOS : total DOS
+    PDOS : projected DOS over all orbitals
+    spin_moment : spin moment
+
+    Returns
+    -------
+    ~sisl.oplist.oplist
+        COP calculated at energies, has dimension ``(len(E), *M.shape)``.
+    """
+    if isinstance(distribution, str):
+        distribution = get_distribution(distribution)
+
+    assert len(eig) == len(state), "COP: number of eigenvalues and states are not consistent"
+
+    n_s = M.shape[1] // M.shape[0]
+
+    def calc_cop(M, state, n_s):
+        state = np.tile(np.outer(state.conj(), state), n_s)
+        return M.multiply(state).real
+
+    # now calculate the COP curves for the different energies
+    cop = oplist([0.] * len(E))
+    if isspmatrix(M):
+        for e, s in zip(eig, state):
+            # calculate contribution from this state
+            we = distribution(E - e)
+            tmp = calc_cop(M, s, n_s)
+            cop += [tmp.multiply(w) for w in we]
+    else:
+        for e, s in zip(eig, state):
+            we = distribution(E - e)
+            cop += we.reshape(-1, 1, 1) * calc_cop(M, s, n_s)
+
+    return cop
+
+
+@set_module("sisl.physics.electron")
 def spin_moment(state, S=None, project=False):
     r""" Spin magnetic moment (spin texture) and optionally orbitally resolved moments
 
@@ -303,6 +384,7 @@ def spin_moment(state, S=None, project=False):
     --------
     DOS : total DOS
     PDOS : projected DOS
+    COP : calculate COOP or COHP curves
 
     Returns
     -------
@@ -623,7 +705,7 @@ def velocity_matrix(state, dHk, energy=None, dSk=None, degenerate=None, degenera
     Returns
     -------
     numpy.ndarray
-        velocity matrixstate with final dimension ``(state.shape[0], state.shape[0], 3)``, the velocity unit is Ang/ps. Units *may* change in future releases.
+        velocity matrix state with final dimension ``(state.shape[0], state.shape[0], 3)``, the velocity unit is Ang/ps. Units *may* change in future releases.
     """
     if state.ndim == 1:
         return velocity_matrix(state.reshape(1, -1), dHk, energy, dSk, degenerate, degenerate_dir)
@@ -1565,8 +1647,12 @@ class _electron_State:
             n = self.shape[1] // 2
         else:
             n = self.shape[1]
+        if 'sc:' in format:
+            m = n * self.parent.n_s
+        else:
+            m = n
 
-        return _FakeMatrix(n)
+        return _FakeMatrix(n, m)
 
     def norm2(self, sum=True):
         r""" Return a vector with the norm of each state :math:`\langle\psi|\mathbf S|\psi\rangle`
@@ -1697,7 +1783,7 @@ class StateCElectron(_electron_State, StateC):
 
         See Also
         --------
-        PDOS : for an explanation of the projections in case of `project` being True
+        velocity : for an explanation of the projections in case of `project` being True
         """
         try:
             opt = {'k': self.info.get('k', (0, 0, 0)), "dtype": self.dtype}
@@ -1951,3 +2037,28 @@ class EigenstateElectron(StateCElectron):
         See `~sisl.physics.electron.PDOS` for argument details.
         """
         return PDOS(E, self.c, self.state, self.Sk(), distribution, getattr(self.parent, "spin", None))
+
+    def COP(self, M, E, distribution="gaussian"):
+        r""" Calculate COP for provided energies, `E` using matrix `M`
+
+        This routine calls `~sisl.physics.electron.COP` with appropriate arguments.
+        """
+        return COP(E, self.c, self.state, M, distribution)
+
+    def COOP(self, E, distribution="gaussian"):
+        r""" Calculate COOP for provided energies, `E`.
+
+        This routine calls `~sisl.physics.electron.COP` with appropriate arguments.
+        """
+        # Get Sk in full format
+        Sk = self.Sk(format='sc:csr')
+        return COP(E, self.c, self.state, Sk, distribution)
+
+    def COHP(self, E, distribution="gaussian"):
+        r""" Calculate COHP for provided energies, `E`.
+
+        This routine calls `~sisl.physics.electron.COP` with appropriate arguments.
+        """
+        # Get Hk in full format
+        Hk = self.parent.Hk(format='sc:csr')
+        return COP(E, self.c, self.state, Hk, distribution)
